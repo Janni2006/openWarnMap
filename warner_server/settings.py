@@ -44,16 +44,13 @@ INSTALLED_APPS = [
     'frontend.apps.FrontendConfig',
     'users.apps.UsersConfig',
     'rest_framework',
-    'corsheaders',
     'djoser',
     'rest_framework.authtoken',
-    'qr_code',
     'colorfield',
     'reactbackend.apps.ReactbackendConfig',
 ]
 
 MIDDLEWARE = [
-    # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -159,8 +156,3 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
-
-# CORS_ORIGIN_WHITELIST = (
-#     'http://localhost:8000',
-#     'http://127.0.0.1:8000'
-# )
