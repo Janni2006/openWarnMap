@@ -1,0 +1,39 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'users/login.css' %}" />
+{% endblock head %}
+
+{% block main %}
+<form class="login-form" method="POST">
+  {% csrf_token %}
+  <h1>{% translate "Email - Code" %}</h1>
+ 
+  {% if code_error %}
+  <div class="login-error">{% translate "That´s not a valid code" %}</div>
+  {% endif %}
+  <div class="txtb">
+    <input type="text" name="email_key" required/>
+    <span data-placeholder="{% translate 'Code' %}"></span>
+  </div>
+  <input type="submit" class="logbtn" value="{% translate 'Check' %}" />
+
+  <div class="bottom-text">
+    <p>{% translate "Have your normal Code?" %} <a href="{% url 'totp_validate' %}">{% translate "Authorize with your code" %}</a></p>
+  </div>
+</form>
+<script type="text/javascript">
+  $(".txtb input").on("focus",function(){
+    $(this).addClass("focus");
+  });
+
+  $(".txtb input").on("blur",function(){
+    if($(this).val() == "")
+    $(this).removeClass("focus");
+  });
+
+</script>
+{% endblock main %}

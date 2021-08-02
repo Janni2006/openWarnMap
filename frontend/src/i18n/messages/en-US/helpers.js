@@ -1,0 +1,16 @@
+export const HELPERS = {
+	HELPERS_COVERT_BELOW_MINUTE: "less than a minute ago",
+	HELPERS_COVERT_MINUTE: "a minute ago",
+	HELPERS_COVERT_MINUTES: "{minutes} minutes ago",
+	HELPERS_COVERT_HOUR: "an hour ago",
+	HELPERS_COVERT_HOURS: "{hours} hours ago",
+	HELPERS_COVERT_DAY: "a day ago",
+	HELPERS_COVERT_DAYS: "{days} days ago",
+	HELPERS_COVERT_WEEK: "a week ago",
+	HELPERS_COVERT_WEEKS: "{weeks} weeks ago",
+	HELPERS_COVERT_MONTH: "a month ago",
+	HELPERS_COVERT_MONTHS: "{months} months ago",
+	HELPERS_COVERT_YEAR: "a year ago",
+	HELPERS_COVERT_YEARS: "{years} years ago",
+	HELPERS_CONVERT_ERROR: "something went wrong",
+};

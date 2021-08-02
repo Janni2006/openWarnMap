@@ -1,0 +1,20 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'users/login.css' %}" />
+{% endblock head %}
+
+{% block main %}
+<div class="login-form">
+  {% csrf_token %}
+  <h1>{% translate "Success" %}</h1>
+<p style="text-align: center;">{% translate "Your email got validated successfully." %}</p>
+
+  <div class="bottom-text">
+    <a href="{% url 'login' %}">{% translate "Login now" %}</a>
+  </div>
+</div>
+{% endblock main %}

@@ -1,0 +1,9 @@
+{% autoescape off %}
+{% if user.first_name %}
+<h5>Hi {{ user.first_name }},</h5>
+{% else %}
+<h5>Hi {{ user.username }},</h5>
+{% endif %}
+please validate your email through clicking on the link below.
+http://{{ domain }}{% url 'email_validatione_request' uidb64=uidb token=token %}
+{% endautoescape %}

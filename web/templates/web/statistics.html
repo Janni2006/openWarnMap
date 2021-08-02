@@ -1,0 +1,205 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% block main %}
+{% now "Y" as current_year %}
+<div class="statistics-page">
+  <ul class="monthly-difference" style="grid-area: m_dif;">
+    {% for data in monthly_difference %}
+    <li class="{% if data.difference < 0 %}green{% elif data.difference > 0 %}red{% endif %}">
+      <ul class="difference-data">
+        <li class="value">
+          <h2>
+            {% if data.difference < 0 %}{% elif data.difference > 0 %}+{% endif %}{{ data.difference }}
+          </h2>
+        </li>
+        <li class="arrow">
+          {% if data.difference < 0 %}
+          <i class="fas fa-arrow-alt-circle-down icon"></i>
+          {% elif data.difference > 0 %}
+          <i class="fas fa-arrow-alt-circle-up icon"></i>
+          {% endif %}
+        </li>
+      </ul>
+  
+      <hr>
+      <div class="date">{% translate data.month %}, {{ data.year }}</div>
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="chart" style="grid-area: y_overview;">
+    <div class="header">
+      <h3>{% translate 'Yearly overview' %}</h3>
+      <hr />
+    </div>
+    <div id="yearly_chart_container">
+      <canvas
+        id="yearly_chart"
+        data-url="{% url 'statistics_data' year=current_year %}"
+      ></canvas>
+    </div>
+  </div>
+  <div class="chart" style="grid-area: re_issues;">
+    <div class="header">
+      <h3>{% translate 'Reported issues' %}</h3>
+      <hr />
+    </div>
+    <h2>{{ count }}</h2>
+    {% if difference > 0 %}
+    <h5 style="color:red;">
+      {% if difference >= 0 %}+{% endif %}{{ difference }}
+    </h5>
+    {% elif difference < 0 %}
+    <h5 style="color:green;">
+      {% if difference >= 0 %}+{% endif %}{{ difference }}
+    </h5>
+    {% else %}
+    <h5 style="color:black;">
+      {% if difference >= 0 %}+{% endif %}{{ difference }}
+    </h5>
+    {% endif %}
+    
+  </div>
+  <div class="chart" style="grid-area: re_a_issues;">
+    <div class="header">
+      <h3>{% translate 'Reported active issues' %}</h3>
+      <hr />
+    </div>
+    <h2>{{ active_count }}</h2>
+    {% if active_difference > 0 %}
+    <h5 style="color:red;">
+      {% if active_difference >= 0 %}+{% endif %}{{ active_difference }}
+    </h5>
+    {% elif active_difference < 0 %}
+    <h5 style="color:green;">
+      {% if active_difference >= 0 %}+{% endif %}{{ active_difference }}
+    </h5>
+    {% else %}
+    <h5 style="color:black;">
+      {% if active_difference >= 0 %}+{% endif %}{{ active_difference }}
+    </h5>
+    {% endif %}
+  </div>
+  <div class="chart" style="grid-area: m_overview;">
+    <div class="header">
+      <h3>{% translate 'Monthly overview' %}</h3>
+      <hr />
+    </div>
+    <button value="{{ current_year|add:-2 }}">{{ current_year|add:-2 }}</button>
+    <button value="{{ current_year|add:-1 }}">{{ current_year|add:-1 }}</button>
+    <button value="{{ current_year }}">{% translate 'Current' %}</button>
+    <div id="monthly_chart_container">
+      <canvas
+        id="monthly_chart"
+        data-url="{% url 'statistics_data' year=current_year %}"
+      ></canvas>
+    </div>
+  </div>
+  <div class="chart" style="grid-area: pu_activity;">
+    <div class="header">
+      <h3>{% translate 'Public activity' %}</h3>
+      <hr />
+    </div>
+    <ul class="private_data">
+      {% for data in latest_data %}
+      <li class="">
+        <h6>{{ data.code }}</h6>
+        <p><i class="far fa-clock"></i> {{ data.updated|timesince }}</p>
+      </li>
+      {% empty %}
+      <li>
+        <h6>{% translate 'Nothing here' %}</h6>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% if user.is_authenticated %}
+  <div class="chart" style="grid-area: pr_activity;">
+    <div class="header">
+      <h3>{% translate 'Private activity' %}</h3>
+      <hr />
+    </div>
+    <ul class="private_data">
+      {% for data in latest_private_data %}
+      <li class="">
+        <h6>{{ data.code }}</h6>
+        <p><i class="far fa-clock"></i> {{ data.created|timesince }}</p>
+      </li>
+      {% empty %}
+      <li>
+        <h6>{% translate 'Nothing here' %}</h6>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock main %} {% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'web/statistics.css' %}"
+/>
+<script src="{% static 'web/js/statistics.js' %}"></script>
+{% if user.is_authenticated %}
+<style>
+  .statistics-page {
+    grid-template-areas:
+    "m_dif m_dif m_dif m_dif"
+    "y_overview pu_activity pr_activity re_issues"
+    "y_overview pu_activity pr_activity re_a_issues"
+    "m_overview m_overview m_overview m_overview";
+  }
+
+  @media (max-width: 600px) {
+    .statistics-page {
+      grid-template-areas:
+      "m_dif m_dif"
+      "y_overview y_overview"
+      "m_overview m_overview"
+      "re_issues re_a_issues"
+      "pu_activity pu_activity"
+      "pr_activity pr_activity";
+    }
+  }
+
+  @media (max-width: 1350px) and (min-width: 601px){
+    .statistics-page {
+      grid-template-areas:
+      "m_dif m_dif m_dif"
+      "y_overview re_a_issues re_issues"
+      "y_overview pu_activity pr_activity"
+      "m_overview pu_activity pr_activity"
+      "m_overview pu_activity pr_activity";
+    }
+  }
+</style>
+{% else %}
+<style>
+  .statistics-page {
+    grid-template-areas:
+    "m_dif m_dif m_dif"
+    "y_overview pu_activity re_issues"
+    "y_overview pu_activity re_a_issues"
+    "m_overview m_overview m_overview";
+  }
+
+  @media (max-width: 600px) {
+    .statistics-page {
+      grid-template-areas:
+      "m_dif m_dif"
+      "y_overview y_overview"
+      "m_overview m_overview"
+      "re_issues re_a_issues"
+      "pu_activity pu_activity";
+    }
+  }
+</style>
+{% endif %}
+{% endblock head %}

@@ -1,0 +1,16 @@
+export const HELPERS = {
+	HELPERS_COVERT_BELOW_MINUTE: "vor weniger als einer Minute",
+	HELPERS_COVERT_MINUTE: "vor einer Minute",
+	HELPERS_COVERT_MINUTES: "vor {minutes} Minuten",
+	HELPERS_COVERT_HOUR: "vor einer Stunde",
+	HELPERS_COVERT_HOURS: "vor {hours} Stunden",
+	HELPERS_COVERT_DAY: "vor einem Tag",
+	HELPERS_COVERT_DAYS: "vor {days} Tagen",
+	HELPERS_COVERT_WEEK: "vor einer Woche",
+	HELPERS_COVERT_WEEKS: "vor {weeks} Wochen",
+	HELPERS_COVERT_MONTH: "vor einem Monat",
+	HELPERS_COVERT_MONTHS: "vor {months} Monaten",
+	HELPERS_COVERT_YEAR: "vor einem Jahr",
+	HELPERS_COVERT_YEARS: "vor {years} Jahren",
+	HELPERS_CONVERT_ERROR: "etwas ist schief gelaufen",
+};

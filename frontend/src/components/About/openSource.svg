@@ -1,0 +1,101 @@
+<svg width="844" height="625" viewBox="0 0 844 625" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="openSource" clip-path="url(#clip0)">
+<g id="Background">
+<path id="Vector" d="M83 166C128.84 166 166 128.84 166 83C166 37.1604 128.84 0 83 0C37.1604 0 0 37.1604 0 83C0 128.84 37.1604 166 83 166Z" fill="url(#paint0_linear)"/>
+<path id="Vector_2" d="M761 352C806.84 352 844 314.84 844 269C844 223.16 806.84 186 761 186C715.16 186 678 223.16 678 269C678 314.84 715.16 352 761 352Z" fill="url(#paint1_linear)"/>
+</g>
+<g id="Monitor">
+<path id="Vector_3" d="M501.716 617.871L487.124 611.727L477.113 538.575H343.809L332.958 611.428L319.903 617.955C319.279 618.268 318.778 618.782 318.482 619.414C318.186 620.047 318.112 620.761 318.273 621.441C318.433 622.12 318.818 622.726 319.366 623.159C319.914 623.593 320.592 623.828 321.29 623.828H500.513C501.229 623.828 501.923 623.581 502.477 623.128C503.031 622.674 503.411 622.043 503.552 621.342C503.694 620.64 503.588 619.911 503.254 619.279C502.919 618.646 502.376 618.149 501.716 617.871Z" fill="#E6E6E6"/>
+<path id="Vector_4" d="M738.607 548.308H83.7782C80.3425 548.3 77.0502 546.93 74.6235 544.498C72.1968 542.066 70.8339 538.77 70.8339 535.335V442.995H751.552V535.335C751.552 538.77 750.189 542.066 747.762 544.498C745.335 546.93 742.043 548.3 738.607 548.308Z" fill="#CCCCCC"/>
+<path id="Vector_5" d="M752.236 486.637H70.2362V91.5357C70.241 87.3893 71.8903 83.4142 74.8223 80.4823C77.7543 77.5504 81.7295 75.9013 85.8758 75.8966H736.596C740.743 75.9012 744.718 77.5504 747.65 80.4823C750.582 83.4141 752.231 87.3893 752.236 91.5357V486.637Z" fill="#3F3D56"/>
+<path id="Vector_6" d="M579.656 624.592H242.208C241.862 624.599 241.524 624.492 241.246 624.287C240.967 624.082 240.764 623.79 240.669 623.458C240.609 623.232 240.602 622.995 240.649 622.766C240.695 622.536 240.793 622.321 240.936 622.135C241.079 621.95 241.262 621.8 241.472 621.696C241.682 621.593 241.912 621.539 242.146 621.539H579.531C579.896 621.526 580.254 621.637 580.547 621.854C580.841 622.071 581.052 622.38 581.147 622.733C581.197 622.956 581.196 623.188 581.144 623.41C581.092 623.633 580.991 623.841 580.847 624.02C580.704 624.198 580.523 624.342 580.317 624.441C580.111 624.54 579.885 624.591 579.656 624.592Z" fill="#CCCCCC"/>
+<path id="Vector_7" d="M711.503 457.96H110.969C107.773 457.957 104.708 456.686 102.448 454.425C100.187 452.165 98.916 449.1 98.9124 445.904V116.63C98.9159 113.433 100.187 110.368 102.448 108.108C104.708 105.848 107.773 104.576 110.969 104.572H711.503C714.7 104.576 717.764 105.848 720.025 108.108C722.285 110.368 723.557 113.433 723.56 116.63V445.904C723.556 449.1 722.285 452.165 720.025 454.425C717.764 456.686 714.7 457.957 711.503 457.96Z" fill="#C7C7C7"/>
+<path id="Vector_8" d="M110.969 457.96H711.503C714.7 457.957 717.764 456.686 720.025 454.425C722.285 452.165 723.556 449.1 723.56 445.904V136H98.9124V445.904C98.916 449.1 100.187 452.165 102.448 454.425C104.708 456.686 107.773 457.957 110.969 457.96Z" fill="#606060"/>
+<path id="Vector 1" d="M276.492 125H99V136H723.5V125H383.508C381.237 125 379.034 124.227 377.261 122.809L370.239 117.191C368.466 115.773 366.263 115 363.992 115H296.008C293.737 115 291.534 115.773 289.761 117.191L282.739 122.809C280.966 124.227 278.763 125 276.492 125Z" fill="#E6E6E6"/>
+<path id="Vector 1_2" d="M166.492 125H99V136H723.5V125H273.508C271.237 125 269.034 124.227 267.261 122.809L260.239 117.191C258.466 115.773 256.263 115 253.992 115H186.008C183.737 115 181.534 115.773 179.761 117.191L172.739 122.809C170.966 124.227 168.763 125 166.492 125Z" fill="white"/>
+<circle id="Ellipse 1" cx="708.5" cy="115.5" r="4.5" fill="#FF3535"/>
+<circle id="Ellipse 2" cx="693.5" cy="115.5" r="4.5" fill="#00CD46"/>
+<circle id="Ellipse 3" cx="678.5" cy="115.5" r="4.5" fill="#35B6FF"/>
+<circle id="Ellipse 5" cx="254.5" cy="120" r="2" fill="#FF3535"/>
+<circle id="Ellipse 6" cx="364.5" cy="120" r="2" fill="#FF3535" fill-opacity="0.75"/>
+</g>
+<g id="Content">
+<rect id="Rectangle 4" x="105" y="145" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 10" x="105" y="223" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 5" x="105" y="158" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 9" x="105" y="210" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 11" x="105" y="236" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 12" x="105" y="249" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 13" x="105" y="262" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 14" x="105" y="275" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 8" x="105" y="197" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 15" x="105" y="288" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 16" x="105" y="301" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 6" x="105" y="171" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 7" x="105" y="184" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 26" x="105" y="314" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 27" x="105" y="392" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 28" x="105" y="327" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 29" x="105" y="379" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 30" x="105" y="405" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 31" x="105" y="418" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 32" x="105" y="431" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 33" x="105" y="444" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 34" x="105" y="366" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 37" x="105" y="340" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 38" x="105" y="353" width="4" height="8" fill="#C4C4C4"/>
+<rect id="Rectangle 3" x="120" y="136" width="4" height="322" fill="#C4C4C4"/>
+<rect id="Rectangle 17" x="140" y="145" width="30" height="8" fill="#3397D3"/>
+<rect id="Rectangle 22" x="202" y="184" width="80" height="8" fill="#3397D3"/>
+<path id="Rectangle 24" d="M170 210H230V218H170V210Z" fill="#3397D3"/>
+<rect id="Rectangle 18" x="140" y="158" width="30" height="8" fill="#E8811F"/>
+<rect id="Rectangle 39" x="140" y="223" width="30" height="8" fill="#E8811F"/>
+<rect id="Rectangle 43" x="170" y="275" width="20" height="8" fill="#E8811F"/>
+<rect id="Rectangle 64" x="215" y="379" width="20" height="8" fill="#E8811F"/>
+<rect id="Rectangle 40" x="140" y="249" width="30" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 65" x="140" y="392" width="30" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 23" x="170" y="197" width="50" height="8" fill="#E8811F"/>
+<rect id="Rectangle 52" x="202" y="314" width="50" height="8" fill="#E8811F"/>
+<rect id="Rectangle 56" x="306" y="327" width="45" height="8" fill="#E8811F"/>
+<rect id="Rectangle 58" x="170" y="340" width="45" height="8" fill="#E8811F"/>
+<rect id="Rectangle 19" x="170" y="171" width="100" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 25" x="233" y="210" width="95" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 48" x="243" y="301" width="95" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 53" x="170" y="327" width="35" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 57" x="354" y="327" width="35" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 61" x="203" y="353" width="35" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 63" x="170" y="379" width="42.5" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 44" x="170" y="288" width="45" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 41" x="170" y="262" width="110" height="8" fill="#69C386"/>
+<rect id="Rectangle 42" x="311" y="262" width="85" height="8" fill="#69C386"/>
+<rect id="Rectangle 45" x="218" y="288" width="95" height="8" fill="#69C386"/>
+<rect id="Rectangle 39_2" x="283" y="262" width="25" height="8" fill="#35B6FF"/>
+<rect id="Rectangle 49" x="341" y="301" width="25" height="8" fill="#35B6FF"/>
+<rect id="Rectangle 54" x="208" y="327" width="30" height="8" fill="#35B6FF"/>
+<rect id="Rectangle 60" x="170" y="353" width="30" height="8" fill="#35B6FF"/>
+<rect id="Rectangle 46" x="170" y="301" width="25" height="8" fill="#35B6FF"/>
+<rect id="Rectangle 21" x="170" y="184" width="30" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 51" x="170" y="314" width="30" height="8" fill="#8B4AA0"/>
+<rect id="Rectangle 20" x="273" y="171" width="40" height="8" fill="#69C386"/>
+<rect id="Rectangle 47" x="198" y="301" width="42" height="8" fill="#69C386"/>
+<rect id="Rectangle 50" x="369" y="301" width="60" height="8" fill="#69C386"/>
+<rect id="Rectangle 55" x="241" y="327" width="62" height="8" fill="#69C386"/>
+<rect id="Rectangle 59" x="218" y="340" width="75" height="8" fill="#69C386"/>
+<rect id="Rectangle 62" x="170" y="366" width="77.5" height="8" fill="#69C386"/>
+<circle id="Ellipse 4" cx="114" cy="331" r="2" fill="#FF3535"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear" x1="0" y1="0" x2="166" y2="166" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F0F0F0"/>
+<stop offset="1" stop-color="#CFCFCF"/>
+</linearGradient>
+<linearGradient id="paint1_linear" x1="844" y1="269" x2="678" y2="269" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F0F0F0"/>
+<stop offset="1" stop-color="#979797"/>
+</linearGradient>
+<clipPath id="clip0">
+<rect width="844" height="624.592" fill="white"/>
+</clipPath>
+</defs>
+</svg>

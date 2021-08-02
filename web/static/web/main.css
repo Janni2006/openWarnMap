@@ -1,0 +1,7 @@
+#mapid {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 75px);
+  overflow: hidden;
+  z-index: 0;
+}

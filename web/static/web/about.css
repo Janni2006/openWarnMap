@@ -1,0 +1,91 @@
+.block_content {
+  overflow-x: hidden;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #3f3f3f;
+}
+.goal-section {
+  position: relative;
+  height: calc(100vh - 75px);
+}
+
+.goal-section h1 {
+  text-align: center;
+  font-size: 50px;
+}
+
+.goal-section h6 {
+  text-align: center;
+  font-size: 20px;
+}
+
+.goal-section div {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  max-width: 300px;
+}
+
+.benefits {
+  height: 25%;
+  position: relative;
+  background-color: rgb(67, 149, 255);
+  padding-top: 50px;
+  padding-bottom: 50px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.benefits .container {
+  background-color: white;
+  overflow: hidden;
+  width: calc(33% - 100px);
+  border-radius: 20px;
+  padding: 10px;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+@media (max-width: 800px) {
+  .benefits .container {
+    width: calc(33% - 50px);
+  }
+}
+
+@media (max-width: 575px) {
+  .benefits .container {
+    width: calc(50% - 50px);
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 450px) {
+  .benefits .container {
+    width: calc(100% - 50px);
+  }
+}
+
+.triangle {
+  display: flex;
+  align-items: flex-end;
+}
+
+.triangle svg polygon {
+  stroke-dasharray: 25;
+  animation: animation 10s ease infinite;
+}
+@keyframes animation {
+  to {
+    stroke-dashoffset: 100;
+    stroke: red;
+  }
+}

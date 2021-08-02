@@ -1,0 +1,99 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+
+import { Link } from "react-router-dom";
+
+import {
+	Card,
+	Typography,
+	Dialog,
+	DialogTitle,
+	DialogActions,
+	Button,
+	IconButton,
+	Grid,
+} from "@material-ui/core";
+
+import { Language } from "@material-ui/icons";
+
+import { useIntl, FormattedMessage } from "react-intl";
+
+import { setLanguage } from "../../actions/generalActions";
+
+import SubmitButton from "../SubmitButton";
+
+import Select from "react-select";
+import { LOCALES } from "../../i18n/languages";
+
+function SettingsDialog(props) {
+	const { onClose, open } = props;
+
+	const intl = useIntl();
+
+	const handleClose = () => {
+		onClose();
+	};
+
+	return (
+		<Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth={"xs"}>
+			<DialogTitle>
+				<FormattedMessage id="SETTINGS_TITLE" />
+			</DialogTitle>
+			<div style={{ padding: "0px 24px", overflowX: "visible" }}>
+				<Grid container spacing={1}>
+					<Grid
+						item
+						xs={12}
+						sm={6}
+						style={{
+							display: "flex",
+							justifyContent: "flex-start",
+							flexWrap: "nowrap",
+							alignItems: "center",
+						}}
+					>
+						<Language />
+						<Typography
+							style={{ fontSize: "16px", color: "black", marginLeft: "5px" }}
+						>
+							<FormattedMessage id="SETTINGS_LANGUAGE" />:
+						</Typography>
+					</Grid>
+					<Grid item xs={12} sm={6}>
+						<Select
+							options={[
+								{ value: LOCALES.ENGLISH, label: "English" },
+								{ value: LOCALES.GERMAN, label: "Deutsch" },
+							]}
+							defaultValue={{
+								value: props.language,
+								label:
+									props.language == LOCALES.ENGLISH ? "English" : "Deutsch",
+							}}
+							onChange={(value) => {
+								props.setLanguage(value.value);
+							}}
+						/>
+					</Grid>
+				</Grid>
+			</div>
+
+			<DialogActions style={{ padding: "16px 24px" }}>
+				<SubmitButton
+					title={intl.formatMessage({ id: "SAVE" })}
+					onClick={handleClose}
+				/>
+			</DialogActions>
+		</Dialog>
+	);
+}
+
+SettingsDialog.propTypes = {
+	language: PropTypes.string.isRequired,
+	setLanguage: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({ language: state.general.language });
+
+export default connect(mapStateToProps, { setLanguage })(SettingsDialog);

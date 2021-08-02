@@ -1,0 +1,119 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% block main %}
+<table class="issues">
+    <tr>
+        <th id="code">
+            {% if order_by == "code" %}
+            <a class="th-element" href="?page={{ paginator.number }}&order_by=-code">
+                <div>Code</div>
+                <div class="sort"><i class="fas fa-sort-down"></i></div>
+            </a>       
+            {% elif order_by == "-code" %}
+            <a class="th-element" href="?page={{ paginator.number }}">
+                <div>Code</div>
+                <div class="sort"><i class="fas fa-sort-up"></i></div>
+            </a>   
+            {% else %}
+            <a class="th-element" href="?page={{ paginator.number }}&order_by=code">
+                <div>Code</div>
+                <div class="sort"><i class="fas fa-sort"></i></div>
+            </a> 
+            {% endif %}
+        </th>
+        <th id="created">
+            {% if order_by == "-created" %}
+            <a class="th-element" href="?page={{ paginator.number }}&order_by=created">
+                <div>Created</div>
+                <div class="sort"><i class="fas fa-sort-down"></i></div>
+            </a>       
+            {% elif order_by == "created" %}
+            <a class="th-element" href="?page={{ paginator.number }}">
+                <div>Created</div>
+                <div class="sort"><i class="fas fa-sort-up"></i></div>
+            </a>   
+            {% else %}
+            <a class="th-element" href="?page={{ paginator.number }}&order_by=-created">
+                <div>Created</div>
+                <div class="sort"><i class="fas fa-sort"></i></div>
+            </a> 
+            {% endif %}
+        </th>
+        <th id="updated">
+            {% if order_by == "-updated" %}
+            <a class="th-element" href="?page={{ paginator.number }}&order_by=updated">
+                <div>Updated</div>
+                <div class="sort"><i class="fas fa-sort-down"></i></div>
+            </a>       
+            {% elif order_by == "updated" %}
+            <a class="th-element" href="?page={{ paginator.number }}">
+                <div>Updated</div>
+                <div class="sort"><i class="fas fa-sort-up"></i></div>
+            </a>   
+            {% else %}
+            <a class="th-element" href="?page={{ paginator.number }}&order_by=-updated">
+                <div>Updated</div>
+                <div class="sort"><i class="fas fa-sort"></i></div>
+            </a> 
+            {% endif %}
+        </th>
+        <th id="status">
+            {% if order_by == "-active" %}
+            <a class="th-element" href="?page={{ paginator.number }}&order_by=active">
+                <div>Status</div>
+                <div class="sort"><i class="fas fa-sort-down"></i></div>
+            </a>       
+            {% elif order_by == "active" %}
+            <a class="th-element" href="?page={{ paginator.number }}">
+                <div>Status</div>
+                <div class="sort"><i class="fas fa-sort-up"></i></div>
+            </a>   
+            {% else %}
+            <a class="th-element" href="?page={{ paginator.number }}&order_by=-active">
+                <div>Status</div>
+                <div class="sort"><i class="fas fa-sort"></i></div>
+            </a> 
+            {% endif %}
+        </th>
+        {% if user.is_authenticated %}
+        <th>Action</th>
+        {% endif %}
+    </tr>
+    {% for data in paginator %}
+    <tr>
+        <td>{{ data.code }}</td>
+        <td>vor {{ data.created|timesince }}</td>
+        <td>vor {{data.updated|timesince }}</td>
+        <td>{{ data.active }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <h6>Nothing here</h6>
+    </tr>
+    {% endfor %}
+</table>
+<span>
+    {% if paginator.has_previous %}
+    {% if paginator.number >= 3 %}
+    <a href="?page=1&order_by={{ order_by }}"><i class="fas fa-angle-double-left"></i></a>
+    {% endif %}
+    <a href="?page={{ paginator.previous_page_number }}&order_by={{ order_by }}"><i class="fas fa-angle-left"></i></a>
+    {% endif %}
+
+    <span>
+        Page {{ paginator.number }} of {{ paginator.paginator.num_pages }}
+    </span>
+
+    {% if paginator.has_next %}
+    <a href="?page={{ paginator.next_page_number }}&order_by={{ order_by }}"><i class="fas fa-angle-right"></i></a>
+    {% if paginator.number <= paginator.paginator.num_pages|add:-2 %}
+    <a href="?page={{ paginator.paginator.num_pages }}&order_by={{ order_by }}"><i class="fas fa-angle-double-right"></i></a>
+    {% endif %}
+    {% endif %}
+</span>
+{% endblock main %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'web/issue_list.css' %}" />
+<!-- <script src="{% static 'web/js/issue_list.js' %}"></script> -->
+{% endblock head %}

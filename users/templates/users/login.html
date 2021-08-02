@@ -1,0 +1,50 @@
+{% extends 'web/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'users/login.css' %}" />
+{% endblock head %}
+
+{% block main %}
+<form class="login-form" method="POST">
+  {% csrf_token %}
+  <h1>{% translate "Login" %}</h1>
+ 
+  {% if error %}
+  <div class="login-error">{% translate "There is no account with these credentials" %}</div>
+  {% endif %}
+
+  <div class="txtb">
+    <input type="text" name="username" id="username" value="{{ username }}" required/>
+    <span data-placeholder="{% translate 'Username or Email' %}"></span>
+  </div>
+
+  <div class="txtb">
+    <input type="password" name="password" required/>
+    <span data-placeholder="{% translate 'Password' %}"></span>
+  </div>
+  <input type="submit" class="logbtn" value="{% translate 'Login' %}" />
+
+  <div class="bottom-text">
+    <p>{% translate "Forgot password?" %} <a href="{% url 'password_reset_request' %}">{% translate "Reset Password" %}</a></p>
+    <p>{% translate "Don´t have account?" %} <a href="{% url 'register' %}">{% translate "Sign up" %}</a></p>    
+  </div>
+</form>
+<script type="text/javascript">
+  $(".txtb input").on("focus",function(){
+    $(this).addClass("focus");
+  });
+
+  if(document.getElementById("username").value != ""){
+    document.getElementById("username").classList.add("focus");
+  }
+
+  $(".txtb input").on("blur",function(){
+    if($(this).val() == "")
+    $(this).removeClass("focus");
+  });
+
+</script>
+{% endblock main %}
