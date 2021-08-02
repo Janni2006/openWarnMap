@@ -3,10 +3,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
 
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import "leaflet-defaulticon-compatibility";
 
 import "./style.css";
 import { VerifiedUser, Warning } from "@material-ui/icons";

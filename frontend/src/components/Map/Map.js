@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
+import "react-leaflet-markercluster/dist/styles.min.css";
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
+import "leaflet-defaulticon-compatibility";
 
 import { viewChanges, updateData } from "../../actions/mapActions";
 
@@ -14,6 +16,7 @@ import {
 	useMap,
 	ScaleControl,
 	CircleMarker,
+	LayersControl,
 } from "react-leaflet";
 
 import { withWidth, Hidden } from "@material-ui/core";
@@ -85,6 +88,7 @@ function MapObject(props) {
 						))}
 					</MarkerClusterGroup>
 				) : null}
+				<LayersControl />
 			</MapContainer>
 			<AddActionButton />
 			<Hidden smDown>

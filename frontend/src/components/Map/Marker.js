@@ -4,10 +4,7 @@ import { connect } from "react-redux";
 
 import { openMarkerPopup } from "../../actions/mapActions";
 
-import { Marker, Popup, Circle } from "react-leaflet";
-
-import "leaflet-defaulticon-compatibility";
-import "react-leaflet-markercluster/dist/styles.min.css";
+import { Marker, Popup } from "react-leaflet";
 
 import { VerifiedUser, Warning } from "@material-ui/icons";
 

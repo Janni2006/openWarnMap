@@ -7,9 +7,6 @@ module.exports = {
 		path: path.resolve(__dirname, "./static/frontend"),
 		filename: "[name].js",
 	},
-	cache: {
-		type: "filesystem",
-	},
 	module: {
 		rules: [
 			{
@@ -22,14 +19,12 @@ module.exports = {
 				use: ["style-loader", "css-loader"],
 			},
 			{
-				test: /\.(jpg|png)$/,
-				use: {
-					loader: "url-loader",
-				},
-			},
-			{
 				test: /\.svg$/,
 				use: ["@svgr/webpack", "url-loader"],
+			},
+			{
+				test: /\.(png|jpg|jpeg|gif)$/i,
+				type: "asset/resource",
 			},
 		],
 	},
@@ -39,7 +34,7 @@ module.exports = {
 	plugins: [
 		new webpack.DefinePlugin({
 			"process.env": {
-				NODE_ENV: JSON.stringify("development"),
+				NODE_ENV: JSON.stringify("production"),
 			},
 		}),
 	],

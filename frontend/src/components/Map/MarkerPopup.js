@@ -6,9 +6,6 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 
 import { closeMarkerPopup } from "../../actions/mapActions";
 
-import "leaflet-defaulticon-compatibility";
-import "react-leaflet-markercluster/dist/styles.min.css";
-
 import {
 	VerifiedUser,
 	Warning,
