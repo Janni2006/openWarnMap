@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
-import { Skeleton, ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
+import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 
 import Breadcrumbs from "../Breadcrumbs";
 
@@ -21,22 +21,12 @@ import {
 	FormControlLabel,
 	FormControl,
 	FormLabel,
-	Card,
-	CardContent,
-	Button,
 	Divider,
 	Hidden,
 	Typography,
 } from "@material-ui/core";
 
 import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
-
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import "leaflet-defaulticon-compatibility";
-
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ListIcon from "@material-ui/icons/List";
 import ViewComfyIcon from "@material-ui/icons/ViewComfy";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";

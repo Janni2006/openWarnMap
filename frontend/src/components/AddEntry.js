@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import { setTitle } from "../actions/generalActions";
 
 import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css";
+
+import L from "leaflet";
 
 import {
 	Typography,
@@ -26,7 +27,6 @@ import { Warning, Add, MyLocation, CheckCircle } from "@material-ui/icons";
 import CoordinateInput from "react-coordinate-input";
 
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import "leaflet-defaulticon-compatibility";
 
 import Select from "react-select";
 
@@ -40,6 +40,8 @@ import {
 	FormattedDate,
 	FormattedTime,
 } from "react-intl";
+
+import marker_icon from "../media/marker-icon.png";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
