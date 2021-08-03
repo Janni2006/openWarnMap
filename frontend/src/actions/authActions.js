@@ -78,7 +78,7 @@ export const loadUser =
 								"Token " + getState().auth.token;
 
 							axios
-								.get("/react/user/", config, dispatch(authInterceptor()))
+								.get("/auth/user/", config, dispatch(authInterceptor()))
 								.then((res) => {
 									res.config.success(res);
 								})
@@ -118,7 +118,7 @@ export const login = (username, password) => (dispatch, getState) => {
 
 	const body = JSON.stringify({ username: username, password: password });
 	axios
-		.post("/react/login/", body, config)
+		.post("/auth/login/", body, config)
 		.then((res) => {
 			const logoutTimer = () => setTimeout(() => {}, timeToLogout);
 			logoutTimerID = logoutTimer();
@@ -149,7 +149,7 @@ export const register = (username, email, password) => (dispatch, getState) => {
 		password2: password,
 	});
 	axios
-		.post("/react/register/", body, config)
+		.post("/auth/register/", body, config)
 		.then((res) => {
 			console.log(res);
 			dispatch({ type: REGISTER_SUCCESS });

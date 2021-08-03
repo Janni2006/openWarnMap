@@ -8,7 +8,8 @@ import uuid
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, primary_key=True)
     email_confirmed = models.BooleanField(default=False)
     validation_email_send = models.BooleanField(default=False)
     validation_email_send_time = models.DateTimeField(
@@ -37,4 +38,5 @@ def generate_unique_uuid():
 
 class TokenUUID(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    uuid = models.TextField(default=generate_unique_uuid, unique=True)
+    uuid = models.TextField(default=generate_unique_uuid,
+                            unique=True, primary_key=True)

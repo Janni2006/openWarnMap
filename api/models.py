@@ -28,7 +28,8 @@ def generate_unique_code():
 
 
 class Issue(models.Model):
-    code = models.CharField(default=generate_unique_code, max_length=10)
+    code = models.CharField(default=generate_unique_code,
+                            max_length=10, primary_key=True)
     active = models.BooleanField(null=False, default=True)
     verified = models.BooleanField(null=False, default=False)
     gps_lat = models.DecimalField(null=False, decimal_places=7, max_digits=10)
@@ -51,6 +52,7 @@ class Issue(models.Model):
 
 
 class Statistics(models.Model):
+    id = models.BigAutoField(primary_key=True)
     time = models.DateTimeField(default=datetime.datetime.now)
     count = models.IntegerField(default=0)
 
