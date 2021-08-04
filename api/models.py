@@ -1,10 +1,11 @@
-from django.db import models
+from django.contrib.gis.db import models
 import string
 import random
 import datetime
 from django.utils.translation import gettext as _
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.contrib.gis.geos import Point
 
 
 def generate_unique_code():
@@ -32,9 +33,7 @@ class Issue(models.Model):
                             max_length=10, primary_key=True)
     active = models.BooleanField(null=False, default=True)
     verified = models.BooleanField(null=False, default=False)
-    gps_lat = models.DecimalField(null=False, decimal_places=7, max_digits=10)
-    gps_long = models.DecimalField(
-        null=False, decimal_places=7, max_digits=10)
+    gps = models.PointField(blank=True, default=Point(0, 0))
     size = models.IntegerField(null=False, default=1)
     height = models.IntegerField(null=False, default=1)
     localization = models.IntegerField(null=False, default=0)

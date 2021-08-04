@@ -70,6 +70,10 @@ function MapObject(props) {
 			<MapContainer
 				center={initial_center}
 				zoom={initial_zoom}
+				maxBounds={[
+					[-90, -180],
+					[90, 180],
+				]}
 				scrollWheelZoom={true}
 				style={{ height: "calc(100vh - 90px)", zIndex: 0 }}
 				whenCreated={setMap}

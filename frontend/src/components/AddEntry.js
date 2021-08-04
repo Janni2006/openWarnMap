@@ -5,8 +5,6 @@ import { setTitle } from "../actions/generalActions";
 
 import "leaflet/dist/leaflet.css";
 
-import L from "leaflet";
-
 import {
 	Typography,
 	withWidth,
@@ -40,8 +38,6 @@ import {
 	FormattedDate,
 	FormattedTime,
 } from "react-intl";
-
-import marker_icon from "../media/marker-icon.png";
 
 const useStyles = makeStyles((theme) => ({
 	root: {

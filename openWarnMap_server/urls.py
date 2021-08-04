@@ -7,7 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('api.urls')),
     path('api/', RedirectView.as_view(pattern_name='api')),
-    path('auth/', include('users.urls')),
+    path('backend/auth/', include('users.urls')),
     path('react/', include('reactbackend.urls')),
     # path('login/', RedirectView.as_view(pattern_name='login')),
     # path('register/', RedirectView.as_view(pattern_name='register')),

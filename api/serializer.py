@@ -6,6 +6,7 @@ from .models import Issue
 from django.contrib.auth.models import User
 import datetime
 from django.utils import timezone
+from django.contrib.gis.geos import Point
 
 
 class IssueSerializer(serializers.ModelSerializer):
@@ -36,16 +37,16 @@ class CreateIssueSerializer(serializers.Serializer):
         return attrs
 
     def create(self, validated_data):
-        if Issue.objects.filter(gps_lat__iexact=validated_data["gps_lat"], gps_long__iexact=validated_data["gps_long"]).exists():
+        if Issue.objects.filter(gps__iexact=Point(validated_data["gps_lat"], validated_data["gps_long"])).exists():
             issue = Issue.objects.filter(
-                gps_lat__iexact=validated_data["gps_lat"], gps_long__iexact=validated_data["gps_long"]).first()
+                gps__iexact=Point(validated_data["gps_lat"], validated_data["gps_long"])).first()
             issue.size = validated_data["size"]
             issue.height = validated_data["height"]
             issue.localization = validated_data["localization"]
             issue.save(update_fields=[
                 'size', 'height', 'localization'])
         else:
-            issue = Issue(gps_lat=validated_data["gps_lat"], gps_long=validated_data["gps_long"], size=validated_data["size"],
+            issue = Issue(gps=Point(validated_data["gps_lat"], validated_data["gps_long"]), size=validated_data["size"],
                           height=validated_data["height"], localization=validated_data["localization"], created=validated_data["created"])
             issue.save()
 

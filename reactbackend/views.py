@@ -21,6 +21,8 @@ from django.conf import settings
 from users.models import TokenUUID
 from api.models import Issue, generate_unique_code
 
+from django.contrib.gis.geos import Point
+
 
 class WebLoginView(APIView):
     permission_classes = (AllowAny,)
@@ -173,7 +175,7 @@ class WebCreateIssueView(APIView):
             height = serializer.data.get('height')
             localization = serializer.data.get('localization')
             created = serializer.data.get('created')
-            queryset = Issue.objects.filter(gps_lat=gps_lat, gps_long=gps_long)
+            queryset = Issue.objects.filter(gps=Point(gps_lat, gps_long))
 
             if queryset.exists():
                 issue = queryset.first()
@@ -191,7 +193,7 @@ class WebCreateIssueView(APIView):
                 return Response(IssueSerializer(issue).data, status=status.HTTP_200_OK)
 
             else:
-                issue = Issue(gps_lat=gps_lat, gps_long=gps_long, size=size,
+                issue = Issue(gps=Point(gps_lat, gps_long), size=size,
                               height=height, localization=localization, created=created)
                 issue.save()
                 if request.user.is_authenticated:

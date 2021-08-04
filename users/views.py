@@ -6,8 +6,8 @@ from rest_framework import exceptions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from django.utils.http import urlsafe_base64_encode
-from reactbackend.serializers import UserResetPasswordRequestSerializer, UserChangePasswordSerializer, UserLoginSerializer, IssueSerializer, UserRegistrationSerializer, CreateIssueSerializer
-from reactbackend.utils import generate_access_token, generate_refresh_token
+from users.serializers import UserResetPasswordRequestSerializer, UserChangePasswordSerializer, UserLoginSerializer, IssueSerializer, UserRegistrationSerializer, CreateIssueSerializer
+from users.utils import generate_access_token, generate_refresh_token
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -113,7 +113,7 @@ class WebRefreshToken(APIView):
 
 
 class WebTokenLogout(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     UserModel = get_user_model()
 
     def post(self, request):

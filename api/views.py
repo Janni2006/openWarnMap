@@ -11,6 +11,7 @@ from django.utils.encoding import force_bytes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
+from django.contrib.gis.geos import Point
 
 from .models import Issue
 from .serializer import *
@@ -40,7 +41,7 @@ class CreateIssueView(APIView):
             height = serializer.data.get('height')
             localization = serializer.data.get('localization')
             created = serializer.data.get('created')
-            queryset = Issue.objects.filter(gps_lat=gps_lat, gps_long=gps_long)
+            queryset = Issue.objects.filter(gps=Point(gps_lat, gps_long))
 
             if queryset.exists():
                 issue = queryset.first()
@@ -60,7 +61,7 @@ class CreateIssueView(APIView):
                 return Response(IssueSerializer(issue).data, status=status.HTTP_200_OK)
 
             else:
-                issue = Issue(gps_lat=gps_lat, gps_long=gps_long, size=size,
+                issue = Issue(gps=Point(gps_lat, gps_long), size=size,
                               height=height, localization=localization, created=created)
                 issue.save()
                 if request.user.is_authenticated:
