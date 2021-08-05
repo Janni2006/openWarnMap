@@ -37,6 +37,10 @@ def generate_unique_uuid():
 
 
 class TokenUUID(models.Model):
+    id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     uuid = models.TextField(default=generate_unique_uuid,
-                            unique=True, primary_key=True)
+                            unique=True)
+
+    def __str__(self):
+        return f'Token uuid {self.user}'

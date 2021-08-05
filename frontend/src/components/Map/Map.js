@@ -32,7 +32,7 @@ function MapObject(props) {
 
 	const [map, setMap] = React.useState(null);
 
-	const initial_center = [props.lattitude ?? 0, props.longitude ?? 0];
+	const initial_center = [props.latitude ?? 0, props.longitude ?? 0];
 	const initial_zoom = props.zoom ?? 0;
 
 	React.useEffect(() => {
@@ -104,14 +104,14 @@ function MapObject(props) {
 
 MapObject.propTypes = {
 	viewChanges: PropTypes.func.isRequired,
-	lattitude: PropTypes.number.isRequired,
+	latitude: PropTypes.number.isRequired,
 	longitude: PropTypes.number.isRequired,
 	zoom: PropTypes.number.isRequired,
 	data: PropTypes.array,
 };
 
 const mapStateToProps = (state) => ({
-	lattitude: state.map.view.lattitude,
+	latitude: state.map.view.latitude,
 	longitude: state.map.view.longitude,
 	zoom: state.map.view.zoom,
 	data: state.map.data,

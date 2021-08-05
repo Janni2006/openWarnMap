@@ -1,3 +1,4 @@
+import jwt
 from datetime import datetime, timedelta
 from django.contrib.auth import get_user_model
 from rest_framework import serializers, status, generics
@@ -6,8 +7,6 @@ from rest_framework import exceptions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from django.utils.http import urlsafe_base64_encode
-from users.serializers import UserResetPasswordRequestSerializer, UserChangePasswordSerializer, UserLoginSerializer, IssueSerializer, UserRegistrationSerializer, CreateIssueSerializer
-from users.utils import generate_access_token, generate_refresh_token
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.contrib.auth.models import User
@@ -16,10 +15,11 @@ from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 
-import jwt
 from django.conf import settings
 from users.models import TokenUUID
-from api.models import Issue, generate_unique_code
+
+from users.serializers import UserResetPasswordRequestSerializer, UserChangePasswordSerializer, UserLoginSerializer, IssueSerializer, UserRegistrationSerializer, CreateIssueSerializer
+from users.utils import generate_access_token, generate_refresh_token
 
 
 class WebLoginView(APIView):
@@ -70,8 +70,6 @@ class WebRefreshToken(APIView):
 
     def post(self, request):
         refresh_token = request.COOKIES.get('refreshtoken')
-
-        print(refresh_token)
 
         if refresh_token is None:
             return Response(data={"Bad Request": "Authentication credentials were not provided."}, status=status.HTTP_400_BAD_REQUEST)
@@ -151,67 +149,6 @@ class WebUserLoader(APIView):
         return Response(data={"username": request.user.username, "avatar_color": request.user.profile.avatar_color, "email": request.user.email, "firstname": request.user.first_name, "lastname": request.user.last_name, "last_login": request.user.last_login})
 
 
-class WebCreateIssueView(APIView):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = CreateIssueSerializer
-
-    def post(self, request, format=None):
-
-        serializer = self.serializer_class(data=request.data)
-
-        if serializer.is_valid():
-            # active = serializer.data.get('status')
-            gps_lat = serializer.data.get('gps_lat')
-            gps_long = serializer.data.get('gps_long')
-            size = serializer.data.get('size')
-            height = serializer.data.get('height')
-            localization = serializer.data.get('localization')
-            created = serializer.data.get('created')
-            queryset = Issue.objects.filter(gps_lat=gps_lat, gps_long=gps_long)
-
-            if queryset.exists():
-                issue = queryset.first()
-                issue.size = size
-                issue.height = height
-                issue.localization = localization
-                issue.created = created
-                issue.save(update_fields=[
-                           'size', 'height', 'localization', 'created'])
-
-                user = request.user
-                user.profile.private_data.add(issue)
-                user.save()
-
-                return Response(IssueSerializer(issue).data, status=status.HTTP_200_OK)
-
-            else:
-                issue = Issue(gps_lat=gps_lat, gps_long=gps_long, size=size,
-                              height=height, localization=localization, created=created)
-                issue.save()
-                if request.user.is_authenticated:
-
-                    user = request.user
-                    user.profile.private_data.add(issue)
-                    user.save()
-
-                return Response(IssueSerializer(issue).data, status=status.HTTP_201_CREATED)
-
-        return Response({'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class WebGetPrivateData(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def get(self, request, format=None):
-        queryset = request.user.profile.private_data.all()
-        if queryset.exists():
-            issues = []
-            for i in range(queryset.count()):
-                issues.append(IssueSerializer(queryset[i]).data)
-            return Response(data=issues, status=status.HTTP_200_OK)
-        return Response(data={'Error': 'No data found'}, status=status.HTTP_404_NOT_FOUND)
-
-
 class WebChangePassword(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserChangePasswordSerializer
@@ -235,10 +172,6 @@ class WebChangePassword(APIView):
 
         return Response(
             {'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
-
-
-class WebChangeProfile(APIView):
-    permission_classes = (IsAuthenticated,)
 
 
 class WebPasswordResetRequest(APIView):

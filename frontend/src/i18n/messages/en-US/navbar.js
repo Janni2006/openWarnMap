@@ -8,4 +8,7 @@ export const NAVBAR = {
 	NAVBAR_SIGNEDIN: "Signed in as",
 	NAVBAR_PROFILE: "Profile",
 	NAVBAR_PRIVATE_ENTRYS: "Private Entry´s",
+	NAVBAR_IMPRESSUM: "Impressum",
+	NAVBAR_PRIVACY: "Privacy",
+	NAVBAR_NEWS: "News",
 };

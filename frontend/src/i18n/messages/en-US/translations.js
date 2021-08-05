@@ -10,6 +10,8 @@ export const TRANSLATIONS = {
 	SAVE: "Save",
 	READY: "Ready",
 
+	COOKIE_CONSENT: "This website uses cookies to enhance the user experience.",
+
 	SETTINGS_TITLE: "Settings",
 	SETTINGS_LANGUAGE: "Language",
 };

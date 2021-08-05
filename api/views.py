@@ -41,7 +41,8 @@ class CreateIssueView(APIView):
             height = serializer.data.get('height')
             localization = serializer.data.get('localization')
             created = serializer.data.get('created')
-            queryset = Issue.objects.filter(gps=Point(gps_lat, gps_long))
+            queryset = Issue.objects.filter(
+                gps=Point(float(gps_long), float(gps_lat)))
 
             if queryset.exists():
                 issue = queryset.first()
@@ -61,7 +62,7 @@ class CreateIssueView(APIView):
                 return Response(IssueSerializer(issue).data, status=status.HTTP_200_OK)
 
             else:
-                issue = Issue(gps=Point(gps_lat, gps_long), size=size,
+                issue = Issue(gps=Point(float(gps_long), float(gps_lat)), size=size,
                               height=height, localization=localization, created=created)
                 issue.save()
                 if request.user.is_authenticated:
@@ -99,9 +100,9 @@ class GetOfflineData(APIView):
         gps_long_two = request.query_params.get('gps_long_second')
 
         if gps_lat_one is not None and gps_lat_two is not None and gps_long_one is not None and gps_long_two is not None:
-            issues = issues.filter(gps_lat__range=(gps_lat_one, gps_lat_two))
-            issues = issues.filter(
-                gps_long__range=(gps_long_one, gps_long_two))
+            # issues = issues.filter(gps__range=(gps_lat_one, gps_lat_two))
+            # issues = issues.filter(
+            #     gps_long__range=(gps_long_one, gps_long_two))
 
             return Response(IssueSerializer(issues, many=True).data, status=status.HTTP_200_OK)
 
@@ -116,8 +117,7 @@ class GetIssuesAround(APIView):
         lat = request.GET.get(self.lookup_url_lat)
         long = request.GET.get(self.lookup_url_long)
         if lat is not None and long is not None:
-            queryset = Issue.objects.filter(
-                gps_lat__startswith=lat, gps_long__startswith=long)
+            queryset = Issue.objects.all()
 
             if queryset.exists():
                 issues = []

@@ -7,7 +7,7 @@ import {
 
 const initialState = {
 	view: {
-		lattitude: 0,
+		latitude: 0,
 		longitude: 0,
 		zoom: 0,
 	},
@@ -21,7 +21,7 @@ export default function foo(state = initialState, action) {
 			return {
 				...state,
 				view: {
-					lattitude: action.payload.lattitude,
+					latitude: action.payload.latitude,
 					longitude: action.payload.longitude,
 					zoom: action.payload.zoom,
 				},

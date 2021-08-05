@@ -125,7 +125,7 @@ export const login = (username, password) => (dispatch, getState) => {
 
 	const body = JSON.stringify({ username: username, password: password });
 	axios
-		.post("/auth/login/", body, config)
+		.post("/backend/auth/login/", body, config)
 		.then((res) => {
 			const logoutTimer = () => setTimeout(() => {}, timeToLogout);
 			logoutTimerID = logoutTimer();
@@ -156,7 +156,7 @@ export const register = (username, email, password) => (dispatch, getState) => {
 		password2: password,
 	});
 	axios
-		.post("/auth/register/", body, config)
+		.post("/backend/auth/register/", body, config)
 		.then((res) => {
 			console.log(res);
 			dispatch({ type: REGISTER_SUCCESS });

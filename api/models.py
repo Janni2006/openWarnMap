@@ -38,7 +38,7 @@ class Issue(models.Model):
     height = models.IntegerField(null=False, default=1)
     localization = models.IntegerField(null=False, default=0)
     created = models.DateTimeField(default=datetime.datetime.now)
-    updated = models.DateTimeField(default=datetime.datetime.now)
+    updated = models.DateTimeField(auto_now=True)
     creator = models.ForeignKey(
         User, null=True, blank=True, default=None, on_delete=models.SET_DEFAULT)
 

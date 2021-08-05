@@ -44,7 +44,7 @@ function ResetPassword(props) {
 			const body = JSON.stringify({ email: input });
 
 			axios
-				.post("/react/login/reset/", body, config)
+				.post("/backend/auth/login/reset/", body, config)
 				.then((res) => {
 					if (res.status == 200) {
 						handleClose();

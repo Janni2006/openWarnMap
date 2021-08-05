@@ -23,4 +23,12 @@ export const ADD = {
 		"Wir danken Ihnen für das Hinzufügen eines neuen Eintrags!",
 	ADD_SUCCESS_UPDATED:
 		"Wir danken Ihnen für das aktualisieren eines bereits bestehenden Eintrags!",
+	ADD_CURRENT_POSITION: "GPS-Position",
+	ADD_LATITUDE: "Breitengrad",
+	ADD_LONGITUDE: "Längengrad",
+	ADD_LATITUDE_ERROR_UNDEFINED: "Sie müssen den Breitengrad angeben",
+	ADD_LONGITUDE_ERROR_UNDEFINED: "Sie müssen den Länegngrad angeben",
+	ADD_LATITUDE_ERROR_OUT_OF_RANGE: "Der Wert uss zwischen -90 und 90 liegen",
+	ADD_LONGITUDE_ERROR_OUT_OF_RANGE:
+		"Der Wert muss zwischen -180 und 180 liegen",
 };
