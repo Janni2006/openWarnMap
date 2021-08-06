@@ -424,13 +424,87 @@ function About(props) {
 						<div className={classes.sectionContent}>
 							<Grid container spacing={4}>
 								<Grid item xs={12} md={4}>
-									<Paper style={{ height: "100px", width: "100%" }}></Paper>
+									<Paper className={classes.sectionCard}>
+										<Typography
+											style={{
+												padding: "8px 16px",
+												textAlign: "center",
+												width: "calc(100% - 40px)",
+												backgroundColor: "#ff837e",
+												color: "white",
+												borderRadius: "10px",
+												border: "2.5px solid #ff3a32",
+												marginBottom: "10px",
+											}}
+										>
+											This is an upcominc function!
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "black",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_1_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												color: "#444444",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_1_CONTENT" />
+										</Typography>
+									</Paper>
 								</Grid>
 								<Grid item xs={12} md={4}>
-									<Paper style={{ height: "100px", width: "100%" }}></Paper>
+									<Paper className={classes.sectionCard}>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "black",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_2_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												color: "#444444",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_2_CONTENT" />
+										</Typography>
+									</Paper>
 								</Grid>
 								<Grid item xs={12} md={4}>
-									<Paper style={{ height: "100px", width: "100%" }}></Paper>
+									<Paper className={classes.sectionCard}>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "black",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_3_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												color: "#444444",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_3_CONTENT" />
+										</Typography>
+									</Paper>
 								</Grid>
 							</Grid>
 						</div>

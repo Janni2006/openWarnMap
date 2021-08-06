@@ -13,6 +13,8 @@ import {
 
 import axios from "axios";
 
+import { useIntl } from "react-intl";
+
 import { toast } from "react-toastify";
 
 export const loadUser =
@@ -140,33 +142,39 @@ export const login = (username, password) => (dispatch, getState) => {
 		});
 };
 
-export const register = (username, email, password) => (dispatch, getState) => {
-	dispatch({ type: USER_LOADING });
-	const config = {
-		headers: {
-			"Content-Type": "application/json",
-			"X-CSRFToken": getState().security.csrf_token,
-		},
-	};
+export const register =
+	(username, email, password, intl) => (dispatch, getState) => {
+		dispatch({ type: USER_LOADING });
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				"X-CSRFToken": getState().security.csrf_token,
+			},
+		};
 
-	const body = JSON.stringify({
-		username: username,
-		email: email,
-		password: password,
-		password2: password,
-	});
-	axios
-		.post("/backend/auth/register/", body, config)
-		.then((res) => {
-			console.log(res);
-			dispatch({ type: REGISTER_SUCCESS });
-			toast.success("You´ve successfully created your account");
-		})
-		.catch((err) => {
-			console.log(err);
-			dispatch({ type: REGISTER_FAILED });
+		const body = JSON.stringify({
+			username: username,
+			email: email,
+			password: password,
+			password2: password,
 		});
-};
+		axios
+			.post("/backend/auth/register/", body, config)
+			.then((res) => {
+				dispatch({ type: REGISTER_SUCCESS });
+				toast.success(
+					intl.formatMessage(
+						{ id: "AUTH_REGISTER_SUCCESS" },
+						{ username: res.data.username }
+					)
+				);
+			})
+			.catch((err) => {
+				console.log(err.response);
+				dispatch({ type: REGISTER_FAILED });
+				toast.error(intl.formatMessage({ id: "AUTH_REGISTER_SUCCESS" }));
+			});
+	};
 
 // Logout User
 export const logout = () => (dispatch, getState) => {
@@ -188,7 +196,6 @@ export const logout = () => (dispatch, getState) => {
 			dispatch({
 				type: LOGOUT_FAIL,
 			});
-			clearTimeout(logoutTimerId);
 		},
 		headers: {
 			"Content-Type": "application/json",
@@ -215,6 +222,9 @@ export const authInterceptor = () => (dispatch, getState) => {
 			config.headers["Content-Type"] = "application/json";
 			if (token) {
 				config.headers["Authorization"] = `Token ${token}`;
+			}
+			if (getState().auth.tokenGenerated - Date.now() > 1000 * 60 * 60 * 14.9) {
+				console.log("token expired");
 			}
 			return config;
 		},

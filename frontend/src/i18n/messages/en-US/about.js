@@ -1,17 +1,24 @@
 export const ABOUT = {
 	ABOUT_TITLE: "All oak processionary moths, one map",
 	ABOUT_DESCRIPTION:
-		"Remote Terminal and Status Monitoring for Raspberry Pi, as well as tunnels to any network services running on your Raspberry Pi (such as HTTP, VNC, SSH) so you can access them worldwide over the internet!",
+		"See all known oak processionary moths and ticks centralised on our map.\
+		We want to protect anyone from them regardless of there activity.\
+		Use it while riding a bike or being on a walk, it doesn´t metter!",
 	// First section: About the project
 	ABOUT_SECTION_WHY_1TITLE: "Why use openWarnMap?",
 	ABOUT_SECTION_WHY_2TITLE: "Why",
 	ABOUT_SECTION_WHY_1_TITLE: "Completely free",
 	ABOUT_SECTION_WHY_1_CONTENT:
-		"Every function is free for private use. We earn the money to run this page with you donating your money",
+		"Every function is free for private use. We earn the money to run this page with\
+		you donating your money",
 	ABOUT_SECTION_WHY_2_TITLE: "All issues on one Map",
-	ABOUT_SECTION_WHY_2_CONTENT: "Add text!!!",
+	ABOUT_SECTION_WHY_2_CONTENT:
+		"You no longer have to scan through multiple forms and maybe don´t even find a\
+		correct answer there. Just use this platform and see everything in one view.",
 	ABOUT_SECTION_WHY_3_TITLE: "Easy to use",
-	ABOUT_SECTION_WHY_3_CONTENT: "Add text!!!",
+	ABOUT_SECTION_WHY_3_CONTENT:
+		"This project is oriented to be as userfriendly as possible.\
+		To endhance the user experience your can leave some feedback.",
 
 	// Second section: This project features
 	ABOUT_SECTION_FEATURES_1TITLE: "More freatures",
