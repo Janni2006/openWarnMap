@@ -26,6 +26,7 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 import MapMarker from "./Marker";
 import MarkerPopup from "./MarkerPopup";
 import AddActionButton from "./AddActionButton";
+import MapClick from "./MapClick";
 
 function MapObject(props) {
 	const [key, setKey] = new React.useState(0);
@@ -85,6 +86,7 @@ function MapObject(props) {
 				/>
 				<LastPosition />
 				<ScaleControl />
+				<MapClick />
 				{props.data ? (
 					<MarkerClusterGroup>
 						{props.data.map((item, index) => (

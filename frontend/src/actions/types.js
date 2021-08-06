@@ -2,6 +2,7 @@
 export const VISIT = "VISIT";
 export const LANGUAGE = "LANGUAGE";
 export const TITLE = "TITLE";
+export const TOGGLE_CLICK_TO_ADD = "TOGGLE_CLICK_TO_ADD";
 
 // authentification
 export const USER_LOADING = "USER_LOADING";

@@ -77,9 +77,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class CreateIssueSerializer(serializers.Serializer):
     # status = serializers.BooleanField(default=True, required=False)
     gps_lat = serializers.DecimalField(
-        required=True, decimal_places=15, max_digits=18)
+        required=True, decimal_places=17, max_digits=20)
     gps_long = serializers.DecimalField(
-        required=True, decimal_places=15, max_digits=18)
+        required=True, decimal_places=17, max_digits=20)
     size = serializers.IntegerField(default=1, required=False)
     height = serializers.IntegerField(default=1, required=False)
     localization = serializers.IntegerField(default=0, required=False)

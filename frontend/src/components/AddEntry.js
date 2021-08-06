@@ -318,7 +318,7 @@ function AddEntry(props) {
 						>
 							<MapContainer
 								center={[options.latitude, options.longitude]}
-								zoom={16}
+								zoom={17}
 								scrollWheelZoom={false}
 								closePopupOnClick={false}
 								dragging={false}

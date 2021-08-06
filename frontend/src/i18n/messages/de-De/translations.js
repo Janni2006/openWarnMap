@@ -15,4 +15,5 @@ export const TRANSLATIONS = {
 
 	SETTINGS_TITLE: "Einstellungen",
 	SETTINGS_LANGUAGE: "Sprache",
+	SETTINGS_CLICK_TO_ADD: "Hinzufügen auf der Karte",
 };

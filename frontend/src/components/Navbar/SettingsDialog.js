@@ -2,24 +2,20 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { Link } from "react-router-dom";
-
 import {
-	Card,
 	Typography,
 	Dialog,
 	DialogTitle,
 	DialogActions,
-	Button,
-	IconButton,
 	Grid,
+	Switch,
 } from "@material-ui/core";
 
-import { Language } from "@material-ui/icons";
+import { Language, MapOutlined } from "@material-ui/icons";
 
 import { useIntl, FormattedMessage } from "react-intl";
 
-import { setLanguage } from "../../actions/generalActions";
+import { setLanguage, toggleClickToAdd } from "../../actions/generalActions";
 
 import SubmitButton from "../SubmitButton";
 
@@ -76,6 +72,30 @@ function SettingsDialog(props) {
 							}}
 						/>
 					</Grid>
+					<Grid
+						item
+						xs={12}
+						sm={6}
+						style={{
+							display: "flex",
+							justifyContent: "flex-start",
+							flexWrap: "nowrap",
+							alignItems: "center",
+						}}
+					>
+						<MapOutlined />
+						<Typography
+							style={{ fontSize: "16px", color: "black", marginLeft: "5px" }}
+						>
+							<FormattedMessage id="SETTINGS_CLICK_TO_ADD" />:
+						</Typography>
+					</Grid>
+					<Grid item xs={12} sm={6}>
+						<Switch
+							onChange={props.toggleClickToAdd}
+							checked={props.clickToAdd}
+						/>
+					</Grid>
 				</Grid>
 			</div>
 
@@ -92,8 +112,15 @@ function SettingsDialog(props) {
 SettingsDialog.propTypes = {
 	language: PropTypes.string.isRequired,
 	setLanguage: PropTypes.func.isRequired,
+	clickToAdd: PropTypes.bool.isRequired,
+	toggleClickToAdd: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({ language: state.general.language });
+const mapStateToProps = (state) => ({
+	language: state.general.language,
+	clickToAdd: state.general.settings.map.clickToAdd,
+});
 
-export default connect(mapStateToProps, { setLanguage })(SettingsDialog);
+export default connect(mapStateToProps, { setLanguage, toggleClickToAdd })(
+	SettingsDialog
+);

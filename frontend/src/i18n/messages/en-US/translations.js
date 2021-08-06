@@ -14,4 +14,5 @@ export const TRANSLATIONS = {
 
 	SETTINGS_TITLE: "Settings",
 	SETTINGS_LANGUAGE: "Language",
+	SETTINGS_CLICK_TO_ADD: "Click on map to add entry",
 };

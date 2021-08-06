@@ -16,7 +16,6 @@ export const viewChanges = (lat, lng, zoom) => (dispatch) => {
 export const updateData = () => (dispatch) => {
 	const config = {
 		success: (res) => {
-			console.log(res.data);
 			dispatch({
 				type: MAP_DATA,
 				payload: res.data,
