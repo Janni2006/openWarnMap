@@ -11,6 +11,10 @@ import { withWidth, isWidthUp, Button, isWidthDown } from "@material-ui/core";
 
 import { Link } from "react-router-dom";
 
+import { Add } from "@material-ui/icons";
+
+import { FormattedMessage } from "react-intl";
+
 function MapClick(props) {
 	const [key, setKey] = React.useState(0);
 	const [position, setPosition] = React.useState([0, 0]);
@@ -47,9 +51,31 @@ function MapClick(props) {
 					closeButton={false}
 					position={position}
 				>
-					<Button onClick={() => setShow(false)}>Close</Button>
-					<Link to="/add">
-						<Button>Add</Button>
+					<Button
+						variant="outlined"
+						color="secondary"
+						style={{
+							borderRadius: "22px",
+							height: "44px",
+							borderWidth: "2px",
+							marginRight: "10px",
+						}}
+						onClick={() => setShow(false)}
+					>
+						<FormattedMessage id="CANCEL" />
+					</Button>
+					<Link to="/add" style={{ textDecoration: "none" }}>
+						<Button
+							variant="contained"
+							color="secondary"
+							startIcon={<Add />}
+							style={{
+								borderRadius: "22px",
+								height: "44px",
+							}}
+						>
+							<FormattedMessage id="ADD_SUBMIT" />
+						</Button>
 					</Link>
 				</Popup>
 			) : null}
