@@ -14,5 +14,7 @@ export const TRANSLATIONS = {
 
 	SETTINGS_TITLE: "Settings",
 	SETTINGS_LANGUAGE: "Language",
-	SETTINGS_CLICK_TO_ADD: "Click on map to add entry",
+	SETTINGS_CLICK_TO_ADD: "Click to add",
+	SETTINGS_CLICK_TO_ADD_DESCRIPTION:
+		"With this option enabled you just click on the map to add an entry at this point.",
 };

@@ -7,9 +7,9 @@ import {
 
 const initialState = {
 	view: {
-		latitude: 0,
-		longitude: 0,
-		zoom: 0,
+		latitude: 51.163375,
+		longitude: 10.447683,
+		zoom: 6,
 	},
 	markerPopup: { open: false, content: {} },
 	data: [],

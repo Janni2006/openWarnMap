@@ -12,15 +12,16 @@ import {
 	FormattedTime,
 } from "react-intl";
 
-import Select from "react-select";
-
 import "./input.css";
+
+import axios from "axios";
 
 function Profile(props) {
 	const [input, setInput] = React.useState({
 		firstname: props.firstname,
 		lastname: props.lastname,
 	});
+	const [loading, setLoading] = React.useState(false);
 	const intl = useIntl();
 
 	React.useEffect(() => {
@@ -30,6 +31,20 @@ function Profile(props) {
 			props.setTitle("Profile");
 		};
 	});
+
+	function updateProfile() {
+		setLoading(true);
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				"X-CSRFToken": props.csrf,
+			},
+		};
+		const body = JSON.stringify({
+			firstname: input.firstname,
+			lastname: input.lastname,
+		});
+	}
 
 	return (
 		<Paper style={{ padding: "22px" }}>
@@ -46,6 +61,7 @@ function Profile(props) {
 								value={input.firstname}
 								id="firstname"
 								name="firstname"
+								disabled={loading}
 							/>
 							<div className="underline" />
 							<label>
@@ -66,6 +82,7 @@ function Profile(props) {
 								value={input.lastname}
 								id="lastname"
 								name="lastname"
+								disabled={loading}
 							/>
 							<div className="underline" />
 							<label>
@@ -77,25 +94,11 @@ function Profile(props) {
 			</Grid>
 			<Grid container spacing={2}>
 				<Grid item xs={12} md={6}>
-					<Typography>
-						Last login: <FormattedDate value={props.last_login} />,{" "}
+					<Typography style={{ padding: "0px 10px" }}>
+						<FormattedMessage id="PROFILE_PAGE_ACCOUNT_LAST_LOGIN" />:{" "}
+						<FormattedDate value={props.last_login} />,{" "}
 						<FormattedTime value={props.last_login} />
 					</Typography>
-				</Grid>
-				<Grid item xs={12} md={6}>
-					<Select
-						placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
-						options={[
-							{
-								value: 0,
-								label: "German",
-							},
-							{
-								value: 1,
-								label: "English",
-							},
-						]}
-					/>
 				</Grid>
 			</Grid>
 			<div
@@ -113,6 +116,7 @@ function Profile(props) {
 						borderRadius: "2.5px",
 						height: "44px",
 					}}
+					disabled={loading}
 					onClick={() => {
 						setInput({ firstname: props.firstname, lastname: props.lastname });
 					}}
@@ -127,6 +131,8 @@ function Profile(props) {
 						height: "44px",
 						marginLeft: "15px",
 					}}
+					disabled={loading}
+					onClick={updateProfile}
 				>
 					<FormattedMessage id="UPDATE" />
 				</Button>
@@ -140,12 +146,14 @@ Profile.propTypes = {
 	firstname: PropTypes.string.isRequired,
 	lastname: PropTypes.string.isRequired,
 	last_login: PropTypes.number.isRequired,
+	csrf: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	firstname: state.auth.user.firstname,
 	lastname: state.auth.user.lastname,
 	last_login: state.auth.user.last_login,
+	csrf: state.security.csrf_token,
 });
 
 export default connect(mapStateToProps, { setTitle })(Profile);

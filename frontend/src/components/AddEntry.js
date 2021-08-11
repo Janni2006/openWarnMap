@@ -296,7 +296,8 @@ function AddEntry(props) {
 				})
 				.catch((err) => {
 					setLoading(false);
-					console.log(err);
+					console.log(err.config);
+					console.log("Error");
 					toast.error(intl.formatMessage({ id: "ADD_ERROR_BAD_REQUEST" }));
 				});
 		}

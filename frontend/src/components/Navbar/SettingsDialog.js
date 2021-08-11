@@ -9,9 +9,10 @@ import {
 	DialogActions,
 	Grid,
 	Switch,
+	Tooltip,
 } from "@material-ui/core";
 
-import { Language, MapOutlined } from "@material-ui/icons";
+import { Language, MapOutlined, InfoOutlined } from "@material-ui/icons";
 
 import { useIntl, FormattedMessage } from "react-intl";
 
@@ -32,7 +33,7 @@ function SettingsDialog(props) {
 	};
 
 	return (
-		<Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth={"xs"}>
+		<Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth={"sm"}>
 			<DialogTitle>
 				<FormattedMessage id="SETTINGS_TITLE" />
 			</DialogTitle>
@@ -89,6 +90,15 @@ function SettingsDialog(props) {
 						>
 							<FormattedMessage id="SETTINGS_CLICK_TO_ADD" />:
 						</Typography>
+						<Tooltip
+							title={intl.formatMessage({
+								id: "SETTINGS_CLICK_TO_ADD_DESCRIPTION",
+							})}
+							placement="right"
+							arrow
+						>
+							<InfoOutlined style={{ color: "#2d79df", marginLeft: "5px" }} />
+						</Tooltip>
 					</Grid>
 					<Grid item xs={12} sm={6}>
 						<Switch
