@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setTitle } from "../../../actions/generalActions";
@@ -8,26 +8,27 @@ import { AnimateSharedLayout, motion } from "framer-motion";
 import {
 	List,
 	Grid,
-	Paper,
 	ListItem,
-	Button,
 	Avatar,
 	Typography,
 	Hidden,
-	IconButton,
-	Tooltip,
 } from "@material-ui/core";
 
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import SecurityIcon from "@material-ui/icons/Security";
+import {
+	VpnKey,
+	SecurityRounded,
+	AccountCircle,
+	Notifications,
+} from "@material-ui/icons";
 
 import { useLocation, Link } from "react-router-dom";
 
 import AccountSettings from "./AccountSettings";
 import Password from "./Password";
+import Security from "./Security";
+import ProfileNotifications from "./ProfileNotifications";
 
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
 function SiteItem({ isSelected, icon, title, label }) {
 	return (
@@ -52,18 +53,18 @@ function SiteItem({ isSelected, icon, title, label }) {
 					spacing={1}
 				>
 					<Hidden smDown>
-						<Grid item xs={4} style={{ color: "#cccccc" }}>
+						<Grid item xs={3} style={{ color: "#cccccc" }}>
 							{icon}
 						</Grid>
 					</Hidden>
 
 					<Hidden smUp>
-						<Grid item xs={4} style={{ color: "#cccccc" }}>
+						<Grid item xs={3} style={{ color: "#cccccc" }}>
 							{icon}
 						</Grid>
 					</Hidden>
 
-					<Grid item xs={8}>
+					<Grid item xs={9}>
 						<Typography style={{ color: "#cccccc" }}>{title}</Typography>
 					</Grid>
 				</Grid>
@@ -95,32 +96,30 @@ function Profile(props) {
 		{
 			label: "account",
 			index: 0,
-			icon: <AccountCircleIcon />,
+			icon: <AccountCircle />,
 			title: intl.formatMessage({ id: "PROFILE_PAGE_TITLE_ACCOUNT" }),
 			content: () => <AccountSettings />,
 		},
 		{
 			label: "password",
 			index: 1,
-			icon: <VpnKeyIcon />,
+			icon: <VpnKey />,
 			title: intl.formatMessage({ id: "PROFILE_PAGE_TITLE_PASSWORD" }),
 			content: () => <Password />,
 		},
 		{
 			label: "security",
 			index: 2,
-			icon: <SecurityIcon />,
+			icon: <SecurityRounded />,
 			title: intl.formatMessage({ id: "PROFILE_PAGE_TITLE_SECURITY" }),
-			content: () => (
-				<Grid container>
-					<Grid item xs={6}>
-						Test 1
-					</Grid>
-					<Grid item xs={6}>
-						Test 2
-					</Grid>
-				</Grid>
-			),
+			content: () => <Security />,
+		},
+		{
+			label: "notifications",
+			index: 3,
+			icon: <Notifications />,
+			title: intl.formatMessage({ id: "PROFILE_PAGE_TITLE_NOTIFICATIONS" }),
+			content: () => <ProfileNotifications />,
 		},
 	];
 
@@ -144,9 +143,15 @@ function Profile(props) {
 	}, [page]);
 
 	return (
-		<div style={{ padding: "22px", maxWidth: "980px", margin: "auto" }}>
+		<div
+			style={{
+				padding: "22px",
+				maxWidth: "1200px",
+				margin: "auto",
+			}}
+		>
 			<Grid container spacing={4}>
-				<Grid item xs={12} sm={3}>
+				<Grid item xs={12} sm={4} md={3}>
 					<motion.div
 						layout
 						style={{
@@ -194,12 +199,6 @@ function Profile(props) {
 											>
 												{props.firstname}
 											</Typography>
-											<br />
-											<Typography
-												style={{ textAlign: "center", width: "100%" }}
-											>
-												{props.lastname}
-											</Typography>
 										</>
 									) : (
 										<Typography style={{ textAlign: "center", width: "100%" }}>
@@ -231,7 +230,7 @@ function Profile(props) {
 					</motion.div>
 				</Grid>
 
-				<Grid item xs={12} sm={9}>
+				<Grid item xs={12} sm={8} md={9}>
 					<div
 						style={{
 							width: "100%",
