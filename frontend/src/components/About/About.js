@@ -302,8 +302,8 @@ function About(props) {
 							</Typography>
 						</div>
 						<div className={classes.sectionContent}>
-							<Grid container spacing={4}>
-								<Grid item xs={12} md={4}>
+							<Grid container spacing={4} style={{ justifyContent: "center" }}>
+								<Grid item xs={12} sm={6} md={4}>
 									<Paper className={classes.sectionCard}>
 										<div
 											style={{
@@ -338,7 +338,7 @@ function About(props) {
 										</Typography>
 									</Paper>
 								</Grid>
-								<Grid item xs={12} md={4}>
+								<Grid item xs={12} sm={6} md={4}>
 									<Paper className={classes.sectionCard}>
 										<div
 											style={{
@@ -373,7 +373,7 @@ function About(props) {
 										</Typography>
 									</Paper>
 								</Grid>
-								<Grid item xs={12} md={4}>
+								<Grid item xs={12} sm={6} md={4}>
 									<Paper className={classes.sectionCard}>
 										<div
 											style={{
@@ -422,9 +422,19 @@ function About(props) {
 							</Typography>
 						</div>
 						<div className={classes.sectionContent}>
-							<Grid container spacing={4}>
-								<Grid item xs={12} md={4}>
+							<Grid container spacing={4} style={{ justifyContent: "center" }}>
+								<Grid item xs={12} sm={6} md={4}>
 									<Paper className={classes.sectionCard}>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "black",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_1_TITLE" />
+										</Typography>
 										<Typography
 											style={{
 												padding: "8px 16px",
@@ -437,17 +447,7 @@ function About(props) {
 												marginBottom: "10px",
 											}}
 										>
-											This is an upcominc function!
-										</Typography>
-										<Typography
-											style={{
-												width: "100%",
-												textAlign: "center",
-												fontWeight: "bold",
-												color: "black",
-											}}
-										>
-											<FormattedMessage id="ABOUT_SECTION_WHY_1_TITLE" />
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_UPCOMMING" />
 										</Typography>
 										<Typography
 											style={{
@@ -456,11 +456,11 @@ function About(props) {
 												color: "#444444",
 											}}
 										>
-											<FormattedMessage id="ABOUT_SECTION_WHY_1_CONTENT" />
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_1_CONTENT" />
 										</Typography>
 									</Paper>
 								</Grid>
-								<Grid item xs={12} md={4}>
+								<Grid item xs={12} sm={6} md={4}>
 									<Paper className={classes.sectionCard}>
 										<Typography
 											style={{
@@ -470,7 +470,21 @@ function About(props) {
 												color: "black",
 											}}
 										>
-											<FormattedMessage id="ABOUT_SECTION_WHY_2_TITLE" />
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_2_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												padding: "8px 16px",
+												textAlign: "center",
+												width: "calc(100% - 40px)",
+												backgroundColor: "#ff837e",
+												color: "white",
+												borderRadius: "10px",
+												border: "2.5px solid #ff3a32",
+												marginBottom: "10px",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_UPCOMMING" />
 										</Typography>
 										<Typography
 											style={{
@@ -479,30 +493,7 @@ function About(props) {
 												color: "#444444",
 											}}
 										>
-											<FormattedMessage id="ABOUT_SECTION_WHY_2_CONTENT" />
-										</Typography>
-									</Paper>
-								</Grid>
-								<Grid item xs={12} md={4}>
-									<Paper className={classes.sectionCard}>
-										<Typography
-											style={{
-												width: "100%",
-												textAlign: "center",
-												fontWeight: "bold",
-												color: "black",
-											}}
-										>
-											<FormattedMessage id="ABOUT_SECTION_WHY_3_TITLE" />
-										</Typography>
-										<Typography
-											style={{
-												width: "100%",
-												textAlign: "center",
-												color: "#444444",
-											}}
-										>
-											<FormattedMessage id="ABOUT_SECTION_WHY_3_CONTENT" />
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_2_CONTENT" />
 										</Typography>
 									</Paper>
 								</Grid>
@@ -520,8 +511,8 @@ function About(props) {
 							</Typography>
 						</div>
 						<div className={classes.sectionContent}>
-							<Grid container spacing={4}>
-								<Grid item xs={12} md={4}>
+							<Grid container spacing={4} style={{ justifyContent: "center" }}>
+								<Grid item xs={12} sm={6} md={4}>
 									<Paper className={classes.sectionCard}>
 										<div
 											style={{
@@ -571,7 +562,7 @@ function About(props) {
 										</div>
 									</Paper>
 								</Grid>
-								<Grid item xs={12} md={4}>
+								<Grid item xs={12} sm={6} md={4}>
 									<Paper className={classes.sectionCard}>
 										<div
 											style={{
@@ -623,7 +614,7 @@ function About(props) {
 										</div>
 									</Paper>
 								</Grid>
-								<Grid item xs={12} md={4}>
+								<Grid item xs={12} sm={6} md={4}>
 									<Paper className={classes.sectionCard}>
 										<div
 											style={{

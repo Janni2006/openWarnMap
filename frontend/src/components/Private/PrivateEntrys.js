@@ -26,6 +26,8 @@ import {
 	Typography,
 } from "@material-ui/core";
 
+import { Skeleton } from "@material-ui/lab";
+
 import "leaflet/dist/leaflet.css";
 import ListIcon from "@material-ui/icons/List";
 import ViewComfyIcon from "@material-ui/icons/ViewComfy";
@@ -126,7 +128,7 @@ function PrivateEntrys(props) {
 									}}
 								>
 									<FormControl component="fieldset">
-										<FormLabel component="legend">Label Placement</FormLabel>
+										<FormLabel component="legend">Apply Filters</FormLabel>
 										<FormGroup aria-label="position">
 											<FormControlLabel
 												value="active"
@@ -149,19 +151,26 @@ function PrivateEntrys(props) {
 							</StyledBadge>
 						</Dropdown>
 					</Hidden>
-					<ToggleButtonGroup
-						value={listType}
-						exclusive
-						onChange={handleListType}
-						style={{ position: "absolute", right: "15px" }}
+					<div
+						style={{
+							width: "100%",
+							display: "flex",
+							justifyContent: "flex-end",
+						}}
 					>
-						<ToggleButton value="box" style={{ padding: "0 2.5px" }}>
-							<ViewComfyIcon />
-						</ToggleButton>
-						<ToggleButton value="list" style={{ padding: "0 2.5px" }}>
-							<ListIcon />
-						</ToggleButton>
-					</ToggleButtonGroup>
+						<ToggleButtonGroup
+							value={listType}
+							exclusive
+							onChange={handleListType}
+						>
+							<ToggleButton value="box" style={{ padding: "0 2.5px" }}>
+								<ViewComfyIcon />
+							</ToggleButton>
+							<ToggleButton value="list" style={{ padding: "0 2.5px" }}>
+								<ListIcon />
+							</ToggleButton>
+						</ToggleButtonGroup>
+					</div>
 				</Grid>
 			</Grid>
 
@@ -183,84 +192,14 @@ function PrivateEntrys(props) {
 									</FormGroup>
 								</FormControl>
 							</Paper>
-						) : null}
+						) : (
+							<div style={{ height: "50vh" }}>
+								<Skeleton width="100%" height="100%" />
+							</div>
+						)}
 					</Grid>
 				</Hidden>
 				<Grid item xs={12} md={10} style={{ overflowX: "hidden" }}>
-					{/* <div
-						style={{
-							display: "flex",
-							flexWrap: "wrap",
-							margin: "auto",
-							justifyContent: "center",
-						}}
-					> */}
-					{/* {(props.loading ? Array.from(new Array(3)) : props.data).map(
-							(item, index) => (
-								<Card className={classes.card} key={index}>
-									{props.loading ? (
-										<Skeleton
-											animation="wave"
-											variant="rect"
-											className={classes.media}
-										/>
-									) : (
-										<MapContainer
-											center={[item.gps_lat, item.gps_long]}
-											zoom={10}
-											scrollWheelZoom={false}
-											closePopupOnClick={false}
-											dragging={false}
-											boxZoom={false}
-											doubleClickZoom={false}
-											trackResize={false}
-											zoomControl={false}
-											style={{
-												height: 190,
-												width: "100%",
-											}}
-										>
-											<TileLayer
-												attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-												url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-											/>
-											<Marker
-												position={[item.gps_lat, item.gps_long]}
-												style={{ color: "red" }}
-											/>
-										</MapContainer>
-									)}
-
-									<CardContent>
-										{props.loading ? (
-											<React.Fragment>
-												<Skeleton
-													animation="wave"
-													height={10}
-													style={{ marginBottom: 6 }}
-												/>
-												<Skeleton animation="wave" height={10} width="80%" />
-											</React.Fragment>
-										) : (
-											<>
-												{item.active ? (
-													<CheckCircleOutlineIcon style={{ color: "green" }} />
-												) : (
-													<HighlightOffIcon style={{ color: "red" }} />
-												)}
-												<Button
-													onClick={() => {
-														setOpen(true);
-													}}
-												>
-													Test
-												</Button>
-											</>
-										)}
-									</CardContent>
-								</Card>
-							)
-						)} */}
 					<AnimateSharedLayout type="crossfade">
 						{!props.loading && props.data ? (
 							<>
@@ -282,9 +221,16 @@ function PrivateEntrys(props) {
 									)}
 								</AnimatePresence>
 							</>
-						) : null}
+						) : (
+							<ul className="card-list" style={{ width: "calc(100% + 25px)" }}>
+								{Array.from(new Array(5)).map((item, index) => (
+									<li className={`card`}>
+										<div className="card-content-container"></div>
+									</li>
+								))}
+							</ul>
+						)}
 					</AnimateSharedLayout>
-					{/* </div> */}
 				</Grid>
 			</Grid>
 		</div>

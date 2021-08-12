@@ -23,12 +23,18 @@ export const ABOUT = {
 	// Second section: This project features
 	ABOUT_SECTION_FEATURES_1TITLE: "More freatures",
 	ABOUT_SECTION_FEATURES_2TITLE: "Features",
-	ABOUT_SECTION_FEATURES_1_TITLE: "",
-	ABOUT_SECTION_FEATURES_1_CONTENT: "",
-	ABOUT_SECTION_FEATURES_2_TITLE: "",
-	ABOUT_SECTION_FEATURES_2_CONTENT: "",
+	ABOUT_SECTION_FEATURES_1_TITLE: "GPX tracks",
+	ABOUT_SECTION_FEATURES_1_CONTENT:
+		"Upload your GPX track to see all the entrys nearby.",
+	ABOUT_SECTION_FEATURES_2_TITLE: "Mobile application",
+	ABOUT_SECTION_FEATURES_2_CONTENT:
+		"Have a mobile app on your phone sending you notifications\
+		when entering a zone full of entrys. You can also download\
+		some of the data and have it available offline.",
 	ABOUT_SECTION_FEATURES_3_TITLE: "",
 	ABOUT_SECTION_FEATURES_3_CONTENT: "",
+	ABOUT_SECTION_FEATURES_UPCOMMING:
+		"This is an upcomming function which is not available yet.",
 
 	ABOUT_SECTION_SUPPORT_1TITLE: "Support this project",
 	ABOUT_SECTION_SUPPORT_2TITLE: "Support",

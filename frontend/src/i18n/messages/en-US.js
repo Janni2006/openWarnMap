@@ -8,6 +8,7 @@ import { ADD } from "./en-US/add";
 import { ERROR } from "./en-US/error";
 import { AUTH } from "./en-US/auth";
 import { PROFILE } from "./en-US/profile";
+import { FEEDBACK } from "./en-US/feedback";
 
 export default {
 	[LOCALES.ENGLISH]: {
@@ -19,5 +20,6 @@ export default {
 		...ERROR,
 		...AUTH,
 		...PROFILE,
+		...FEEDBACK,
 	},
 };

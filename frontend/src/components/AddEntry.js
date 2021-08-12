@@ -79,12 +79,12 @@ function AddEntry(props) {
 	});
 
 	const [options, setOptions] = React.useState({
-		latitude: props.map_view.latitude,
-		longitude: props.map_view.longitude,
+		latitude: props.map_view.zoom > 9 ? props.map_view.latitude : 0,
+		longitude: props.map_view.zoom > 9 ? props.map_view.longitude : 0,
 		height: null,
 		size: null,
 		localization: null,
-		status: null,
+		status: true,
 		created: new Date().toISOString(),
 	});
 
@@ -656,6 +656,23 @@ function AddEntry(props) {
 												),
 											},
 										]}
+										defaultValue={{
+											value: true,
+											label: (
+												<div style={{ display: "flex", alignItems: "center" }}>
+													<Warning style={{ color: "#CC1B29" }} />
+													<Typography
+														style={{
+															display: "inline-block",
+															marginLeft: "25px",
+															color: "black",
+														}}
+													>
+														<FormattedMessage id="ACTIVE" />
+													</Typography>
+												</div>
+											),
+										}}
 										onChange={(option) => {
 											setOptions({ ...options, status: option?.value });
 										}}

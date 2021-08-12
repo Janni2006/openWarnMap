@@ -24,12 +24,19 @@ export const ABOUT = {
 	/// Second section: Tis project´s features
 	ABOUT_SECTION_FEATURES_1TITLE: "Weitere Funktionen",
 	ABOUT_SECTION_FEATURES_2TITLE: "Funktionen",
-	ABOUT_SECTION_FEATURES_1_TITLE: "",
-	ABOUT_SECTION_FEATURES_1_CONTENT: "",
-	ABOUT_SECTION_FEATURES_2_TITLE: "",
-	ABOUT_SECTION_FEATURES_2_CONTENT: "",
+	ABOUT_SECTION_FEATURES_1_TITLE: "GPX Tracks",
+	ABOUT_SECTION_FEATURES_1_CONTENT:
+		"Laden Sie einen GPX-Track hoch und lassen Sie sich alle uns bekannten Einträge\
+		entlang der Route anzeigen.",
+	ABOUT_SECTION_FEATURES_2_TITLE: "App",
+	ABOUT_SECTION_FEATURES_2_CONTENT:
+		"Mit unserer App können Sie benachrichtigt werden, sobald Sie sich einem Eintrag\
+		nähern und Sie können Daten offline speichern, um dieses Projekt auch ohne\
+		Empfang nutzen zu können.",
 	ABOUT_SECTION_FEATURES_3_TITLE: "",
 	ABOUT_SECTION_FEATURES_3_CONTENT: "",
+	ABOUT_SECTION_FEATURES_UPCOMMING:
+		"Dies ist eine zukünftige Funktion, die noch nicht entwickelt wurde.",
 
 	ABOUT_SECTION_SUPPORT_1TITLE: "Dieses Projekt unterstützen",
 	ABOUT_SECTION_SUPPORT_2TITLE: "Unterstützung",

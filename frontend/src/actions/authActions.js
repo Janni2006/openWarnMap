@@ -13,8 +13,6 @@ import {
 
 import axios from "axios";
 
-import { useIntl } from "react-intl";
-
 import { toast } from "react-toastify";
 
 export const loadUser =

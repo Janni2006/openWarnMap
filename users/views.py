@@ -18,7 +18,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from users.models import TokenUUID
 
-from users.serializers import UserResetPasswordRequestSerializer, UserChangePasswordSerializer, UserLoginSerializer, IssueSerializer, UserRegistrationSerializer, CreateIssueSerializer
+from users.serializers import *
 from users.utils import generate_access_token, generate_refresh_token
 
 
@@ -147,6 +147,23 @@ class WebUserLoader(APIView):
 
     def get(self, request):
         return Response(data={"username": request.user.username, "avatar_color": request.user.profile.avatar_color, "email": request.user.email, "firstname": request.user.first_name, "lastname": request.user.last_name, "last_login": request.user.last_login})
+
+
+class WebChangeProfile(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = UserChangeProfileSerializer
+
+    def post(self, request):
+
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            user = request.user
+            user.first_name = serializer.data.get("firstname")
+            user.last_name = serializer.data.get("lastname")
+
+            user.save(update_fields=['first_name', 'last_name'])
+        return Response()
 
 
 class WebChangePassword(APIView):

@@ -14,6 +14,10 @@ import {
 
 import "./input.css";
 
+import { toast } from "react-toastify";
+
+import { loadUser } from "../../../actions/authActions";
+
 import axios from "axios";
 
 function Profile(props) {
@@ -25,10 +29,10 @@ function Profile(props) {
 	const intl = useIntl();
 
 	React.useEffect(() => {
-		props.setTitle("Profile (Account)");
+		props.setTitle(intl.formatMessage({ id: "PROFILE_PAGE_TITLE_ACCOUNT" }));
 
 		return () => {
-			props.setTitle("Profile");
+			props.setTitle(intl.formatMessage({ id: "PROFILE" }));
 		};
 	});
 
@@ -44,6 +48,19 @@ function Profile(props) {
 			firstname: input.firstname,
 			lastname: input.lastname,
 		});
+		axios
+			.post("/backend/auth/change-profile/", body, config)
+			.then((res) => {
+				setLoading(false);
+				if (res.status == 200) {
+					props.loadUser(true);
+					toast.success("Erfolgreich geupdated");
+				}
+			})
+			.catch((err) => {
+				setLoading(false);
+				toast.error("Es ist ein Fehler aufgetreten.");
+			});
 	}
 
 	return (
@@ -143,6 +160,7 @@ function Profile(props) {
 
 Profile.propTypes = {
 	setTitle: PropTypes.func.isRequired,
+	loadUser: PropTypes.func.isRequired,
 	firstname: PropTypes.string.isRequired,
 	lastname: PropTypes.string.isRequired,
 	last_login: PropTypes.number.isRequired,
@@ -156,4 +174,4 @@ const mapStateToProps = (state) => ({
 	csrf: state.security.csrf_token,
 });
 
-export default connect(mapStateToProps, { setTitle })(Profile);
+export default connect(mapStateToProps, { setTitle, loadUser })(Profile);

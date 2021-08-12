@@ -9,6 +9,8 @@ import "leaflet-defaulticon-compatibility";
 
 import { viewChanges, updateData } from "../../actions/mapActions";
 
+import { setTitle } from "../../actions/generalActions";
+
 import {
 	MapContainer,
 	TileLayer,
@@ -42,6 +44,7 @@ function MapObject(props) {
 
 	React.useEffect(() => {
 		props.updateData();
+		props.setTitle();
 	}, []);
 
 	function LastPosition() {
@@ -71,10 +74,6 @@ function MapObject(props) {
 			<MapContainer
 				center={initial_center}
 				zoom={initial_zoom}
-				maxBounds={[
-					[-90, -180],
-					[90, 180],
-				]}
 				scrollWheelZoom={true}
 				style={{ height: "calc(100vh - 90px)", zIndex: 0 }}
 				whenCreated={setMap}
@@ -106,6 +105,8 @@ function MapObject(props) {
 
 MapObject.propTypes = {
 	viewChanges: PropTypes.func.isRequired,
+	updateData: PropTypes.func.isRequired,
+	setTitle: PropTypes.func.isRequired,
 	latitude: PropTypes.number.isRequired,
 	longitude: PropTypes.number.isRequired,
 	zoom: PropTypes.number.isRequired,
@@ -119,6 +120,6 @@ const mapStateToProps = (state) => ({
 	data: state.map.data,
 });
 
-export default connect(mapStateToProps, { viewChanges, updateData })(
+export default connect(mapStateToProps, { viewChanges, updateData, setTitle })(
 	withWidth()(MapObject)
 );

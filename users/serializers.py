@@ -1,18 +1,8 @@
-from datetime import datetime
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from api.models import Issue
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
-from django.utils import timezone
-
-
-class IssueSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Issue
-        fields = ('code', 'active', 'verified', 'gps_lat', 'gps_long',
-                  'size', 'height', 'localization', 'created')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -73,43 +63,10 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
-class CreateIssueSerializer(serializers.Serializer):
-    # status = serializers.BooleanField(default=True, required=False)
-    gps_lat = serializers.DecimalField(
-        required=True, decimal_places=7, max_digits=10)
-    gps_long = serializers.DecimalField(
-        required=True, decimal_places=7, max_digits=10)
-    size = serializers.IntegerField(default=1, required=False)
-    height = serializers.IntegerField(default=1, required=False)
-    localization = serializers.IntegerField(default=0, required=False)
-    created = serializers.DateTimeField(
-        default=timezone.now, required=False)
-
-    def validate(self, attrs):
-        if attrs["gps_lat"] > 360 or attrs["gps_lat"] < 0:
-            raise serializers.ValidationError(
-                {"gps_lat": "gps_lat is greater than 360 or less than 0"})
-        if attrs["gps_long"] > 360 or attrs["gps_long"] < 0:
-            raise serializers.ValidationError(
-                {"gps_long": "gps_long is greater than 360 or less than 0"})
-        return attrs
-
-    def create(self, validated_data):
-        if Issue.objects.filter(gps_lat__iexact=validated_data["gps_lat"], gps_long__iexact=validated_data["gps_long"]).exists():
-            issue = Issue.objects.filter(
-                gps_lat__iexact=validated_data["gps_lat"], gps_long__iexact=validated_data["gps_long"]).first()
-            issue.size = validated_data["size"]
-            issue.height = validated_data["height"]
-            issue.localization = validated_data["localization"]
-            issue.save(update_fields=[
-                'size', 'height', 'localization'])
-        else:
-            issue = Issue(gps_lat=validated_data["gps_lat"], gps_long=validated_data["gps_long"], size=validated_data["size"],
-                          height=validated_data["height"], localization=validated_data["localization"], created=validated_data["created"])
-            issue.save()
-
-        return issue
-
-
 class UserResetPasswordRequestSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
+
+
+class UserChangeProfileSerializer(serializers.Serializer):
+    firstname = serializers.CharField()
+    lastname = serializers.CharField()
