@@ -53,19 +53,19 @@ function SiteItem({ isSelected, icon, title, label }) {
 					spacing={1}
 				>
 					<Hidden smDown>
-						<Grid item xs={3} style={{ color: "#cccccc" }}>
+						<Grid item xs={3} style={{ color: "#3f3f3f" }}>
 							{icon}
 						</Grid>
 					</Hidden>
 
 					<Hidden smUp>
-						<Grid item xs={3} style={{ color: "#cccccc" }}>
+						<Grid item xs={3} style={{ color: "#3f3f3f" }}>
 							{icon}
 						</Grid>
 					</Hidden>
 
 					<Grid item xs={9}>
-						<Typography style={{ color: "#cccccc" }}>{title}</Typography>
+						<Typography style={{ color: "#3f3f3f" }}>{title}</Typography>
 					</Grid>
 				</Grid>
 				{isSelected ? (
@@ -77,7 +77,7 @@ function SiteItem({ isSelected, icon, title, label }) {
 							left: "0px",
 							height: "44px",
 							backgroundColor: "#f0f0f0",
-							borderRight: "2px solid black",
+							borderRight: "2px solid #3f3f3f",
 							width: "calc(100% - 2px)",
 							zIndex: 0,
 						}}
@@ -161,7 +161,7 @@ function Profile(props) {
 							minWidth: "80px",
 							borderRadius: "5px",
 							backgroundColor: "white",
-							boxShadow: "5px 5px 30px -20px black",
+							boxShadow: "5px 5px 30px -20px #3f3f3f",
 						}}
 					>
 						<List style={{ padding: "0px" }}>
@@ -195,19 +195,35 @@ function Profile(props) {
 									{props.firstname && props.lastname ? (
 										<>
 											<Typography
-												style={{ textAlign: "center", width: "100%" }}
+												style={{
+													textAlign: "center",
+													width: "100%",
+													color: "#3f3f3f",
+												}}
 											>
 												{props.firstname}
 											</Typography>
 										</>
 									) : (
-										<Typography style={{ textAlign: "center", width: "100%" }}>
+										<Typography
+											style={{
+												textAlign: "center",
+												width: "100%",
+												color: "#3f3f3f",
+											}}
+										>
 											{props.username}
 										</Typography>
 									)}
 								</Hidden>
 								<Hidden smUp>
-									<Typography style={{ textAlign: "center", width: "100%" }}>
+									<Typography
+										style={{
+											textAlign: "center",
+											width: "100%",
+											color: "#3f3f3f",
+										}}
+									>
 										{props.firstname && props.lastname
 											? `${props.firstname} ${props.lastname}`
 											: props.email}

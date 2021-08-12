@@ -141,7 +141,7 @@ function Item(props) {
 								props.setID("");
 							}}
 						>
-							<Close style={{ fontSize: "36px", color: "black" }} />
+							<Close style={{ fontSize: "36px", color: "#3f3f3f" }} />
 						</Link>
 					</motion.div>
 				</motion.div>

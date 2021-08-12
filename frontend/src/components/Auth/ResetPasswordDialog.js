@@ -140,7 +140,7 @@ function ResetPassword(props) {
 				<Button
 					style={{
 						padding: "7.5px 25px",
-						color: "black",
+						color: "#3f3f3f",
 						fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
 						fontSize: "15px",
 						textTransform: "uppercase",

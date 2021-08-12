@@ -52,7 +52,7 @@ function SettingsDialog(props) {
 					>
 						<Language />
 						<Typography
-							style={{ fontSize: "16px", color: "black", marginLeft: "5px" }}
+							style={{ fontSize: "16px", color: "#3f3f3f", marginLeft: "5px" }}
 						>
 							<FormattedMessage id="SETTINGS_LANGUAGE" />:
 						</Typography>
@@ -86,7 +86,7 @@ function SettingsDialog(props) {
 					>
 						<MapOutlined />
 						<Typography
-							style={{ fontSize: "16px", color: "black", marginLeft: "5px" }}
+							style={{ fontSize: "16px", color: "#3f3f3f", marginLeft: "5px" }}
 						>
 							<FormattedMessage id="SETTINGS_CLICK_TO_ADD" />:
 						</Typography>

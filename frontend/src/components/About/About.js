@@ -322,7 +322,7 @@ function About(props) {
 												width: "100%",
 												textAlign: "center",
 												fontWeight: "bold",
-												color: "black",
+												color: "#3f3f3f",
 											}}
 										>
 											<FormattedMessage id="ABOUT_SECTION_WHY_1_TITLE" />
@@ -357,7 +357,7 @@ function About(props) {
 												width: "100%",
 												textAlign: "center",
 												fontWeight: "bold",
-												color: "black",
+												color: "#3f3f3f",
 											}}
 										>
 											<FormattedMessage id="ABOUT_SECTION_WHY_2_TITLE" />
@@ -392,7 +392,7 @@ function About(props) {
 												width: "100%",
 												textAlign: "center",
 												fontWeight: "bold",
-												color: "black",
+												color: "#3f3f3f",
 											}}
 										>
 											<FormattedMessage id="ABOUT_SECTION_WHY_3_TITLE" />
@@ -430,7 +430,7 @@ function About(props) {
 												width: "100%",
 												textAlign: "center",
 												fontWeight: "bold",
-												color: "black",
+												color: "#3f3f3f",
 											}}
 										>
 											<FormattedMessage id="ABOUT_SECTION_FEATURES_1_TITLE" />
@@ -467,7 +467,7 @@ function About(props) {
 												width: "100%",
 												textAlign: "center",
 												fontWeight: "bold",
-												color: "black",
+												color: "#3f3f3f",
 											}}
 										>
 											<FormattedMessage id="ABOUT_SECTION_FEATURES_2_TITLE" />
@@ -531,7 +531,7 @@ function About(props) {
 												width: "100%",
 												textAlign: "center",
 												fontWeight: "bold",
-												color: "black",
+												color: "#3f3f3f",
 											}}
 										>
 											<FormattedMessage id="ABOUT_SECTION_SUPPORT_1_TITLE" />
@@ -584,7 +584,7 @@ function About(props) {
 												width: "100%",
 												textAlign: "center",
 												fontWeight: "bold",
-												color: "black",
+												color: "#3f3f3f",
 											}}
 										>
 											<FormattedMessage id="ABOUT_SECTION_SUPPORT_2_TITLE" />
@@ -633,7 +633,7 @@ function About(props) {
 												width: "100%",
 												textAlign: "center",
 												fontWeight: "bold",
-												color: "black",
+												color: "#3f3f3f",
 											}}
 										>
 											<FormattedMessage id="ABOUT_SECTION_SUPPORT_3_TITLE" />

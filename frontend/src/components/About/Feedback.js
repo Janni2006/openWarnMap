@@ -261,7 +261,7 @@ function Feedback(props) {
 								fontSize: "15px",
 								outline: "none",
 								padding: "2.5px 5px",
-								borderColor: errors.feedback ? "red" : "black",
+								borderColor: errors.feedback ? "red" : "#3f3f3f",
 							}}
 							onChange={(e) => setInput({ ...input, feedback: e.target.value })}
 						/>
@@ -281,7 +281,7 @@ function Feedback(props) {
 				<Button
 					style={{
 						padding: "7.5px 25px",
-						color: "black",
+						color: "#3f3f3f",
 						fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
 						fontSize: "15px",
 						textTransform: "uppercase",

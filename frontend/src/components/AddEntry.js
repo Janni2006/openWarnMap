@@ -407,7 +407,7 @@ function AddEntry(props) {
 											display: "flex",
 											alignItems: "center",
 											padding: "2px 10px",
-											color: "black",
+											color: "#3f3f3f",
 											fontSize: "16px",
 										}}
 										value={options.latitude}
@@ -445,7 +445,7 @@ function AddEntry(props) {
 											display: "flex",
 											alignItems: "center",
 											padding: "2px 10px",
-											color: "black",
+											color: "#3f3f3f",
 											fontSize: "16px",
 										}}
 										value={options.longitude}
@@ -628,7 +628,7 @@ function AddEntry(props) {
 															style={{
 																display: "inline-block",
 																marginLeft: "25px",
-																color: "black",
+																color: "#3f3f3f",
 															}}
 														>
 															<FormattedMessage id="ACTIVE" />
@@ -647,7 +647,7 @@ function AddEntry(props) {
 															style={{
 																display: "inline-block",
 																marginLeft: "25px",
-																color: "black",
+																color: "#3f3f3f",
 															}}
 														>
 															<FormattedMessage id="INACTIVE" />
@@ -665,7 +665,7 @@ function AddEntry(props) {
 														style={{
 															display: "inline-block",
 															marginLeft: "25px",
-															color: "black",
+															color: "#3f3f3f",
 														}}
 													>
 														<FormattedMessage id="ACTIVE" />
@@ -708,7 +708,7 @@ function AddEntry(props) {
 											padding: "2px 8px",
 										}}
 									>
-										<Typography style={{ color: "black", margin: "0px 2px" }}>
+										<Typography style={{ color: "#3f3f3f", margin: "0px 2px" }}>
 											<FormattedDate value={Date.now()} />,{" "}
 											<FormattedTime value={Date.now()} />
 										</Typography>
