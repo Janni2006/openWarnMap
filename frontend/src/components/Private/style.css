@@ -1,5 +1,4 @@
-ul,
-li {
+ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -14,24 +13,24 @@ li {
 	overflow-y: auto;
 }
 
-.card {
+/* .card {
 	position: relative;
 	margin-right: 25px;
 	margin-bottom: 25px;
 	height: 160px;
 	flex: 0 0 40%;
 	max-width: calc(100% / 3 - 25px);
-}
+} */
 
-.card-content-container {
+/* .card-content-container {
 	width: 100%;
 	height: 100%;
 	position: relative;
 	display: block;
 	pointer-events: none;
-}
+} */
 
-.card-content-container.open {
+/* .card-content-container.open {
 	top: 0;
 	left: 0;
 	right: 0;
@@ -41,9 +40,9 @@ li {
 	height: calc(100vh - 90px);
 	width: 100%;
 	padding: 104px 0px 40px 0px;
-}
+} */
 
-.card-content {
+/* .card-content {
 	pointer-events: auto;
 	position: relative;
 	border-radius: 15px;
@@ -52,15 +51,15 @@ li {
 	width: 100%;
 	height: 100%;
 	margin: 0 auto;
-}
+} */
 
-.open .card-content {
+/* .open .card-content {
 	height: auto;
 	max-width: 900px;
 	overflow: hidden;
 	pointer-events: none;
 	z-index: 1000;
-}
+} */
 
 .card-open-link {
 	position: absolute;
@@ -74,7 +73,7 @@ li {
 	z-index: 800;
 }
 
-.title-container {
+/* .title-container {
 	position: absolute;
 	top: 15px;
 	left: 15px;
@@ -85,7 +84,7 @@ li {
 	margin: 0;
 	margin-bottom: 2.5px;
 	color: #3f3f3f;
-}
+} */
 
 .open .title-container {
 	top: 30px;
@@ -100,16 +99,6 @@ li {
 	width: 100vw;
 	left: 50%;
 	background: rgba(82, 82, 82, 0.8);
-
-	transform: translateX(-50%);
-}
-
-.overlay p {
-	position: fixed;
-	bottom: 40px;
-	text-align: center;
-	color: white;
-	left: 50%;
 
 	transform: translateX(-50%);
 }
