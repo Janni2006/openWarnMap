@@ -34,6 +34,9 @@ import ViewComfyIcon from "@material-ui/icons/ViewComfy";
 import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
 
 import Badge from "@material-ui/core/Badge";
+import Select from "react-select";
+
+import { FormattedMessage, useIntl } from "react-intl";
 
 import List from "./List";
 import Item from "./Item";
@@ -118,12 +121,23 @@ function PrivateEntrys(props) {
 	const [listType, setListType] = React.useState("box");
 	const [selectedId, setSelectedId] = React.useState(null);
 	const [index, setIndex] = React.useState(0);
+	const [loading, setLoading] = React.useState(props.loading);
+	const [filters, setFilters] = React.useState({
+		active: false,
+		verified: false,
+		height: 0,
+		size: 0,
+		localization: 0,
+		sort: 0,
+	});
+
+	const [data, setData] = React.useState([]);
 
 	const classes = useStyles({ listType });
-
 	const history = useHistory();
-
+	const intl = useIntl();
 	const search = useLocation().search;
+
 	const urlListType = new URLSearchParams(search).get("listType");
 
 	React.useEffect(() => {
@@ -143,6 +157,95 @@ function PrivateEntrys(props) {
 			props.setTitle();
 		};
 	}, []);
+
+	React.useEffect(() => {
+		setLoading(true);
+		var current_data = props.data;
+		var cache_data = [];
+		if (filters.active == true) {
+			current_data.map((item) => {
+				if (item.active == true) {
+					cache_data.push(item);
+				}
+			});
+		} else {
+			cache_data = current_data;
+		}
+		current_data = cache_data;
+		cache_data = [];
+
+		if (filters.verified == true) {
+			current_data.map((item) => {
+				if (item.verified == true) {
+					cache_data.push(item);
+				}
+			});
+		} else {
+			cache_data = current_data;
+		}
+
+		current_data = cache_data;
+		cache_data = [];
+
+		if (filters.size == 0) {
+			cache_data = current_data;
+		} else {
+			current_data.map((item) => {
+				if (item.size == filters.size - 1) {
+					cache_data.push(item);
+				}
+			});
+		}
+
+		current_data = cache_data;
+		cache_data = [];
+
+		if (filters.height == 0) {
+			cache_data = current_data;
+		} else {
+			current_data.map((item) => {
+				if (item.height == filters.height - 1) {
+					cache_data.push(item);
+				}
+			});
+		}
+
+		current_data = cache_data;
+		cache_data = [];
+
+		if (filters.localization == 0) {
+			cache_data = current_data;
+		} else {
+			current_data.map((item) => {
+				if (item.localization == filters.localization - 1) {
+					cache_data.push(item);
+				}
+			});
+		}
+
+		current_data = cache_data;
+		cache_data = [];
+
+		if (filters.sort == 0) {
+			cache_data = current_data;
+			setData([]);
+			cache_data.sort(function (a, b) {
+				return Date.parse(b.created) - Date.parse(a.created);
+			});
+		} else if (filters.sort == 1) {
+			cache_data = current_data;
+			setData([]);
+			cache_data.sort(function (a, b) {
+				return Date.parse(a.created) - Date.parse(b.created);
+			});
+		}
+
+		current_data = cache_data;
+		cache_data = [];
+
+		setData(current_data);
+		setTimeout(() => setLoading(false), 1);
+	}, [props.data, filters]);
 
 	React.useEffect(() => {
 		setSelectedId(
@@ -207,6 +310,9 @@ function PrivateEntrys(props) {
 													control={<Checkbox color="primary" />}
 													label="Active"
 													labelPlacement="end"
+													onChange={(event) => {
+														console.log(event);
+													}}
 												/>
 											</FormGroup>
 										</FormControl>
@@ -294,16 +400,186 @@ function PrivateEntrys(props) {
 						{!props.loading ? (
 							<Paper style={{ height: "calc(50vh - 40px)", padding: "20px" }}>
 								<FormControl component="fieldset">
-									<FormLabel component="legend">Apply Filters</FormLabel>
+									<FormLabel component="legend">
+										<FormattedMessage id="ENTRYS_FILTER" />
+									</FormLabel>
 									<FormGroup aria-label="position">
 										<FormControlLabel
 											value="active"
 											control={<Checkbox color="primary" />}
-											label="Active"
+											label={intl.formatMessage({
+												id: "ENTRYS_FILTERS_ONLY_ACTIVE",
+											})}
 											labelPlacement="end"
+											checked={filters.active}
+											onChange={(event) => {
+												setFilters({
+													...filters,
+													active: event.target.checked,
+												});
+											}}
+										/>
+										<FormControlLabel
+											value="verified"
+											control={<Checkbox color="primary" />}
+											label={intl.formatMessage({
+												id: "ENTRYS_FILTERS_ONLY_VERIFIED",
+											})}
+											labelPlacement="end"
+											checked={filters.verified}
+											onChange={(event) => {
+												setFilters({
+													...filters,
+													verified: event.target.checked,
+												});
+											}}
 										/>
 									</FormGroup>
 								</FormControl>
+								<Select
+									placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
+									options={[
+										{
+											value: 0,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_SIZE_ALL",
+											}),
+										},
+										{
+											value: 1,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_SIZE_OPTION_1",
+											}),
+										},
+										{
+											value: 2,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_SIZE_OPTION_2",
+											}),
+										},
+										{
+											value: 3,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_SIZE_OPTION_3",
+											}),
+										},
+									]}
+									defaultValue={{
+										value: 0,
+										label: intl.formatMessage({
+											id: "ENTRYS_FILTERS_SIZE_ALL",
+										}),
+									}}
+									onChange={(option) => {
+										setFilters({ ...filters, size: option?.value });
+									}}
+									// styles={customStyles(error.fields.height.error)}
+								/>
+								<Select
+									placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
+									options={[
+										{
+											value: 0,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_HEIGHT_ALL",
+											}),
+										},
+										{
+											value: 1,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_HEIGHT_OPTION_1",
+											}),
+										},
+										{
+											value: 2,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_HEIGHT_OPTION_2",
+											}),
+										},
+										{
+											value: 3,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_HEIGHT_OPTION_3",
+											}),
+										},
+									]}
+									defaultValue={{
+										value: 0,
+										label: intl.formatMessage({
+											id: "ENTRYS_FILTERS_HEIGHT_ALL",
+										}),
+									}}
+									onChange={(option) => {
+										setFilters({ ...filters, height: option?.value });
+									}}
+									// styles={customStyles(error.fields.height.error)}
+								/>
+								<Select
+									placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
+									options={[
+										{
+											value: 0,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_LOCALIZATION_ALL",
+											}),
+										},
+										{
+											value: 1,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_LOCALIZATION_OPTION_1",
+											}),
+										},
+										{
+											value: 2,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_LOCALIZATION_OPTION_2",
+											}),
+										},
+										{
+											value: 3,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_LOCALIZATION_OPTION_3",
+											}),
+										},
+									]}
+									defaultValue={{
+										value: 0,
+										label: intl.formatMessage({
+											id: "ENTRYS_FILTERS_LOCALIZATION_ALL",
+										}),
+									}}
+									onChange={(option) => {
+										setFilters({ ...filters, localization: option?.value });
+									}}
+									// styles={customStyles(error.fields.height.error)}
+								/>
+								<Select
+									placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
+									options={[
+										{
+											value: 0,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_SORT_NEWEST",
+											}),
+										},
+										{
+											value: 1,
+											label: intl.formatMessage({
+												id: "ENTRYS_FILTERS_SORT_OLDEST",
+											}),
+										},
+									]}
+									defaultValue={{
+										value: 0,
+										label: intl.formatMessage({
+											id: "ENTRYS_FILTERS_SORT_NEWEST",
+										}),
+									}}
+									onChange={(option) => {
+										setFilters({ ...filters, sort: option?.value });
+									}}
+									// styles={customStyles(error.fields.height.error)}
+								/>
 							</Paper>
 						) : (
 							<Paper style={{ height: "50vh", background: "transparent" }}>
@@ -319,12 +595,12 @@ function PrivateEntrys(props) {
 				</Hidden>
 				<Grid item xs={12} md={10} style={{ overflowX: "hidden" }}>
 					<AnimateSharedLayout type="crossfade">
-						{!props.loading && props.data ? (
+						{!loading && data ? (
 							<>
 								<List
 									selectedId={selectedId}
 									setID={setID}
-									data={props.data}
+									data={data}
 									listType={listType}
 								/>
 								<AnimatePresence>
@@ -332,7 +608,6 @@ function PrivateEntrys(props) {
 										<Item
 											id={selectedId}
 											key="item"
-											data={props.data}
 											setID={setID}
 											layout={listType}
 										/>
@@ -372,6 +647,7 @@ PrivateEntrys.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 	loadPrivateData: PropTypes.func.isRequired,
 	loading: PropTypes.bool.isRequired,
+	data: PropTypes.array,
 };
 
 const mapStateToProps = (state) => ({

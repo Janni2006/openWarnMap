@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -103,139 +105,168 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Item(props) {
-	const { created, gps_lat, gps_long, active, verified } = props.data.find(
-		(item) => item.code === props.id
-	);
+	const [data, setData] = React.useState(null);
 
 	const classes = useStyles();
 
-	const created_date = Date.parse(created);
+	React.useEffect(() => {
+		if (props.loading == false && props.data) {
+			var cache_data = props.data.find((item) => item.code === props.id);
+			console.log(cache_data);
+			cache_data.created_date = Date.parse(cache_data.created);
+			setData(cache_data);
+		}
+	}, [props.loading, props.data]);
 
 	return (
 		<>
-			<motion.div
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				exit={{ opacity: 0, transition: { duration: 0.15 } }}
-				transition={{ duration: 0.2, delay: 0.15 }}
-				style={{ pointerEvents: "auto" }}
-				className={classes.overlay}
-			></motion.div>
-			<div className={classes.contentContainerOpen}>
-				<motion.div
-					className={classes.contentOpen}
-					layoutId={`card-container-${props.id}`}
-				>
-					<motion.div
-						className="card-map-container"
-						layoutId={`card-map-container-${props.id}`}
-					>
-						<MapContainer
-							center={[gps_lat, gps_long]}
-							zoom={13}
-							scrollWheelZoom={false}
-							closePopupOnClick={false}
-							dragging={false}
-							boxZoom={false}
-							doubleClickZoom={false}
-							trackResize={false}
-							zoomControl={false}
-							style={{
-								height: "75vh",
-								width: "100%",
-								zIndex: 0,
-							}}
-							className="card-map"
-						>
-							<TileLayer
-								attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-								url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-							/>
-							<Marker position={[gps_lat, gps_long]} style={{ color: "red" }} />
-						</MapContainer>
-					</motion.div>
-					<motion.div
-						className={classes.titleContainerOpen}
-						layoutId={`title-container-${props.id}`}
-						initial={{ backgroundColor: "transparent", borderRadius: "0px" }}
-						animate={{
-							backgroundColor: "white",
-							borderRadius: "15px",
-							padding: "20px",
-						}}
-					>
-						<h2>{props.id}</h2>
-						<Typography
-							style={{ color: "#D5D5D5", marginTop: "0px", textAlign: "right" }}
-						>
-							{/* {ConvertMillisecondsToString(Date.now() - created_date)} */}
-							<FormattedRelativeTime
-								value={(Date.now() - created_date) * -0.001}
-								numeric="auto"
-								updateIntervalInSeconds={1}
-							/>
-						</Typography>
-						{active ? (
-							<div style={{ display: "flex", alignItems: "center" }}>
-								<Warning style={{ color: "#CC1B29" }} />
-								<Typography
-									style={{
-										color: "#CC1B29",
-										display: "inline-block",
-										marginLeft: "5px",
-										fontWeight: "bolder",
-									}}
-								>
-									<FormattedMessage id="ACTIVE" />
-								</Typography>
-								<br />
-							</div>
-						) : null}
-						{verified ? (
-							<div style={{ display: "flex", alignItems: "center" }}>
-								<VerifiedUser style={{ color: "#387600" }} />
-								<Typography
-									style={{
-										color: "#387600",
-										display: "inline-block",
-										marginLeft: "5px",
-										fontWeight: "bolder",
-									}}
-								>
-									<FormattedMessage id="VERIFIED" />
-								</Typography>
-							</div>
-						) : null}
-					</motion.div>
+			{!props.loading && data ? (
+				<>
 					<motion.div
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
-						exit={{ opacity: 0, transition: { duration: 0.15, delay: -0.3 } }}
-						transition={{ duration: 0.2, delay: 0.3 }}
-						style={{
-							pointerEvents: "auto",
-							backgroundColor: "white",
-							height: "36px",
-							width: "36px",
-							position: "absolute",
-							top: "20px",
-							right: "20px",
-							borderRadius: "100%",
-						}}
-					>
-						<Link
-							to="/private"
-							onClick={() => {
-								props.setID("");
-							}}
+						exit={{ opacity: 0, transition: { duration: 0.15 } }}
+						transition={{ duration: 0.2, delay: 0.15 }}
+						style={{ pointerEvents: "auto" }}
+						className={classes.overlay}
+					></motion.div>
+					<div className={classes.contentContainerOpen}>
+						<motion.div
+							className={classes.contentOpen}
+							layoutId={`card-container-${props.id}`}
 						>
-							<Close style={{ fontSize: "36px", color: "#3f3f3f" }} />
-						</Link>
-					</motion.div>
-				</motion.div>
-			</div>
+							<motion.div
+								className="card-map-container"
+								layoutId={`card-map-container-${props.id}`}
+							>
+								<MapContainer
+									center={[data.gps_lat, data.gps_long]}
+									zoom={13}
+									scrollWheelZoom={false}
+									closePopupOnClick={false}
+									dragging={false}
+									boxZoom={false}
+									doubleClickZoom={false}
+									trackResize={false}
+									zoomControl={false}
+									style={{
+										height: "75vh",
+										width: "100%",
+										zIndex: 0,
+									}}
+									className="card-map"
+								>
+									<TileLayer
+										attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+										url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+									/>
+									<Marker position={[data.gps_lat, data.gps_long]} />
+								</MapContainer>
+							</motion.div>
+							<motion.div
+								className={classes.titleContainerOpen}
+								layoutId={`title-container-${props.id}`}
+								initial={{
+									backgroundColor: "transparent",
+									borderRadius: "0px",
+								}}
+								animate={{
+									backgroundColor: "white",
+									borderRadius: "15px",
+									padding: "20px",
+								}}
+							>
+								<h2>{props.id}</h2>
+								<Typography
+									style={{
+										color: "#D5D5D5",
+										marginTop: "0px",
+										textAlign: "right",
+									}}
+								>
+									{/* {ConvertMillisecondsToString(Date.now() - created_date)} */}
+									{/* <FormattedRelativeTime
+										value={(Date.now() - data.created_date) * -0.001}
+										numeric="auto"
+										updateIntervalInSeconds={1}
+									/> */}
+								</Typography>
+								{data.active ? (
+									<div style={{ display: "flex", alignItems: "center" }}>
+										<Warning style={{ color: "#CC1B29" }} />
+										<Typography
+											style={{
+												color: "#CC1B29",
+												display: "inline-block",
+												marginLeft: "5px",
+												fontWeight: "bolder",
+											}}
+										>
+											<FormattedMessage id="ACTIVE" />
+										</Typography>
+										<br />
+									</div>
+								) : null}
+								{data.verified ? (
+									<div style={{ display: "flex", alignItems: "center" }}>
+										<VerifiedUser style={{ color: "#387600" }} />
+										<Typography
+											style={{
+												color: "#387600",
+												display: "inline-block",
+												marginLeft: "5px",
+												fontWeight: "bolder",
+											}}
+										>
+											<FormattedMessage id="VERIFIED" />
+										</Typography>
+									</div>
+								) : null}
+							</motion.div>
+							<motion.div
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								exit={{
+									opacity: 0,
+									transition: { duration: 0.15, delay: -0.3 },
+								}}
+								transition={{ duration: 0.2, delay: 0.3 }}
+								style={{
+									pointerEvents: "auto",
+									backgroundColor: "white",
+									height: "36px",
+									width: "36px",
+									position: "absolute",
+									top: "20px",
+									right: "20px",
+									borderRadius: "100%",
+								}}
+							>
+								<Link
+									to="/private"
+									onClick={() => {
+										props.setID("");
+									}}
+								>
+									<Close style={{ fontSize: "36px", color: "#3f3f3f" }} />
+								</Link>
+							</motion.div>
+						</motion.div>
+					</div>
+				</>
+			) : null}
 		</>
 	);
 }
 
-export default Item;
+Item.propTypes = {
+	loading: PropTypes.bool.isRequired,
+	data: PropTypes.array,
+};
+
+const mapStateToProps = (state) => ({
+	loading: state.private.loading,
+	data: state.private.data,
+});
+
+export default connect(mapStateToProps)(Item);
