@@ -7,4 +7,11 @@ from .models import *
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ("email", "firstname", "lastname")
 
-admin.site.register(Feedback,FeedbackAdmin)
+
+class VotesAdmin(admin.ModelAdmin):
+    list_display = ("entry", "confirm", "change", "created", "applied_change")
+    list_filter = ("entry", "confirm", "change")
+
+
+admin.site.register(Feedback, FeedbackAdmin)
+admin.site.register(Votes, VotesAdmin)

@@ -3,8 +3,15 @@ from django.contrib.auth import models
 from .models import Profile, TokenUUID
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
+from reactbackend.models import Votes
 
 # Register your models here.
+
+
+class VotesInline(admin.StackedInline):
+    model = Votes
+    can_delete = True
+    verbose_name_plural = "Votes"
 
 
 class ProfileInline(admin.StackedInline):
@@ -14,7 +21,7 @@ class ProfileInline(admin.StackedInline):
 
 
 class UserAdmin(BaseUserAdmin):
-    inlines = (ProfileInline,)
+    inlines = (ProfileInline, VotesInline,)
 
 
 admin.site.unregister(User)

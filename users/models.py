@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 from api.models import Issue
 import uuid
 from django.utils import timezone
+from reactbackend.models import Votes
 
 
 class Profile(models.Model):
@@ -16,6 +17,7 @@ class Profile(models.Model):
         blank=True, default=timezone.now)
     private_data = models.ManyToManyField(Issue, blank=True)
     published_count = models.IntegerField(default=0)
+    votes = models.ManyToManyField(Votes, blank=True)
     avatar_color = ColorField(default='#bdbdbd')
 
     def __str__(self):

@@ -26,7 +26,7 @@ import { withWidth, Hidden } from "@material-ui/core";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 
 import MapMarker from "./Marker";
-import MarkerPopup from "./MarkerPopup";
+import MarkerPopup from "./PopUp";
 import AddActionButton from "./AddActionButton";
 import MapClick from "./MapClick";
 
