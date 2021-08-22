@@ -14,8 +14,6 @@ import { VerifiedUser, Warning, Close } from "@material-ui/icons";
 
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
 
-import { ConvertMillisecondsToString } from "../../helpers/ConvertMillisecondsToString";
-
 const useStyles = makeStyles((theme) => ({
 	cardList: {
 		display: "flex",
@@ -185,11 +183,11 @@ function Item(props) {
 									}}
 								>
 									{/* {ConvertMillisecondsToString(Date.now() - created_date)} */}
-									{/* <FormattedRelativeTime
+									<FormattedRelativeTime
 										value={(Date.now() - data.created_date) * -0.001}
 										numeric="auto"
 										updateIntervalInSeconds={1}
-									/> */}
+									/>
 								</Typography>
 								{data.active ? (
 									<div style={{ display: "flex", alignItems: "center" }}>

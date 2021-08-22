@@ -6,17 +6,7 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 
 import { closeMarkerPopup } from "../../../actions/mapActions";
 
-import {
-	VerifiedUser,
-	Warning,
-	Close,
-	ThumbUp,
-	ThumbDown,
-	ThumbUpOutlined,
-	ThumbDownOutlined,
-} from "@material-ui/icons";
-
-import { ConvertMillisecondsToString } from "../../../helpers/ConvertMillisecondsToString";
+import { VerifiedUser, Warning, Close } from "@material-ui/icons";
 
 import {
 	Typography,
@@ -29,35 +19,15 @@ import {
 
 import Votes from "./Votes";
 
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, FormattedRelativeTime } from "react-intl";
 
 function MarkerPopup(props) {
 	const [zIndex, setZIndex] = React.useState("auto");
-	const [confirmButton, setConfirmButton] = React.useState({
-		hover: false,
-		selected: false,
-	});
-	const [changeButton, setChangeButton] = React.useState({
-		hover: false,
-		selected: false,
-	});
-
-	const useStyles = makeStyles((theme) => ({}));
-
-	const classes = useStyles();
 
 	React.useEffect(() => {
 		if (props.map && props.content.gps_lat && props.content.gps_long) {
 			props.map?.flyTo([props.content.gps_lat, props.content.gps_long]);
 		}
-		setChangeButton({
-			hover: false,
-			selected: false,
-		});
-		setConfirmButton({
-			hover: false,
-			selected: false,
-		});
 	}, [props.content.gps_lat, props.content.gps_long]);
 
 	const spring = {
@@ -124,9 +94,13 @@ function MarkerPopup(props) {
 									textAlign: "right",
 								}}
 							>
-								{ConvertMillisecondsToString(
-									Date.now() - Date.parse(props.content.created)
-								)}
+								<FormattedRelativeTime
+									value={
+										(Date.now() - Date.parse(props.content.created)) * -0.001
+									}
+									numeric="auto"
+									updateIntervalInSeconds={1}
+								/>
 							</Typography>
 							{props.content.active ? (
 								<div style={{ display: "flex", alignItems: "center" }}>
@@ -160,93 +134,6 @@ function MarkerPopup(props) {
 								</div>
 							) : null}
 							<Votes />
-							{/* {props.isAuthenticated ? (
-								<>
-									<Button
-										startIcon={
-											confirmButton.hover ? <ThumbUp /> : <ThumbUpOutlined />
-										}
-										style={{
-											border: "2.5px solid green",
-											color: confirmButton.selected
-												? "white"
-												: confirmButton.hover && !changeButton.selected
-												? "white"
-												: "green",
-											backgroundColor: confirmButton.selected
-												? "green"
-												: confirmButton.hover && !changeButton.selected
-												? "green"
-												: "white",
-											height: "41px",
-										}}
-										disabled={
-											changeButton.loading ||
-											confirmButton.loading ||
-											confirmButton.selected
-										}
-										onMouseEnter={() => {
-											setConfirmButton({ ...confirmButton, hover: true });
-										}}
-										onMouseLeave={() => {
-											setConfirmButton({ ...confirmButton, hover: false });
-										}}
-										onClick={() => {
-											setConfirmButton({ ...confirmButton, selected: true });
-										}}
-									>
-										{isWidthDown("md", props.width)
-											? null
-											: confirmButton.hover && !changeButton.selected
-											? "Bestätigen"
-											: null}
-									</Button>
-									<Button
-										startIcon={
-											changeButton.selected ? (
-												<ThumbDown />
-											) : changeButton.hover && !confirmButton.selected ? (
-												<ThumbDown />
-											) : (
-												<ThumbDownOutlined />
-											)
-										}
-										style={{
-											border: "2.5px solid red",
-											color: changeButton.selected
-												? "white"
-												: changeButton.hover && !confirmButton.selected
-												? "white"
-												: "red",
-											backgroundColor: changeButton.selected
-												? "red"
-												: changeButton.hover && !confirmButton.selected
-												? "red"
-												: "white",
-											marginLeft: "5px",
-											height: "41px",
-										}}
-										disabled={confirmButton.selected || changeButton.selected}
-										onMouseEnter={() => {
-											setChangeButton({ ...changeButton, hover: true });
-										}}
-										onMouseLeave={() => {
-											setChangeButton({ ...changeButton, hover: false });
-										}}
-										onClick={() => {
-											if (!confirmButton.selected) {
-												setChangeButton({ ...changeButton, selected: true });
-											}
-										}}
-									>
-										{isWidthDown("md", props.width)
-											? null
-											: changeButton.hover && !confirmButton.selected
-											? "Status ändern"
-											: null}
-									</Button>
-								</>
-							) : null} */}
 						</motion.div>
 					) : (
 						<motion.div

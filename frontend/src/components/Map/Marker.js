@@ -6,11 +6,13 @@ import { openMarkerPopup } from "../../actions/mapActions";
 
 import { Marker, Popup } from "react-leaflet";
 
-import { VerifiedUser, Warning } from "@material-ui/icons";
+// import { VerifiedUser, Warning } from "@material-ui/icons";
 
-import { Tooltip, Hidden } from "@material-ui/core";
+// import { Tooltip, Hidden } from "@material-ui/core";
 
-import { ConvertMillisecondsToString } from "../../helpers/ConvertMillisecondsToString";
+// import { ConvertMillisecondsToString } from "../../helpers/ConvertMillisecondsToString";
+
+import MobilePopup from "./PopUp/Mobile";
 
 function MapMarker(props) {
 	return (
@@ -23,7 +25,7 @@ function MapMarker(props) {
 				},
 			}}
 		>
-			<Hidden mdUp>
+			{/* <Hidden mdUp>
 				<Popup>
 					<strong>{props.item.code}</strong>
 					<br />
@@ -42,7 +44,8 @@ function MapMarker(props) {
 						</Tooltip>
 					) : null}
 				</Popup>
-			</Hidden>
+			</Hidden> */}
+			<MobilePopup item={props.item} />
 		</Marker>
 	);
 }
