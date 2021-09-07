@@ -20,9 +20,15 @@ const useStyles = makeStyles((theme) => ({
 function AddActionButton(props) {
 	const classes = useStyles();
 
+	const [popupOpen, setPopupOpen] = React.useState(false);
+
+	React.useEffect(() => {
+		console.log(props);
+	}, [props.popupOpened]);
+
 	return (
 		<>
-			{props.isAuthenticated ? (
+			{props.isAuthenticated && props.popupOpened ? (
 				<Hidden smUp>
 					<Link to="/add">
 						<Fab
@@ -41,10 +47,12 @@ function AddActionButton(props) {
 
 AddActionButton.propTypes = {
 	isAuthenticated: PropTypes.bool.isRequired,
+	popupOpened: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	isAuthenticated: state.auth.isAuthenticated,
+	popupOpened: state.map.markerPopup.open,
 });
 
 export default connect(mapStateToProps)(AddActionButton);

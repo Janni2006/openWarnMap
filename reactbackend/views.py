@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+from re import A
+from django import http
 from django.contrib.auth import get_user_model
 from rest_framework import serializers, status, generics
 from rest_framework.response import Response
@@ -6,8 +8,10 @@ from rest_framework import exceptions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from django.utils.http import urlsafe_base64_encode
-from reactbackend.serializers import IssueSerializer, CreateIssueSerializer
+from reactbackend.serializers import CreateVoteSerializer, IssueSerializer, CreateIssueSerializer
 from django.contrib.auth import get_user_model
+
+from .models import Votes
 
 from api.models import Issue, generate_unique_code
 
@@ -99,3 +103,57 @@ class WebSendFeedback(APIView):
             return Response(data={}, status=status.HTTP_201_CREATED)
         else:
             return Response(data={}, status=status.HTTP_201_CREATED)
+
+
+class WebCreateIssueVote(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = CreateVoteSerializer
+
+    def post(self, request, format=None):
+
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+
+            entry_id = serializer.data.get("entry_id")
+            entry = Issue.objects.get(code__iexact=entry_id)
+            confirm = serializer.data.get("confirm")
+
+            existing_queryset = Votes.objects.filter(
+                entry=entry, user=request.user)
+
+            if not existing_queryset.exists():
+                if confirm:
+
+                    vote = Votes(entry=entry, user=request.user,
+                                 confirm=True, change=False)
+                    vote.save()
+
+                    return Response(status=status.HTTP_201_CREATED, data={'created': 'Thanks for ranking this entry!'})
+
+                else:
+                    change = serializer.data.get("change")
+                    if change:
+                        applied_change = serializer.data.get("applied_change")
+
+                        if applied_change == 0:
+
+                            vote = Votes(entry=entry, user=request.user, confirm=False,
+                                         change=True, applied_change="IP")
+
+                        elif applied_change == 1:
+                            vote = Votes(entry=entry, user=request.user, confirm=False,
+                                         change=True, applied_change="NT")
+                        else:
+                            return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+
+                        vote.save()
+
+                        print(vote.applied_change)
+
+                        return Response(status=status.HTTP_201_CREATED, data={'created': 'Thanks for ranking this entry!'})
+
+                    return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"Error": "You have ranked this entry already!"}, status=status.HTTP_409_CONFLICT)
+        print(serializer.errors)
+        return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)

@@ -73,15 +73,16 @@ function SideDrawer(props) {
 						</Link>
 					</ListItem>
 					<ListItem>
-						<Link
+						<div
 							className={classes.linkText}
+							style={{ cursor: "pointer" }}
 							onClick={() => {
 								setDrawerOpen(false);
 								openSettings();
 							}}
 						>
 							<FormattedMessage id="SETTINGS_TITLE" />
-						</Link>
+						</div>
 					</ListItem>
 					{!progress ? (
 						<>
@@ -165,7 +166,6 @@ function SideDrawer(props) {
 			<Drawer
 				anchor="left"
 				open={drawerOpen}
-				onOpen={toggleDrawer(true)}
 				onClose={toggleDrawer(false)}
 				className={classes.drawer}
 			>
@@ -178,7 +178,7 @@ function SideDrawer(props) {
 SideDrawer.propTypes = {
 	isAuthenticated: PropTypes.bool.isRequired,
 	progress: PropTypes.bool.isRequired,
-	openSetttings: PropTypes.func.isRequired,
+	openSetttings: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
