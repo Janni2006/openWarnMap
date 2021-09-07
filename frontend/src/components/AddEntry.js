@@ -5,13 +5,10 @@ import { setTitle } from "../actions/generalActions";
 
 import "leaflet/dist/leaflet.css";
 
-import L from "leaflet";
-
 import {
 	Typography,
 	withWidth,
 	isWidthDown,
-	IconButton,
 	makeStyles,
 	Grid,
 	Paper,
@@ -23,8 +20,6 @@ import {
 import { toast } from "react-toastify";
 
 import { Warning, Add, MyLocation, CheckCircle } from "@material-ui/icons";
-
-import CoordinateInput from "react-coordinate-input";
 
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 
@@ -40,8 +35,6 @@ import {
 	FormattedDate,
 	FormattedTime,
 } from "react-intl";
-
-import marker_icon from "../media/marker-icon.png";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -72,12 +65,12 @@ function AddEntry(props) {
 	const [geo_a, setGeoA] = React.useState(false);
 	const [loading, setLoading] = React.useState(false);
 	const [success, setSuccess] = React.useState(false);
-	const [position, setPosition] = React.useState([0, 0]);
 	const [triedToAdd, setTriedToAdd] = React.useState(false);
 	const [error, setError] = React.useState({
 		error: false,
 		fields: {
-			position: { error: false, error_msg: "" },
+			latitude: { error: false, error_msg: "" },
+			longitude: { error: false, error_msg: "" },
 			height: { error: false, error_msg: "" },
 			size: { error: false, error_msg: "" },
 			localization: { error: false, error_msg: "" },
@@ -86,11 +79,12 @@ function AddEntry(props) {
 	});
 
 	const [options, setOptions] = React.useState({
-		position: [0, 0],
+		latitude: props.map_view.zoom > 9 ? props.map_view.latitude : 0,
+		longitude: props.map_view.zoom > 9 ? props.map_view.longitude : 0,
 		height: null,
 		size: null,
 		localization: null,
-		status: null,
+		status: true,
 		created: new Date().toISOString(),
 	});
 
@@ -113,11 +107,7 @@ function AddEntry(props) {
 	}, []);
 
 	React.useEffect(() => {
-		map?.flyTo(position);
-		setOptions({ ...options, position: position });
-	}, [position]);
-
-	React.useEffect(() => {
+		map?.flyTo([options.latitude, options.longitude]);
 		if (triedToAdd) {
 			checkForErrors();
 		}
@@ -127,7 +117,11 @@ function AddEntry(props) {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				function (position) {
-					setPosition([position.coords.latitude, position.coords.longitude]);
+					setOptions({
+						...options,
+						latitude: position.coords.latitude,
+						longitude: position.coords.longitude,
+					});
 				},
 				function (error) {
 					toast.error(`Error Code = ${error.code} - ${error.message}`);
@@ -141,7 +135,8 @@ function AddEntry(props) {
 		var err_object = {
 			error: false,
 			fields: {
-				position: { error: false, error_msg: "" },
+				latitude: { error: false, error_msg: "" },
+				longitude: { error: false, error_msg: "" },
 				height: { error: false, error_msg: "" },
 				size: { error: false, error_msg: "" },
 				localization: { error: false, error_msg: "" },
@@ -149,15 +144,62 @@ function AddEntry(props) {
 			},
 		};
 
-		if (options.position == [0, 0]) {
+		if (options.latitude == 0 || !options.latitude) {
 			err_object = {
 				...err_object,
 				error: true,
 				fields: {
 					...err_object.fields,
-					position: {
+					latitude: {
 						error: true,
-						error_msg: "Please insert a valid coordinate input.",
+						error_msg: intl.formatMessage({
+							id: "ADD_LATITUDE_ERROR_UNDEFINED",
+						}),
+					},
+				},
+			};
+		}
+		if (options.longitude == 0 || !options.longitude) {
+			err_object = {
+				...err_object,
+				error: true,
+				fields: {
+					...err_object.fields,
+					longitude: {
+						error: true,
+						error_msg: intl.formatMessage({
+							id: "ADD_LONGITUDE_ERROR_UNDEFINED",
+						}),
+					},
+				},
+			};
+		}
+		if (options.latitude < -90 || options.latitude > 90) {
+			err_object = {
+				...err_object,
+				error: true,
+				fields: {
+					...err_object.fields,
+					latitude: {
+						error: true,
+						error_msg: intl.formatMessage({
+							id: "ADD_LATITUDE_ERROR_OUT_OF_RANGE",
+						}),
+					},
+				},
+			};
+		}
+		if (options.longitude < -180 || options.longitude > 180) {
+			err_object = {
+				...err_object,
+				error: true,
+				fields: {
+					...err_object.fields,
+					longitude: {
+						error: true,
+						error_msg: intl.formatMessage({
+							id: "ADD_LONGITUDE_ERROR_OUT_OF_RANGE",
+						}),
 					},
 				},
 			};
@@ -234,8 +276,8 @@ function AddEntry(props) {
 				},
 			};
 			const body = JSON.stringify({
-				gps_lat: options.position[0],
-				gps_long: options.position[1],
+				gps_lat: options.latitude,
+				gps_long: options.longitude,
 				size: options.size,
 				height: options.height,
 				localization: options.localization,
@@ -254,7 +296,8 @@ function AddEntry(props) {
 				})
 				.catch((err) => {
 					setLoading(false);
-					console.log(err);
+					console.log(err.config);
+					console.log("Error");
 					toast.error(intl.formatMessage({ id: "ADD_ERROR_BAD_REQUEST" }));
 				});
 		}
@@ -275,8 +318,8 @@ function AddEntry(props) {
 							}}
 						>
 							<MapContainer
-								center={[0, 0]}
-								zoom={16}
+								center={[options.latitude, options.longitude]}
+								zoom={17}
 								scrollWheelZoom={false}
 								closePopupOnClick={false}
 								dragging={false}
@@ -297,7 +340,7 @@ function AddEntry(props) {
 									attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 									url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 								/>
-								<Marker position={position} />
+								<Marker position={[options.latitude, options.longitude]} />
 							</MapContainer>
 						</Paper>
 					</Grid>
@@ -324,42 +367,95 @@ function AddEntry(props) {
 									</Typography>
 								</Grid>
 								<Grid item xs={12} sm={8}>
-									<div style={{ display: "block" }}>
-										<CoordinateInput
-											value={`${position[0]}, ${position[1]}`}
-											onChange={(value, { unmaskedValue, dd, dms }) => {
-												setPosition(dd);
-											}}
+									{geo_a ? (
+										<Button
+											variant="contained"
+											color="secondary"
+											// className={classes.button}
+											startIcon={<MyLocation />}
+											onClick={getLocation}
 											style={{
-												fontSize: "16px",
-												border: error.fields.position.error
-													? "1px solid #CC1B29"
-													: "1px solid #cccccc",
-												padding: "10px 8px",
-												borderRadius: "5px",
-												width: "200px",
-												outline: "none",
+												borderRadius: "22px",
+												height: "44px",
 											}}
-										/>
-										{geo_a ? (
-											<IconButton
-												style={{
-													backgroundColor: "#7a7a7a",
-													marginLeft: "10px",
-													height: "36px",
-													width: "36px",
-												}}
-												onClick={getLocation}
-											>
-												<MyLocation
-													style={{ fontSize: "24px", color: "white" }}
-												/>
-											</IconButton>
-										) : null}
-									</div>
-									{error.fields.position.error ? (
+										>
+											<FormattedMessage id="ADD_CURRENT_POSITION" />
+										</Button>
+									) : null}
+								</Grid>
+							</Grid>
+							<Grid container className={classes.grid_create_container}>
+								<Grid
+									item
+									xs={12}
+									sm={4}
+									className={classes.grid_create_item_4}
+								>
+									<Typography>
+										<FormattedMessage id="ADD_LATITUDE" />:
+									</Typography>
+								</Grid>
+								<Grid item xs={12} sm={8}>
+									<input
+										type="number"
+										step="any"
+										style={{
+											height: "32px",
+											width: "calc(100% - 22px)",
+											border: "1px solid #cccccc",
+											borderRadius: "5px",
+											display: "flex",
+											alignItems: "center",
+											padding: "2px 10px",
+											color: "#3f3f3f",
+											fontSize: "16px",
+										}}
+										value={options.latitude}
+										onChange={(event) => {
+											setOptions({ ...options, latitude: event.target.value });
+										}}
+									/>
+									{error.fields.latitude.error ? (
 										<Typography style={{ fontSize: "12px", color: "#CC1B29" }}>
-											{error.fields.position.error_msg}
+											{error.fields.latitude.error_msg}
+										</Typography>
+									) : null}
+								</Grid>
+							</Grid>
+							<Grid container className={classes.grid_create_container}>
+								<Grid
+									item
+									xs={12}
+									sm={4}
+									className={classes.grid_create_item_4}
+								>
+									<Typography>
+										<FormattedMessage id="ADD_LONGITUDE" />:
+									</Typography>
+								</Grid>
+								<Grid item xs={12} sm={8}>
+									<input
+										type="number"
+										step="any"
+										style={{
+											height: "32px",
+											width: "calc(100% - 22px)",
+											border: "1px solid #cccccc",
+											borderRadius: "5px",
+											display: "flex",
+											alignItems: "center",
+											padding: "2px 10px",
+											color: "#3f3f3f",
+											fontSize: "16px",
+										}}
+										value={options.longitude}
+										onChange={(event) => {
+											setOptions({ ...options, longitude: event.target.value });
+										}}
+									/>
+									{error.fields.longitude.error ? (
+										<Typography style={{ fontSize: "12px", color: "#CC1B29" }}>
+											{error.fields.longitude.error_msg}
 										</Typography>
 									) : null}
 								</Grid>
@@ -532,7 +628,7 @@ function AddEntry(props) {
 															style={{
 																display: "inline-block",
 																marginLeft: "25px",
-																color: "black",
+																color: "#3f3f3f",
 															}}
 														>
 															<FormattedMessage id="ACTIVE" />
@@ -551,7 +647,7 @@ function AddEntry(props) {
 															style={{
 																display: "inline-block",
 																marginLeft: "25px",
-																color: "black",
+																color: "#3f3f3f",
 															}}
 														>
 															<FormattedMessage id="INACTIVE" />
@@ -560,6 +656,23 @@ function AddEntry(props) {
 												),
 											},
 										]}
+										defaultValue={{
+											value: true,
+											label: (
+												<div style={{ display: "flex", alignItems: "center" }}>
+													<Warning style={{ color: "#CC1B29" }} />
+													<Typography
+														style={{
+															display: "inline-block",
+															marginLeft: "25px",
+															color: "#3f3f3f",
+														}}
+													>
+														<FormattedMessage id="ACTIVE" />
+													</Typography>
+												</div>
+											),
+										}}
 										onChange={(option) => {
 											setOptions({ ...options, status: option?.value });
 										}}
@@ -595,7 +708,7 @@ function AddEntry(props) {
 											padding: "2px 8px",
 										}}
 									>
-										<Typography style={{ color: "black", margin: "0px 2px" }}>
+										<Typography style={{ color: "#3f3f3f", margin: "0px 2px" }}>
 											<FormattedDate value={Date.now()} />,{" "}
 											<FormattedTime value={Date.now()} />
 										</Typography>
@@ -640,10 +753,12 @@ function AddEntry(props) {
 AddEntry.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 	csrf_token: PropTypes.string.isRequired,
+	map_view: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	csrf_token: state.security.csrf_token,
+	map_view: state.map.view,
 });
 
 export default withWidth()(connect(mapStateToProps, { setTitle })(AddEntry));

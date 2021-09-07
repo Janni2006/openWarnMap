@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.db.models import fields
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework import serializers
@@ -6,12 +7,14 @@ from api.models import Issue
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from django.utils import timezone
+from django.contrib.gis.geos import Point
+from .models import Votes
 
 
 class IssueSerializer(serializers.ModelSerializer):
     class Meta:
         model = Issue
-        fields = ('code', 'active', 'verified', 'gps_lat', 'gps_long',
+        fields = ('code', 'active', 'verified', 'gps',
                   'size', 'height', 'localization', 'created')
 
 
@@ -22,64 +25,63 @@ class UserSerializer(serializers.ModelSerializer):
                   'first_name', 'last_name', 'is_active']
 
 
-class UserLoginSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True)
-    password = serializers.CharField(
-        required=True, style={'input_type': 'password', 'placeholder': 'Password'})
+# class UserLoginSerializer(serializers.Serializer):
+#     username = serializers.CharField(required=True)
+#     password = serializers.CharField(
+#         required=True, style={'input_type': 'password', 'placeholder': 'Password'})
 
 
-class UserChangePasswordSerializer(serializers.Serializer):
-    old_password = serializers.CharField(
-        required=True, style={'input_type': 'password', 'placeholder': 'Password'})
-    new_password = serializers.CharField(
-        required=True, validators=[
-            validate_password], style={'input_type': 'password', 'placeholder': 'Password'})
-    conf_password = serializers.CharField(
-        required=True, style={'input_type': 'password', 'placeholder': 'Password'})
+# class UserChangePasswordSerializer(serializers.Serializer):
+#     old_password = serializers.CharField(
+#         required=True, style={'input_type': 'password', 'placeholder': 'Password'})
+#     new_password = serializers.CharField(
+#         required=True, validators=[
+#             validate_password], style={'input_type': 'password', 'placeholder': 'Password'})
+#     conf_password = serializers.CharField(
+#         required=True, style={'input_type': 'password', 'placeholder': 'Password'})
 
 
-class UserRegistrationSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(required=True, validators=[
-                                     UniqueValidator(queryset=User.objects.all())])
-    email = serializers.EmailField(required=True, validators=[
-                                   UniqueValidator(queryset=User.objects.all())], style={
-        'input_type': 'email'})
+# class UserRegistrationSerializer(serializers.ModelSerializer):
+#     username = serializers.CharField(required=True, validators=[
+#                                      UniqueValidator(queryset=User.objects.all())])
+#     email = serializers.EmailField(required=True, validators=[
+#                                    UniqueValidator(queryset=User.objects.all())], style={
+#         'input_type': 'email'})
 
-    password = serializers.CharField(write_only=True, required=True, validators=[
-                                     validate_password], style={'input_type': 'password', 'placeholder': 'Password'})
-    password2 = serializers.CharField(write_only=True, required=True, style={
-                                      'input_type': 'password', 'placeholder': 'Confirm password'})
+#     password = serializers.CharField(write_only=True, required=True, validators=[
+#                                      validate_password], style={'input_type': 'password', 'placeholder': 'Password'})
+#     password2 = serializers.CharField(write_only=True, required=True, style={
+#                                       'input_type': 'password', 'placeholder': 'Confirm password'})
 
-    class Meta:
-        model = User
-        fields = ('username',  'email', 'password', 'password2')
+#     class Meta:
+#         model = User
+#         fields = ('username',  'email', 'password', 'password2')
 
-    def validate(self, attrs):
-        if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError(
-                {"password": "Password fields didn't match."})
+#     def validate(self, attrs):
+#         if attrs['password'] != attrs['password2']:
+#             raise serializers.ValidationError(
+#                 {"password": "Password fields didn't match."})
 
-        return attrs
+#         return attrs
 
-    def create(self, validated_data):
-        print(validated_data)
-        user = User.objects.create(
-            username=validated_data['username'],
-            email=validated_data['email']
-        )
+#     def create(self, validated_data):
+#         user = User.objects.create(
+#             username=validated_data['username'],
+#             email=validated_data['email']
+#         )
 
-        user.set_password(validated_data['password'])
-        user.save()
+#         user.set_password(validated_data['password'])
+#         user.save()
 
-        return user
+#         return user
 
 
 class CreateIssueSerializer(serializers.Serializer):
     # status = serializers.BooleanField(default=True, required=False)
     gps_lat = serializers.DecimalField(
-        required=True, decimal_places=7, max_digits=10)
+        required=True, decimal_places=17, max_digits=20)
     gps_long = serializers.DecimalField(
-        required=True, decimal_places=7, max_digits=10)
+        required=True, decimal_places=17, max_digits=20)
     size = serializers.IntegerField(default=1, required=False)
     height = serializers.IntegerField(default=1, required=False)
     localization = serializers.IntegerField(default=0, required=False)
@@ -96,16 +98,16 @@ class CreateIssueSerializer(serializers.Serializer):
         return attrs
 
     def create(self, validated_data):
-        if Issue.objects.filter(gps_lat__iexact=validated_data["gps_lat"], gps_long__iexact=validated_data["gps_long"]).exists():
+        if Issue.objects.filter(gps__iexact=Point(float(validated_data["gps_long"]), float(validated_data["gps_lat"]))).exists():
             issue = Issue.objects.filter(
-                gps_lat__iexact=validated_data["gps_lat"], gps_long__iexact=validated_data["gps_long"]).first()
+                gps__iexact=Point(float(validated_data["gps_long"]), float(validated_data["gps_lat"]))).first()
             issue.size = validated_data["size"]
             issue.height = validated_data["height"]
             issue.localization = validated_data["localization"]
             issue.save(update_fields=[
                 'size', 'height', 'localization'])
         else:
-            issue = Issue(gps_lat=validated_data["gps_lat"], gps_long=validated_data["gps_long"], size=validated_data["size"],
+            issue = Issue(gps=Point(float(validated_data["gps_long"]), float(validated_data["gps_lat"])), size=validated_data["size"],
                           height=validated_data["height"], localization=validated_data["localization"], created=validated_data["created"])
             issue.save()
 
@@ -114,3 +116,17 @@ class CreateIssueSerializer(serializers.Serializer):
 
 class UserResetPasswordRequestSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
+
+
+class CreateFeedbackSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=False)
+    firstname = serializers.CharField(required=False)
+    lastname = serializers.CharField(required=False)
+    content = serializers.CharField(required=True)
+
+
+class CreateVoteSerializer(serializers.Serializer):
+    entry_id = serializers.CharField(required=True)
+    confirm = serializers.BooleanField(required=True)
+    change = serializers.BooleanField(default=False)
+    applied_change = serializers.IntegerField(required=False)

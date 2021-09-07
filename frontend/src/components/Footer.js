@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 import Typography from "@material-ui/core/Typography";
 
+import { FormattedMessage } from "react-intl";
+
 class Footer extends Component {
 	render() {
 		return (
@@ -21,7 +23,7 @@ class Footer extends Component {
 							to={"/impressum"}
 							style={{ textDecoration: "none", color: "inherit" }}
 						>
-							Impressum
+							<FormattedMessage id="NAVBAR_IMPRESSUM" />
 						</Link>
 						<Typography
 							style={{
@@ -36,7 +38,7 @@ class Footer extends Component {
 							to={"/privacy"}
 							style={{ textDecoration: "none", color: "inherit" }}
 						>
-							Privacy
+							<FormattedMessage id="NAVBAR_PRIVACY" />
 						</Link>
 						<Typography
 							style={{
@@ -51,7 +53,7 @@ class Footer extends Component {
 							to={"/news"}
 							style={{ textDecoration: "none", color: "inherit" }}
 						>
-							News
+							<FormattedMessage id="NAVBAR_NEWS" />
 						</Link>
 					</div>
 				</div>

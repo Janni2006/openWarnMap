@@ -10,6 +10,7 @@ export const AUTH = {
 	AUTH_LOGIN_QUESTION_LINK: "Account erstellen",
 	AUTH_LOGIN_ERROR_USERNAME: "Bitte geben sie hier Ihren Nutzernamen ein.",
 	AUTH_LOGIN_ERROR_PASSWORD: "Bitte geben sie hier Ihr Passwort ein.",
+
 	AUTH_REGISTER: "Registrieren",
 	AUTH_REGISTER_TITLE: "Bei openWarnMap registrieren",
 	AUTH_REGISTER_QUESTION: "Sie haben bereits einen Account?",
@@ -31,6 +32,9 @@ export const AUTH = {
 		"Der Benutzername kann keine E-Mail sein.",
 	AUTH_REGISTER_ERROR_PASSWORD_NO_MATCH:
 		"Die Passwörter stimmen nicht überein.",
+	AUTH_REGISTER_SUCCESS:
+		"Willkommen {username}, Ihr Nutzeraccount wurde erfolgreich erstellt!",
+
 	AUTH_RESET_PASSWORD: "Passwort zurücksetzen",
 	AUTH_RESET_PASSWORD_DESCRIPTION:
 		"Bitte geben Sie hier die E-Mail Adresse des betroffenen Accounts ein.\

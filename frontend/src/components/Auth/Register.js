@@ -49,7 +49,12 @@ function Register(props) {
 		event.preventDefault();
 
 		if (validate()) {
-			props.register(input["username"], input["email"], input["password"]);
+			props.register(
+				input["username"],
+				input["email"],
+				input["password"],
+				intl
+			);
 		}
 	}
 
@@ -284,7 +289,7 @@ function Register(props) {
 							<input
 								type="password"
 								name="password"
-								autocomplete="new-password"
+								autoComplete="new-password"
 								placeholder={intl.formatMessage({
 									id: "AUTH_REGISTER_PASSWORD_PLACEHOLDER",
 								})}
@@ -314,7 +319,7 @@ function Register(props) {
 							<input
 								type="password"
 								name="conf_password"
-								autocomplete="new-password"
+								autoComplete="new-password"
 								placeholder={intl.formatMessage({
 									id: "AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER",
 								})}

@@ -44,7 +44,7 @@ function ResetPassword(props) {
 			const body = JSON.stringify({ email: input });
 
 			axios
-				.post("/react/login/reset/", body, config)
+				.post("/backend/auth/login/reset/", body, config)
 				.then((res) => {
 					if (res.status == 200) {
 						handleClose();
@@ -140,7 +140,7 @@ function ResetPassword(props) {
 				<Button
 					style={{
 						padding: "7.5px 25px",
-						color: "black",
+						color: "#3f3f3f",
 						fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
 						fontSize: "15px",
 						textTransform: "uppercase",

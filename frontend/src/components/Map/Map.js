@@ -9,6 +9,8 @@ import "leaflet-defaulticon-compatibility";
 
 import { viewChanges, updateData } from "../../actions/mapActions";
 
+import { setTitle } from "../../actions/generalActions";
+
 import {
 	MapContainer,
 	TileLayer,
@@ -24,15 +26,16 @@ import { withWidth, Hidden } from "@material-ui/core";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 
 import MapMarker from "./Marker";
-import MarkerPopup from "./MarkerPopup";
+import MarkerPopup from "./PopUp";
 import AddActionButton from "./AddActionButton";
+import MapClick from "./MapClick";
 
 function MapObject(props) {
 	const [key, setKey] = new React.useState(0);
 
 	const [map, setMap] = React.useState(null);
 
-	const initial_center = [props.lattitude ?? 0, props.longitude ?? 0];
+	const initial_center = [props.latitude ?? 0, props.longitude ?? 0];
 	const initial_zoom = props.zoom ?? 0;
 
 	React.useEffect(() => {
@@ -41,6 +44,7 @@ function MapObject(props) {
 
 	React.useEffect(() => {
 		props.updateData();
+		props.setTitle();
 	}, []);
 
 	function LastPosition() {
@@ -81,6 +85,7 @@ function MapObject(props) {
 				/>
 				<LastPosition />
 				<ScaleControl />
+				<MapClick />
 				{props.data ? (
 					<MarkerClusterGroup>
 						{props.data.map((item, index) => (
@@ -91,28 +96,30 @@ function MapObject(props) {
 				<LayersControl />
 			</MapContainer>
 			<AddActionButton />
-			<Hidden smDown>
-				<MarkerPopup map={map} />
-			</Hidden>
+			{/* <Hidden smDown> */}
+			<MarkerPopup map={map} />
+			{/* </Hidden> */}
 		</>
 	);
 }
 
 MapObject.propTypes = {
 	viewChanges: PropTypes.func.isRequired,
-	lattitude: PropTypes.number.isRequired,
+	updateData: PropTypes.func.isRequired,
+	setTitle: PropTypes.func.isRequired,
+	latitude: PropTypes.number.isRequired,
 	longitude: PropTypes.number.isRequired,
 	zoom: PropTypes.number.isRequired,
 	data: PropTypes.array,
 };
 
 const mapStateToProps = (state) => ({
-	lattitude: state.map.view.lattitude,
+	latitude: state.map.view.latitude,
 	longitude: state.map.view.longitude,
 	zoom: state.map.view.zoom,
 	data: state.map.data,
 });
 
-export default connect(mapStateToProps, { viewChanges, updateData })(
+export default connect(mapStateToProps, { viewChanges, updateData, setTitle })(
 	withWidth()(MapObject)
 );

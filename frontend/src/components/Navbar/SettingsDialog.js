@@ -2,24 +2,21 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { Link } from "react-router-dom";
-
 import {
-	Card,
 	Typography,
 	Dialog,
 	DialogTitle,
 	DialogActions,
-	Button,
-	IconButton,
 	Grid,
+	Switch,
+	Tooltip,
 } from "@material-ui/core";
 
-import { Language } from "@material-ui/icons";
+import { Language, MapOutlined, InfoOutlined } from "@material-ui/icons";
 
 import { useIntl, FormattedMessage } from "react-intl";
 
-import { setLanguage } from "../../actions/generalActions";
+import { setLanguage, toggleClickToAdd } from "../../actions/generalActions";
 
 import SubmitButton from "../SubmitButton";
 
@@ -36,7 +33,7 @@ function SettingsDialog(props) {
 	};
 
 	return (
-		<Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth={"xs"}>
+		<Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth={"sm"}>
 			<DialogTitle>
 				<FormattedMessage id="SETTINGS_TITLE" />
 			</DialogTitle>
@@ -55,7 +52,7 @@ function SettingsDialog(props) {
 					>
 						<Language />
 						<Typography
-							style={{ fontSize: "16px", color: "black", marginLeft: "5px" }}
+							style={{ fontSize: "16px", color: "#3f3f3f", marginLeft: "5px" }}
 						>
 							<FormattedMessage id="SETTINGS_LANGUAGE" />:
 						</Typography>
@@ -76,6 +73,39 @@ function SettingsDialog(props) {
 							}}
 						/>
 					</Grid>
+					<Grid
+						item
+						xs={12}
+						sm={6}
+						style={{
+							display: "flex",
+							justifyContent: "flex-start",
+							flexWrap: "nowrap",
+							alignItems: "center",
+						}}
+					>
+						<MapOutlined />
+						<Typography
+							style={{ fontSize: "16px", color: "#3f3f3f", marginLeft: "5px" }}
+						>
+							<FormattedMessage id="SETTINGS_CLICK_TO_ADD" />:
+						</Typography>
+						<Tooltip
+							title={intl.formatMessage({
+								id: "SETTINGS_CLICK_TO_ADD_DESCRIPTION",
+							})}
+							placement="right"
+							arrow
+						>
+							<InfoOutlined style={{ color: "#2d79df", marginLeft: "5px" }} />
+						</Tooltip>
+					</Grid>
+					<Grid item xs={12} sm={6}>
+						<Switch
+							onChange={props.toggleClickToAdd}
+							checked={props.clickToAdd}
+						/>
+					</Grid>
 				</Grid>
 			</div>
 
@@ -92,8 +122,15 @@ function SettingsDialog(props) {
 SettingsDialog.propTypes = {
 	language: PropTypes.string.isRequired,
 	setLanguage: PropTypes.func.isRequired,
+	clickToAdd: PropTypes.bool.isRequired,
+	toggleClickToAdd: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({ language: state.general.language });
+const mapStateToProps = (state) => ({
+	language: state.general.language,
+	clickToAdd: state.general.settings.map.clickToAdd,
+});
 
-export default connect(mapStateToProps, { setLanguage })(SettingsDialog);
+export default connect(mapStateToProps, { setLanguage, toggleClickToAdd })(
+	SettingsDialog
+);

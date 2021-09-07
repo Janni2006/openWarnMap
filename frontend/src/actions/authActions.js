@@ -53,7 +53,7 @@ export const loadUser =
 		};
 		if (runAnyways) {
 			axios
-				.get("/react/user/", config, dispatch(authInterceptor()))
+				.get("/backend/auth/user/", config, dispatch(authInterceptor()))
 				.then((res) => {
 					res.config.success(res);
 				})
@@ -62,8 +62,15 @@ export const loadUser =
 				});
 		} else {
 			if (getState().auth.initialLoginState.logged_in) {
+				const refreshtoken_config = {
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": getState().security.csrf_token,
+					},
+				};
+
 				axios
-					.post("/react/refresh-token/", {})
+					.post("/backend/auth/refresh-token/", {}, refreshtoken_config)
 					.then((res) => {
 						if (res.status === 200) {
 							// clearTimeout(logoutTimerId);
@@ -78,7 +85,7 @@ export const loadUser =
 								"Token " + getState().auth.token;
 
 							axios
-								.get("/auth/user/", config, dispatch(authInterceptor()))
+								.get("/backend/auth/user/", config, dispatch(authInterceptor()))
 								.then((res) => {
 									res.config.success(res);
 								})
@@ -118,7 +125,7 @@ export const login = (username, password) => (dispatch, getState) => {
 
 	const body = JSON.stringify({ username: username, password: password });
 	axios
-		.post("/auth/login/", body, config)
+		.post("/backend/auth/login/", body, config)
 		.then((res) => {
 			const logoutTimer = () => setTimeout(() => {}, timeToLogout);
 			logoutTimerID = logoutTimer();
@@ -133,33 +140,39 @@ export const login = (username, password) => (dispatch, getState) => {
 		});
 };
 
-export const register = (username, email, password) => (dispatch, getState) => {
-	dispatch({ type: USER_LOADING });
-	const config = {
-		headers: {
-			"Content-Type": "application/json",
-			"X-CSRFToken": getState().security.csrf_token,
-		},
-	};
+export const register =
+	(username, email, password, intl) => (dispatch, getState) => {
+		dispatch({ type: USER_LOADING });
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				"X-CSRFToken": getState().security.csrf_token,
+			},
+		};
 
-	const body = JSON.stringify({
-		username: username,
-		email: email,
-		password: password,
-		password2: password,
-	});
-	axios
-		.post("/auth/register/", body, config)
-		.then((res) => {
-			console.log(res);
-			dispatch({ type: REGISTER_SUCCESS });
-			toast.success("You´ve successfully created your account");
-		})
-		.catch((err) => {
-			console.log(err);
-			dispatch({ type: REGISTER_FAILED });
+		const body = JSON.stringify({
+			username: username,
+			email: email,
+			password: password,
+			password2: password,
 		});
-};
+		axios
+			.post("/backend/auth/register/", body, config)
+			.then((res) => {
+				dispatch({ type: REGISTER_SUCCESS });
+				toast.success(
+					intl.formatMessage(
+						{ id: "AUTH_REGISTER_SUCCESS" },
+						{ username: res.data.username }
+					)
+				);
+			})
+			.catch((err) => {
+				console.log(err.response);
+				dispatch({ type: REGISTER_FAILED });
+				toast.error(intl.formatMessage({ id: "AUTH_REGISTER_SUCCESS" }));
+			});
+	};
 
 // Logout User
 export const logout = () => (dispatch, getState) => {
@@ -181,7 +194,6 @@ export const logout = () => (dispatch, getState) => {
 			dispatch({
 				type: LOGOUT_FAIL,
 			});
-			clearTimeout(logoutTimerId);
 		},
 		headers: {
 			"Content-Type": "application/json",
@@ -189,7 +201,7 @@ export const logout = () => (dispatch, getState) => {
 		},
 	};
 	axios
-		.post("/react/logout/", {}, config)
+		.post("/backend/auth/logout/", {}, config)
 		.then((res) => {
 			res.config.success(res);
 		})
@@ -208,6 +220,9 @@ export const authInterceptor = () => (dispatch, getState) => {
 			config.headers["Content-Type"] = "application/json";
 			if (token) {
 				config.headers["Authorization"] = `Token ${token}`;
+			}
+			if (getState().auth.tokenGenerated - Date.now() > 1000 * 60 * 60 * 14.9) {
+				console.log("token expired");
 			}
 			return config;
 		},
@@ -245,8 +260,16 @@ export const authInterceptor = () => (dispatch, getState) => {
 			) {
 				originalRequest._retry = true;
 				// request to refresh the token, in request-cookies is the refreshToken
+
+				const refreshtoken_config = {
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": getState().security.csrf_token,
+					},
+				};
+
 				axios
-					.post("/react/refresh-token/", {})
+					.post("/backend/auth/refresh-token/", {}, refreshtoken_config)
 					.then((res) => {
 						if (res.status === 200) {
 							// clearTimeout(logoutTimerId);

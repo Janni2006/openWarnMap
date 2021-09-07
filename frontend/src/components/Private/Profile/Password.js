@@ -169,7 +169,7 @@ function Profile(props) {
 								}}
 								value={input.new_password}
 								disabled={loading}
-								autocomplete="new-password"
+								autoComplete="new-password"
 							/>
 							<div className={"underline"} />
 							<div
@@ -208,7 +208,7 @@ function Profile(props) {
 								value={input.conf_password}
 								onSubmit={updatePassword}
 								disabled={loading}
-								autocomplete="new-password"
+								autoComplete="new-password"
 							/>
 							<div className={"underline"} />
 							{input.new_password != input.conf_password ? (

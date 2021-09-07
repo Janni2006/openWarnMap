@@ -6,7 +6,7 @@ export const viewChanges = (lat, lng, zoom) => (dispatch) => {
 	dispatch({
 		type: VIEW,
 		payload: {
-			lattitude: lat,
+			latitude: lat,
 			longitude: lng,
 			zoom: zoom,
 		},
@@ -21,7 +21,9 @@ export const updateData = () => (dispatch) => {
 				payload: res.data,
 			});
 		},
-		error: (err) => {},
+		error: (err) => {
+			console.log(err);
+		},
 	};
 	axios
 		.get("/react/data/", config)

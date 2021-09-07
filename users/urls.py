@@ -7,8 +7,7 @@ urlpatterns = [
     path('logout/', WebTokenLogout.as_view()),
     path('register/', WebRegisterView.as_view()),
     path('user/', WebUserLoader.as_view()),
-    path('create/', WebCreateIssueView.as_view()),
-    path('private-data/', WebGetPrivateData.as_view()),
     path('change-password/', WebChangePassword.as_view()),
-    path('login/reset/', WebPasswordResetRequest.as_view())
+    path('login/reset/', WebPasswordResetRequest.as_view()),
+    path('change-profile/', WebChangeProfile.as_view())
 ]

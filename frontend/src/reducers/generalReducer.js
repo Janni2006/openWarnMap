@@ -1,4 +1,5 @@
-import { VISIT, LANGUAGE, TITLE } from "../actions/types";
+import { map } from "leaflet";
+import { VISIT, LANGUAGE, TITLE, TOGGLE_CLICK_TO_ADD } from "../actions/types";
 
 import { LOCALES } from "../i18n/languages";
 
@@ -16,6 +17,9 @@ const initialState = {
 	pageVisits: 0, // detect if previous URL was
 	language: initialLanguage(),
 	pageTitle: "openWarnMap",
+	settings: {
+		map: { clickToAdd: true },
+	},
 };
 
 export default function foo(state = initialState, action) {
@@ -34,6 +38,17 @@ export default function foo(state = initialState, action) {
 			return {
 				...state,
 				pageTitle: action.payload,
+			};
+		case TOGGLE_CLICK_TO_ADD:
+			return {
+				...state,
+				settings: {
+					...state.settings,
+					map: {
+						...state.settings.map,
+						clickToAdd: !state.settings.map.clickToAdd,
+					},
+				},
 			};
 		default:
 			return state;
