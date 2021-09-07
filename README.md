@@ -1,6 +1,19 @@
-# openWarnMap
+<img src="images/logo.svg?raw=true" height="96" alt="openWarnMap"/>
 
-## Installation (Debian/Ubuntu)
+---
+
+## Usage
+
+This project was initiated to protect its users from oak processionary moths and ticks.
+
+<img src="images/window.png?raw=true"  alt="openWarnMap"/>
+
+## Why is this so usefull?
+
+- **Centralised visualisation** You no longer have to scan through multiple forms. Just use this platform and see everything in one view.
+- **Free** Every function is free for private use. We earn the money to run this page with you donating your money
+
+## Development setup (Debian/Ubuntu)
 
 1. ### Requirements
 
