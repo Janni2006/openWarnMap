@@ -8,7 +8,7 @@ import { Marker, Popup } from "react-leaflet";
 
 // import { VerifiedUser, Warning } from "@material-ui/icons";
 
-// import { Tooltip, Hidden } from "@material-ui/core";
+import { withWidth, isWidthUp } from "@material-ui/core";
 
 // import { ConvertMillisecondsToString } from "../../helpers/ConvertMillisecondsToString";
 
@@ -21,35 +21,20 @@ function MapMarker(props) {
 			key={props.item.code}
 			eventHandlers={{
 				click: () => {
-					props.openMarkerPopup(props.item);
+					if (isWidthUp("md", props.width)) {
+						props.openMarkerPopup(props.item);
+					}
 				},
 			}}
 		>
-			{/* <Hidden mdUp>
-				<Popup>
-					<strong>{props.item.code}</strong>
-					<br />
-					{ConvertMillisecondsToString(
-						Date.now() - Date.parse(props.item.created)
-					)}
-					<br />
-					{props.item.active ? (
-						<Tooltip title="This entry is marked as active" arrow>
-							<Warning style={{ color: "#CC1B29" }} />
-						</Tooltip>
-					) : null}
-					{props.item.verified ? (
-						<Tooltip title="Verified by multiple users" arrow>
-							<VerifiedUser style={{ color: "#387600" }} />
-						</Tooltip>
-					) : null}
-				</Popup>
-			</Hidden> */}
 			<MobilePopup item={props.item} />
 		</Marker>
 	);
 }
 
-MapMarker.propTypes = { openMarkerPopup: PropTypes.func.isRequired };
+MapMarker.propTypes = {
+	openMarkerPopup: PropTypes.func.isRequired,
+	width: PropTypes.string.isRequired,
+};
 
-export default connect(null, { openMarkerPopup })(MapMarker);
+export default connect(null, { openMarkerPopup })(withWidth()(MapMarker));

@@ -52,8 +52,8 @@ function MarkerPopup(props) {
 				<div
 					style={{
 						height: "50vh",
-						width: "25%",
-						maxWidth: "355px",
+						width: isWidthDown("sm", props.width) ? "calc(100% - 20px)" : "25%",
+						maxWidth: isWidthDown("sm", props.width) ? "100%" : "355px",
 						position: "fixed",
 						right: "10px",
 						top: "74px",

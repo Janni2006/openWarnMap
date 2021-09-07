@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
+import { openMarkerPopup } from "../../../actions/mapActions";
+
 import { Popup } from "react-leaflet";
 
 import { VerifiedUser, Warning } from "@material-ui/icons";
@@ -14,7 +16,11 @@ function MobilePopup(props) {
 	return (
 		<Hidden mdUp>
 			<Popup key={"popup-" + props.item.code}>
-				<div onClick={() => {}}>
+				<div
+					onClick={() => {
+						props.openMarkerPopup(props.item);
+					}}
+				>
 					<strong>{props.item.code}</strong>
 					<br />
 					<FormattedRelativeTime
@@ -39,6 +45,9 @@ function MobilePopup(props) {
 	);
 }
 
-MobilePopup.propTypes = { item: PropTypes.object.isRequired };
+MobilePopup.propTypes = {
+	item: PropTypes.object.isRequired,
+	openMarkerPopup: PropTypes.func.isRequired,
+};
 
-export default connect(null)(MobilePopup);
+export default connect(null, { openMarkerPopup })(MobilePopup);

@@ -96,9 +96,9 @@ function MapObject(props) {
 				<LayersControl />
 			</MapContainer>
 			<AddActionButton />
-			<Hidden smDown>
-				<MarkerPopup map={map} />
-			</Hidden>
+			{/* <Hidden smDown> */}
+			<MarkerPopup map={map} />
+			{/* </Hidden> */}
 		</>
 	);
 }
