@@ -17,6 +17,8 @@ import {
 import { login } from "../../actions/authActions";
 import { setTitle } from "../../actions/generalActions";
 
+import "./input.css";
+
 import { useIntl, FormattedMessage } from "react-intl";
 
 import SubmitButton from "../SubmitButton";
@@ -110,7 +112,7 @@ function Login(props) {
 								md={5}
 								xs={12}
 								style={{
-									background: "linear-gradient(90deg, #eb334a, #f45c43)",
+									background: "linear-gradient(90deg, #378d40, #008259)",
 									padding: "100px 50px",
 									height: `${cardHeight + 32}px`,
 									marginBottom: "-32px",
@@ -181,33 +183,36 @@ function Login(props) {
 								style={{
 									textTransform: "uppercase",
 									marginBottom: "50px",
-									color: "#f45c43",
+									color: "#008259",
 									fontSize: "25px",
 								}}
 							>
 								<FormattedMessage id="AUTH_LOGIN_TITLE" />
 							</p>
 							<form onSubmit={handleSubmit}>
-								<input
-									type="text"
-									name="username"
-									placeholder={intl.formatMessage({
-										id: "AUTH_LOGIN_USERNAME_PLACEHOLDER",
-									})}
-									value={input.username}
-									onChange={(event) => {
-										setInput({ ...input, username: event.target.value });
-									}}
-									style={{
-										height: "45px",
-										width: "calc(100% - 50px)",
-										backgroundColor: props.progress ? "#dddddd" : "#faf6f2",
-										border: "none",
-										padding: "5px 25px",
-									}}
-									id="username"
-									disabled={props.progress}
-								/>
+								<div
+									className={"wrapper"}
+									style={{ marginLeft: "-10px", marginRight: "-10px" }}
+								>
+									<div className={"input-data"}>
+										<input
+											type="text"
+											required
+											onChange={(e) => {
+												setInput({ ...input, username: e.target.value });
+											}}
+											value={input.username}
+											disabled={props.progress}
+											id="username"
+											name="username"
+										/>
+										<div className={"underline"} />
+
+										<label>
+											<FormattedMessage id="AUTH_LOGIN_USERNAME_PLACEHOLDER" />
+										</label>
+									</div>
+								</div>
 								<div
 									style={{
 										color: "red",
@@ -216,27 +221,28 @@ function Login(props) {
 								>
 									{errors.username}
 								</div>
-								<input
-									type="password"
-									name="password"
-									placeholder={intl.formatMessage({
-										id: "AUTH_LOGIN_PASSWORD_PLACEHOLDER",
-									})}
-									value={input.password}
-									onChange={(event) => {
-										setInput({ ...input, password: event.target.value });
-									}}
-									style={{
-										height: "45px",
-										width: "calc(100% - 50px)",
-										backgroundColor: props.progress ? "#dddddd" : "#faf6f2",
-										border: "none",
-										padding: "5px 25px",
-										marginTop: "25px",
-									}}
-									id="password"
-									disabled={props.progress}
-								/>
+								<div
+									className={"wrapper"}
+									style={{ marginLeft: "-10px", marginRight: "-10px" }}
+								>
+									<div className={"input-data"}>
+										<input
+											type="password"
+											required
+											onChange={(e) => {
+												setInput({ ...input, password: e.target.value });
+											}}
+											value={input.password}
+											disabled={props.progress}
+											autoComplete="new-password"
+										/>
+										<div className={"underline"} />
+
+										<label>
+											<FormattedMessage id="AUTH_LOGIN_PASSWORD_PLACEHOLDER" />
+										</label>
+									</div>
+								</div>
 								<div
 									style={{
 										color: "red",
@@ -255,7 +261,7 @@ function Login(props) {
 										onClick={() => setResetDialog(true)}
 										style={{
 											height: "40px",
-											background: "linear-gradient(90deg, #eb334a, #f45c43)",
+											background: "linear-gradient(90deg, #378d40, #008259)",
 											marginTop: "25px",
 											marginLeft: "15px",
 											color: "white",
@@ -268,7 +274,7 @@ function Login(props) {
 							<p style={{ marginLeft: "5px" }}>
 								<FormattedMessage id="AUTH_LOGIN_QUESTION" />{" "}
 								<Link
-									style={{ color: "#f45c43", textDecoration: "none" }}
+									style={{ color: "#008259", textDecoration: "none" }}
 									to={"/register"}
 								>
 									<FormattedMessage id="AUTH_LOGIN_QUESTION_LINK" />

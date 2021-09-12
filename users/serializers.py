@@ -70,3 +70,11 @@ class UserResetPasswordRequestSerializer(serializers.Serializer):
 class UserChangeProfileSerializer(serializers.Serializer):
     firstname = serializers.CharField()
     lastname = serializers.CharField()
+
+
+class WebCheckUsernameSerializer(serializers.Serializer):
+    username = serializers.CharField(required=True)
+
+
+class WebCheckEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)

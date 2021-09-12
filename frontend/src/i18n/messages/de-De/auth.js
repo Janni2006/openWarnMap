@@ -46,4 +46,9 @@ export const AUTH = {
 	AUTH_RESET_PASSWORD_SUCCESS:
 		"Wir haben Ihnen nun eine E-Mail mit weiteren Instruktionen zum Zurücksetzen des Passworts geschickt.",
 	AUTH_RESET_PASSWORD_QUESTION: "Passwort vergessen?",
+
+	AUTH_ALREADY_USED_EMAIL: "Diese E-Mail Addresse ist bereits in Gebrauch.",
+	AUTH_ALREADY_USED_USERNAME: "Dieser Nutzername ist bereits vergeben.",
+
+	AUTH_PASSWORD_NOT_STRONG: "Dieses Passwort ist nicht sicher genug.",
 };

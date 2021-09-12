@@ -44,7 +44,7 @@ function SubmitButton(props) {
 								? "#bbbbbb"
 								: success
 								? green[500]
-								: "linear-gradient(90deg, #eb334a, #f45c43)",
+								: "linear-gradient(90deg, #378d40, #008259)",
 							padding: "7.5px 25px",
 							color: "white",
 							fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
@@ -66,7 +66,7 @@ function SubmitButton(props) {
 								? "#bbbbbb"
 								: success
 								? green[500]
-								: "linear-gradient(90deg, #eb334a, #f45c43)",
+								: "linear-gradient(90deg, #378d40, #008259)",
 							padding: "7.5px 25px",
 							color: "white",
 							fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',

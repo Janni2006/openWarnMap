@@ -9,5 +9,7 @@ urlpatterns = [
     path('user/', WebUserLoader.as_view()),
     path('change-password/', WebChangePassword.as_view()),
     path('login/reset/', WebPasswordResetRequest.as_view()),
-    path('change-profile/', WebChangeProfile.as_view())
+    path('change-profile/', WebChangeProfile.as_view()),
+    path('checks/username/', WebCheckUsername.as_view()),
+    path('checks/email/', WebCheckEmail.as_view())
 ]

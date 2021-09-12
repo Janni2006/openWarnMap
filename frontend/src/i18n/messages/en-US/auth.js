@@ -40,4 +40,9 @@ export const AUTH = {
 		"You have successfully requested to reset your password! You are going to receive an\
 		email with further instructions.",
 	AUTH_RESET_PASSWORD_QUESTION: "Forgot password?",
+
+	AUTH_ALREADY_USED_EMAIL: "The email is already in use.",
+	AUTH_ALREADY_USED_USERNAME: "This username is already occupied.",
+
+	AUTH_PASSWORD_NOT_STRONG: "This password isn´t strong enough",
 };

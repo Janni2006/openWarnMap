@@ -15,21 +15,38 @@ import {
 import { register } from "../../actions/authActions";
 import { setTitle } from "../../actions/generalActions";
 
+import "./input.css";
+
+import zxcvbn from "zxcvbn";
+
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { motion, AnimateSharedLayout } from "framer-motion";
+
 import SubmitButton from "../SubmitButton";
+import axios from "axios";
 
 function Register(props) {
+	const [passwordScore, setPasswordScore] = React.useState(0);
 	const [input, setInput] = React.useState({
 		username: "",
 		email: "",
 		password: "",
 		conf_password: "",
 	});
-	const [errors, setErrors] = React.useState({});
+	const [errors, setErrors] = React.useState({
+		username: "",
+		email: "",
+		password: "",
+		conf_password: "",
+	});
 	const [cardHeight, setCardHeight] = React.useState(0);
 	const cardRef = React.useRef(null);
 	const intl = useIntl();
+
+	const patternEmail = new RegExp(
+		/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
+	);
 
 	React.useEffect(() => {
 		props.setTitle("Register");
@@ -57,6 +74,89 @@ function Register(props) {
 			);
 		}
 	}
+
+	React.useEffect(() => {
+		const username = input.username;
+		setErrors({
+			...errors,
+			username: "",
+		});
+		setTimeout(() => {
+			if (username == input.username && username) {
+				const config = {
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": props.csrf_token,
+					},
+				};
+				const body = JSON.stringify({ username: username });
+				axios
+					.post("/backend/auth/checks/username/", body, config)
+					.then((res) => {
+						console.log(res.data);
+						if (res.data.not_ocupied == false) {
+							setErrors({
+								...errors,
+								username: intl.formatMessage({
+									id: "AUTH_ALREADY_USED_USERNAME",
+								}),
+							});
+						}
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+			}
+		}, 1500);
+	}, [input.username]);
+
+	React.useEffect(() => {
+		const email = input.email;
+		setErrors({
+			...errors,
+			email: "",
+		});
+		setTimeout(() => {
+			if (email == input.email && email && patternEmail.test(email)) {
+				const config = {
+					headers: {
+						"Content-Type": "application/json",
+						"X-CSRFToken": props.csrf_token,
+					},
+				};
+				const body = JSON.stringify({ email: input.email });
+				console.log(body);
+				axios
+					.post("/backend/auth/checks/email/", body, config)
+					.then((res) => {
+						console.log(res.data);
+						if (res.data.not_ocupied == false) {
+							setErrors({
+								...errors,
+								email: intl.formatMessage({ id: "AUTH_ALREADY_USED_EMAIL" }),
+							});
+						}
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+			}
+		}, 1500);
+	}, [input.email]);
+
+	React.useEffect(() => {
+		if (zxcvbn(input.password).score < 3) {
+			setErrors({
+				...errors,
+				password: intl.formatMessage({ id: "AUTH_PASSWORD_NOT_STRONG" }),
+			});
+		} else {
+			setErrors({
+				...errors,
+				password: "",
+			});
+		}
+	}, [input.password]);
 
 	function validate() {
 		let errors = {};
@@ -89,9 +189,6 @@ function Register(props) {
 				id: "AUTH_REGISTER_ERROR_CONFIRM_PASSWORD_UNDEFINED",
 			});
 		}
-		var patternEmail = new RegExp(
-			/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i
-		);
 
 		if (input["email"]) {
 			if (!patternEmail.test(input["email"])) {
@@ -153,7 +250,7 @@ function Register(props) {
 							md={5}
 							xs={12}
 							style={{
-								background: "linear-gradient(90deg, #eb334a, #f45c43)",
+								background: "linear-gradient(90deg, #378d40, #008259)",
 								padding: "100px 50px",
 								height: `${cardHeight + 64}px`,
 								marginBottom: "-64px",
@@ -222,33 +319,47 @@ function Register(props) {
 							style={{
 								textTransform: "uppercase",
 								marginBottom: "50px",
-								color: "#f45c43",
+								color: "#008259",
 								fontSize: "25px",
 							}}
 						>
 							<FormattedMessage id="AUTH_REGISTER_TITLE" />
 						</p>
 						<form onSubmit={handleSubmit}>
-							<input
-								type="text"
-								name="username"
-								placeholder={intl.formatMessage({
-									id: "AUTH_REGISTER_USERNAME_PLACEHOLDER",
-								})}
-								value={input.username}
-								onChange={(event) => {
-									setInput({ ...input, username: event.target.value });
-								}}
-								style={{
-									height: "45px",
-									width: "calc(100% - 50px)",
-									backgroundColor: props.progress ? "#dddddd" : "#faf6f2",
-									border: "none",
-									padding: "5px 25px",
-								}}
-								id="username"
-								disabled={props.progress}
-							/>
+							<div
+								className="wrapper"
+								style={{ marginLeft: "-10px", marginRight: "-10px" }}
+							>
+								<div className="input-data">
+									<input
+										type="text"
+										name="username"
+										required
+										value={input.username}
+										onChange={(event) => {
+											setInput({ ...input, username: event.target.value });
+										}}
+										id="username"
+										disabled={props.progress}
+									/>
+									<div className="underline" />
+									{errors.username ? (
+										<div
+											style={{
+												height: "2px",
+												width: "100%",
+												backgroundColor: "red",
+												position: "absolute",
+												bottom: "2px",
+											}}
+										/>
+									) : null}
+									<label>
+										<FormattedMessage id="AUTH_REGISTER_USERNAME_PLACEHOLDER" />
+									</label>
+								</div>
+							</div>
+
 							<div
 								style={{
 									color: "red",
@@ -257,27 +368,39 @@ function Register(props) {
 							>
 								{errors.username}
 							</div>
-							<input
-								type="email"
-								name="email"
-								placeholder={intl.formatMessage({
-									id: "AUTH_REGISTER_EMAIL_PLACEHOLDER",
-								})}
-								value={input.email}
-								onChange={(event) => {
-									setInput({ ...input, email: event.target.value });
-								}}
-								style={{
-									height: "45px",
-									width: "calc(100% - 50px)",
-									backgroundColor: props.progress ? "#dddddd" : "#faf6f2",
-									border: "none",
-									padding: "5px 25px",
-									marginTop: "25px",
-								}}
-								id="email"
-								disabled={props.progress}
-							/>
+							<div
+								className="wrapper"
+								style={{ marginLeft: "-10px", marginRight: "-10px" }}
+							>
+								<div className="input-data">
+									<input
+										type="email"
+										name="email"
+										required
+										value={input.email}
+										onChange={(event) => {
+											setInput({ ...input, email: event.target.value });
+										}}
+										id="email"
+										disabled={props.progress}
+									/>
+									<div className="underline" />
+									{errors.email ? (
+										<div
+											style={{
+												height: "2px",
+												width: "100%",
+												backgroundColor: "red",
+												position: "absolute",
+												bottom: "2px",
+											}}
+										/>
+									) : null}
+									<label>
+										<FormattedMessage id="AUTH_REGISTER_EMAIL_PLACEHOLDER" />
+									</label>
+								</div>
+							</div>
 							<div
 								style={{
 									color: "red",
@@ -286,28 +409,50 @@ function Register(props) {
 							>
 								{errors.email}
 							</div>
-							<input
-								type="password"
-								name="password"
-								autoComplete="new-password"
-								placeholder={intl.formatMessage({
-									id: "AUTH_REGISTER_PASSWORD_PLACEHOLDER",
-								})}
-								value={input.password}
-								onChange={(event) => {
-									setInput({ ...input, password: event.target.value });
-								}}
-								style={{
-									height: "45px",
-									width: "calc(100% - 50px)",
-									backgroundColor: props.progress ? "#dddddd" : "#faf6f2",
-									border: "none",
-									padding: "5px 25px",
-									marginTop: "25px",
-								}}
-								id="password"
-								disabled={props.progress}
-							/>
+							<div
+								className={"wrapper"}
+								style={{ marginLeft: "-10px", marginRight: "-10px" }}
+							>
+								<div className={"input-data"}>
+									<input
+										type="password"
+										required
+										onChange={(e) => {
+											setPasswordScore(zxcvbn(e.target.value).score);
+											setInput({ ...input, password: e.target.value });
+										}}
+										value={input.password}
+										disabled={props.progress}
+										autoComplete="new-password"
+									/>
+									<div className={"underline"} />
+									<AnimateSharedLayout>
+										<motion.div
+											layoutId="password_score_underline"
+											style={{
+												height: "2px",
+												width: `${passwordScore * 25}%`,
+												backgroundColor:
+													passwordScore == 1
+														? "red"
+														: passwordScore == 2
+														? "orange"
+														: passwordScore == 3
+														? "yellow"
+														: passwordScore == 4
+														? "green"
+														: "#cccccc",
+												position: "absolute",
+												bottom: "2px",
+											}}
+										/>
+									</AnimateSharedLayout>
+
+									<label>
+										<FormattedMessage id="AUTH_REGISTER_PASSWORD_PLACEHOLDER" />
+									</label>
+								</div>
+							</div>
 							<div
 								style={{
 									color: "red",
@@ -316,28 +461,40 @@ function Register(props) {
 							>
 								{errors.password}
 							</div>
-							<input
-								type="password"
-								name="conf_password"
-								autoComplete="new-password"
-								placeholder={intl.formatMessage({
-									id: "AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER",
-								})}
-								value={input.conf_password}
-								onChange={(event) => {
-									setInput({ ...input, conf_password: event.target.value });
-								}}
-								style={{
-									height: "45px",
-									width: "calc(100% - 50px)",
-									backgroundColor: props.progress ? "#dddddd" : "#faf6f2",
-									border: "none",
-									padding: "5px 25px",
-									marginTop: "25px",
-								}}
-								id="conf_password"
-								disabled={props.progress}
-							/>
+							<div
+								className={"wrapper"}
+								style={{ marginLeft: "-10px", marginRight: "-10px" }}
+							>
+								<div className={"input-data"}>
+									<input
+										type="password"
+										required
+										onChange={(e) => {
+											setInput({ ...input, conf_password: e.target.value });
+										}}
+										value={input.conf_password}
+										disabled={props.progress}
+										autoComplete="new-password"
+									/>
+									<div className={"underline"} />
+									{(input.password != input.conf_password) |
+									errors.conf_password ? (
+										<div
+											style={{
+												height: "2px",
+												width: "100%",
+												backgroundColor: "red",
+												position: "absolute",
+												bottom: "2px",
+											}}
+										/>
+									) : null}
+
+									<label>
+										<FormattedMessage id="AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER" />
+									</label>
+								</div>
+							</div>
 							<div
 								style={{
 									color: "red",
@@ -355,7 +512,7 @@ function Register(props) {
 						<p style={{ marginLeft: "5px" }}>
 							<FormattedMessage id="AUTH_REGISTER_QUESTION" />{" "}
 							<Link
-								style={{ color: "#f45c43", textDecoration: "none" }}
+								style={{ color: "#008259", textDecoration: "none" }}
 								to={"/login"}
 							>
 								<FormattedMessage id="AUTH_REGISTER_QUESTION_LINK" />
@@ -372,10 +529,12 @@ Register.propTypes = {
 	progress: PropTypes.bool.isRequired,
 	register: PropTypes.func.isRequired,
 	setTitle: PropTypes.func.isRequired,
+	csrf_token: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	progress: state.auth.progress,
+	csrf_token: state.security.csrf_token,
 });
 
 export default connect(mapStateToProps, { register, setTitle })(

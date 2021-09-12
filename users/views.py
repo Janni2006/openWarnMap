@@ -184,8 +184,44 @@ class WebChangePassword(APIView):
                     request.user.save()
 
                     return Response({'Success': 'Successfully changed password'}, status=status.HTTP_200_OK)
-                return Response({'Passwords don´t match': 'The two new passwords aren´t equal'}, status=status.HTTP_400_BAD_REQUEST)
-            return Response({'Unauthorized': 'The provided authorization password isn´t correct'}, status=status.HTTP_401_UNAUTHORIZED)
+                return Response(
+                    {
+                        "code": 400,
+                        "message": "Invalid data was provided.",
+                        "details": {
+                            "password": {
+                                "error": False
+                            },
+                            "new_password": {
+                                "error": True,
+                                "msg_code": 0,
+                                "msg": "The passwords don´t match"
+                            },
+                            "conf_password": {
+                                "error": True,
+                                "msg_code": 0,
+                                "msg": "The passwords don´t match"
+                            }
+                        }
+                    }, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {
+                    "code": 400,
+                    "message": "Invalid data was provided.",
+                    "details": {
+                        "password": {
+                            "error": True,
+                            "msg_code": 0,
+                            "msg": "The password doen´t work for authorization"
+                        },
+                        "new_password": {
+                            "error": False,
+                        },
+                        "conf_password": {
+                            "error": False,
+                        }
+                    }
+                }, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(
             {'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
@@ -219,5 +255,47 @@ class WebPasswordResetRequest(APIView):
                 print(token)
                 print(uidb64)
 
-                return Response({"Success": "An email was successfully send to your acount. If there was no account with this email address, there wont be an email."}, status=status.HTTP_200_OK)
-        return Response({"Invalid data": "Please try again with different parameters"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message": "An email was successfully send to your acount. If there was no account with this email address, there wont be an email."}, status=status.HTTP_200_OK)
+        return Response({"code": 400, "message": "Invalid data was provided."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WebCheckUsername(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = WebCheckUsernameSerializer
+
+    UserModel = get_user_model()
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            username = serializer.data.get("username")
+
+            try:
+                self.UserModel.objects.get(username__iexact=username)
+            except self.UserModel.DoesNotExist:
+                return Response({"username": username, "not_ocupied": True}, status=status.HTTP_200_OK)
+
+            return Response({"username": username, "not_ocupied": False}, status=status.HTTP_200_OK)
+        return Response({"code": 400, "message": "Invalid data was provided."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WebCheckEmail(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = WebCheckEmailSerializer
+
+    UserModel = get_user_model()
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            email = serializer.data.get("email")
+
+            try:
+                self.UserModel.objects.get(email__iexact=email)
+            except self.UserModel.DoesNotExist:
+                return Response({"email": email, "not_ocupied": True}, status=status.HTTP_200_OK)
+
+            return Response({"email": email, "not_ocupied": False}, status=status.HTTP_200_OK)
+        return Response({"code": 400, "message": "Invalid data was provided."}, status=status.HTTP_400_BAD_REQUEST)

@@ -14,6 +14,8 @@ import {
 	DialogActions,
 } from "@material-ui/core";
 
+import "./input.css";
+
 import { useIntl, FormattedMessage, FormattedTime } from "react-intl";
 
 import SubmitButton from "../SubmitButton";
@@ -104,28 +106,43 @@ function ResetPassword(props) {
 				<Typography>
 					<FormattedMessage id="AUTH_RESET_PASSWORD_DESCRIPTION" />
 				</Typography>
-				<input
-					type="email"
-					name="email"
-					placeholder={intl.formatMessage({
-						id: "AUTH_RESET_PASSWORD_EMAIL_PLACEHOLDER",
-					})}
-					value={input}
-					onChange={(event) => {
-						setInput(event.target.value);
-					}}
-					onSubmit={handleSubmit}
+				<div
+					className={"wrapper"}
 					style={{
-						height: "45px",
-						width: "calc(100% - 50px)",
-						backgroundColor: props.progress ? "#dddddd" : "#faf6f2",
-						border: "none",
-						padding: "5px 25px",
-						marginTop: "25px",
+						marginLeft: "-10px",
+						marginRight: "-10px",
+						marginTop: "15px",
 					}}
-					id="email"
-					disabled={props.progress}
-				/>
+				>
+					<div className={"input-data"}>
+						<input
+							type="email"
+							required
+							onChange={(e) => {
+								setInput(e.target.value);
+							}}
+							value={input}
+							onSubmit={handleSubmit}
+							disabled={props.progress}
+						/>
+						<div className={"underline"} />
+						{errors ? (
+							<div
+								style={{
+									height: "2px",
+									width: "100%",
+									backgroundColor: "red",
+									position: "absolute",
+									bottom: "2px",
+								}}
+							/>
+						) : null}
+
+						<label>
+							<FormattedMessage id="AUTH_RESET_PASSWORD_EMAIL_PLACEHOLDER" />
+						</label>
+					</div>
+				</div>
 				<div
 					style={{
 						color: "red",
@@ -164,6 +181,6 @@ function ResetPassword(props) {
 
 ResetPassword.propTypes = { csrf: PropTypes.string.isRequired };
 
-const mapStateToProps = (state) => ({ csrf: state.security.csrf_toek });
+const mapStateToProps = (state) => ({ csrf: state.security.csrf_token });
 
 export default connect(mapStateToProps)(ResetPassword);
