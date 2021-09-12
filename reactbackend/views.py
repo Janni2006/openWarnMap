@@ -157,3 +157,24 @@ class WebCreateIssueVote(APIView):
             return Response(data={"Error": "You have ranked this entry already!"}, status=status.HTTP_409_CONFLICT)
         print(serializer.errors)
         return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WebGetPrivateIssueVoteStatus(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        issue_code = request.GET.get("item", str)
+
+        try:
+            issue = Issue.objects.get(code__iexact=issue_code)
+        except Issue.MultipleObjectsReturned:
+            return Response({"Internal server error": "Something went drastically wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Issue.DoesNotExist:
+            return Response({"not found": "The desired entry was not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            queryset = Votes.objects.filter(entry=issue, user=request.user)
+
+            if queryset.exists():
+                return Response({"issue": queryset.first().entry.code, "voted": True, "confirm": queryset.first().confirm, "change": queryset.first().change}, status=status.HTTP_200_OK)
+            else:
+                return Response({"issue": issue.code, "voted": False}, status=status.HTTP_200_OK)

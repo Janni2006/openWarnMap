@@ -42,4 +42,9 @@ export const TRANSLATIONS = {
 
 	POPUP_REQUEST_CHANGE_OPTION_IP: "Invalid position",
 	POPUP_REQUEST_CHANGE_OPTION_NT: "No trees nearby",
+
+	POPUP_CONFIRM: "Confirm",
+	POPUP_CONFIRMED: "Confirmed",
+	POPUP_CHANGE: "Change",
+	POPUP_CHANGED: "Changed",
 };

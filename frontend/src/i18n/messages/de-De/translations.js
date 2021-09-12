@@ -45,4 +45,9 @@ export const TRANSLATIONS = {
 
 	POPUP_REQUEST_CHANGE_OPTION_IP: "Ungültige Position",
 	POPUP_REQUEST_CHANGE_OPTION_NT: "Es sind keine Bäume in der Nähe",
+
+	POPUP_CONFIRM: "Bestätigen",
+	POPUP_CONFIRMED: "Bestätigt",
+	POPUP_CHANGE: "Status ändern",
+	POPUP_CHANGED: "Status geändert",
 };

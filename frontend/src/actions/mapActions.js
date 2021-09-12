@@ -35,8 +35,22 @@ export const updateData = () => (dispatch) => {
 		});
 };
 
-export const openMarkerPopup = (item) => (dispatch) => {
-	dispatch({ type: OPEN_MARKER_POPUP, payload: item });
+export const openMarkerPopup = (item) => (dispatch, getState) => {
+	if (getState().auth.isAuthenticated) {
+		axios
+			.get(`/react/vote/status/?item=${item.code}`)
+			.then((res) => {
+				item.voted = res.data.voted;
+				item.vote = { confirm: res.data.confirm, change: res.data.change };
+				dispatch({ type: OPEN_MARKER_POPUP, payload: item });
+			})
+			.catch((err) => {
+				dispatch({ type: OPEN_MARKER_POPUP, payload: item });
+				console.log(err);
+			});
+	} else {
+		dispatch({ type: OPEN_MARKER_POPUP, payload: item });
+	}
 };
 
 export const closeMarkerPopup = () => (dispatch) => {
