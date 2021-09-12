@@ -40,8 +40,15 @@ export const openMarkerPopup = (item) => (dispatch, getState) => {
 		axios
 			.get(`/react/vote/status/?item=${item.code}`)
 			.then((res) => {
-				item.voted = res.data.voted;
-				item.vote = { confirm: res.data.confirm, change: res.data.change };
+				console.log(res);
+				if (res.data.private) {
+					item.private = true;
+					item.voted = false;
+					item.vote = { confirm: false, change: false };
+				} else {
+					item.voted = res.data.voted;
+					item.vote = { confirm: res.data.confirm, change: res.data.change };
+				}
 				dispatch({ type: OPEN_MARKER_POPUP, payload: item });
 			})
 			.catch((err) => {

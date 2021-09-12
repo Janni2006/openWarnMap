@@ -172,6 +172,9 @@ class WebGetPrivateIssueVoteStatus(APIView):
         except Issue.DoesNotExist:
             return Response({"not found": "The desired entry was not found"}, status=status.HTTP_404_NOT_FOUND)
         else:
+            if issue.creator == request.user or request.user.profile.private_data.all().filter(
+                    code__iexact=issue_code).exists():
+                return Response({"issue": issue.code, "private": True}, status=status.HTTP_200_OK)
             queryset = Votes.objects.filter(entry=issue, user=request.user)
 
             if queryset.exists():

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { closeMarkerPopup } from "../../../actions/mapActions";
 
-import { AnimatePresence, motion, AnimateSharedLayout } from "framer-motion";
+import { motion, AnimateSharedLayout } from "framer-motion";
 
 import {
 	ThumbUp,
@@ -12,15 +12,10 @@ import {
 	ThumbUpOutlined,
 	ThumbDownOutlined,
 	Send,
+	InfoOutlined,
 } from "@material-ui/icons";
 
-import {
-	Button,
-	makeStyles,
-	withWidth,
-	isWidthDown,
-	Typography,
-} from "@material-ui/core";
+import { Button, withWidth, isWidthDown, Typography } from "@material-ui/core";
 
 import Select from "react-select";
 
@@ -41,6 +36,9 @@ function Votes(props) {
 		appliedChange: null,
 	});
 
+	const [voted, setVoted] = React.useState(false);
+	const [confirm, setConfirm] = React.useState(false);
+
 	const intl = useIntl();
 
 	React.useEffect(() => {
@@ -60,6 +58,14 @@ function Votes(props) {
 			selected: false,
 		});
 	}, [props.content.code]);
+
+	React.useEffect(() => {
+		setVoted(props.content.voted);
+	}, [props.content.voted]);
+
+	React.useEffect(() => {
+		setConfirm(props.content.vote.confirm);
+	}, [props.content.vote.confirm]);
 
 	function checkForErrors() {
 		var error = false;
@@ -91,6 +97,8 @@ function Votes(props) {
 					toast.success(
 						"Wir danken Ihnen für die Rückmeldung zu diesem Eintrag"
 					);
+					setVoted(true);
+					setConfirm(confirmButton.selected);
 				})
 				.catch((err) => {
 					if (err.response.status == 409) {
@@ -108,11 +116,11 @@ function Votes(props) {
 
 	return (
 		<>
-			{props.isAuthenticated ? (
+			{props.isAuthenticated && !props.content.private ? (
 				<>
-					{props.content.voted ? (
+					{voted ? (
 						<>
-							{props.content.vote.confirm ? (
+							{confirm ? (
 								<button
 									style={{
 										border: "2.5px solid green",
@@ -380,7 +388,43 @@ function Votes(props) {
 						</>
 					)}
 				</>
-			) : null}
+			) : (
+				<>
+					{props.content.private ? (
+						<div style={{ display: "flex", alignItems: "center" }}>
+							<InfoOutlined style={{ color: "#bdbdbd", fontSize: "15px" }} />
+							<Typography
+								style={{
+									color: "#bdbdbd",
+									display: "inline-block",
+									marginLeft: "5px",
+									fontWeight: "normal",
+									fontSize: "12px",
+								}}
+							>
+								Sie haben diesen Eintrag erstellt
+							</Typography>
+							<br />
+						</div>
+					) : (
+						<div style={{ display: "flex", alignItems: "center" }}>
+							<InfoOutlined style={{ color: "#bdbdbd", fontSize: "15px" }} />
+							<Typography
+								style={{
+									color: "#bdbdbd",
+									display: "inline-block",
+									marginLeft: "5px",
+									fontWeight: "normal",
+									fontSize: "12px",
+								}}
+							>
+								Sie müssen eingeloggt sein
+							</Typography>
+							<br />
+						</div>
+					)}
+				</>
+			)}
 		</>
 	);
 }
