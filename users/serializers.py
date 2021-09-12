@@ -29,15 +29,13 @@ class UserChangePasswordSerializer(serializers.Serializer):
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(required=True, validators=[
-                                     UniqueValidator(queryset=User.objects.all())])
-    email = serializers.EmailField(required=True, validators=[
-                                   UniqueValidator(queryset=User.objects.all())], style={
+    username = serializers.CharField(required=True)
+    email = serializers.EmailField(required=True, style={
         'input_type': 'email'})
 
-    password = serializers.CharField(write_only=True, required=True, validators=[
+    password = serializers.CharField(required=True, validators=[
                                      validate_password], style={'input_type': 'password', 'placeholder': 'Password'})
-    password2 = serializers.CharField(write_only=True, required=True, style={
+    password2 = serializers.CharField(required=True, style={
                                       'input_type': 'password', 'placeholder': 'Confirm password'})
 
     class Meta:

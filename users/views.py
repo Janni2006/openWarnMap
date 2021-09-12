@@ -57,10 +57,56 @@ class WebLoginView(APIView):
         return Response({"Bad request": "There is no user with this password."}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class WebRegisterView(generics.CreateAPIView):
+class WebRegisterView(APIView):
     permission_classes = (AllowAny,)
-    queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
+
+    UserModel = get_user_model()
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            username = serializer.data.get("username")
+            email = serializer.data.get("email")
+            password = serializer.data.get("password")
+            conf_password = serializer.data.get("password2")
+
+            error = {
+                "code": 200,
+                "username": {"error": False, "msg_code": None, "msg": ""},
+                "email": {"error": False, "msg_code": None, "msg": ""},
+                "password": {"error": False, "msg_code": None, "msg": ""},
+                "conf_password": {"error": False, "msg_code": None, "msg": ""}
+            }
+
+            if self.UserModel.objects.filter(username__iexact=username).exists():
+                error["username"] = {"error": True, "msg_code": 1,
+                                     "msg": "This username is already in use"}
+                error["code"] = 400
+
+            if self.UserModel.objects.filter(email__iexact=email).exists():
+                error["email"] = {"error": True, "msg_code": 1,
+                                  "msg": "This email is already in use"}
+                error["code"] = 400
+
+            if password != conf_password:
+                error["password"] = {"error": True, "msg_code": 2,
+                                     "msg": "The passwords don´t match"}
+                error["conf_password"] = {"error": True, "msg_code": 2,
+                                          "msg": "The passwords don´t match"}
+                error["code"] = 400
+
+            if error != {
+                "username": {"error": False, "msg_code": None, "msg": ""},
+                "email": {"error": False, "msg_code": None, "msg": ""},
+                "password": {"error": False, "msg_code": None, "msg": ""},
+                "conf_password": {"error": False, "msg_code": None, "msg": ""}
+            }:
+                return Response(data=error, status=status.HTTP_400_BAD_REQUEST)
+            serializer.create()
+            return Response({"success": True, "message": "The user was successsfully created"})
+        return Response({"Bad Request": "Invalid data provided"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class WebRefreshToken(APIView):

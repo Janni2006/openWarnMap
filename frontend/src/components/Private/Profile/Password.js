@@ -13,6 +13,8 @@ import {
 	CircularProgress,
 } from "@material-ui/core";
 
+import { motion, AnimateSharedLayout } from "framer-motion";
+
 import { green, red } from "@material-ui/core/colors";
 
 import { toast } from "react-toastify";
@@ -172,24 +174,28 @@ function Profile(props) {
 								autoComplete="new-password"
 							/>
 							<div className={"underline"} />
-							<div
-								style={{
-									height: "2px",
-									width: `${passwordScore * 25}%`,
-									backgroundColor:
-										passwordScore == 1
-											? "red"
-											: passwordScore == 2
-											? "orange"
-											: passwordScore == 3
-											? "yellow"
-											: passwordScore == 4
-											? "green"
-											: "#cccccc",
-									position: "absolute",
-									bottom: "2px",
-								}}
-							/>
+							<AnimateSharedLayout>
+								<motion.div
+									layoutId="change_password_score"
+									style={{
+										height: "2px",
+										width: `${passwordScore * 25}%`,
+										backgroundColor:
+											passwordScore == 1
+												? "red"
+												: passwordScore == 2
+												? "orange"
+												: passwordScore == 3
+												? "yellow"
+												: passwordScore == 4
+												? "green"
+												: "#cccccc",
+										position: "absolute",
+										bottom: "2px",
+									}}
+								/>
+							</AnimateSharedLayout>
+
 							<label>
 								<FormattedMessage id="PROFILE_PAGE_PASSWORD_NEW_PASSWORD" />
 							</label>

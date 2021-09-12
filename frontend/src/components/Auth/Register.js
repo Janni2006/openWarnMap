@@ -218,6 +218,58 @@ function Register(props) {
 			});
 		}
 
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				"X-CSRFToken": props.csrf_token,
+			},
+		};
+
+		axios
+			.post(
+				"/backend/auth/checks/username/",
+				JSON.stringify({ username: username }),
+				config
+			)
+			.then((res) => {
+				console.log(res.data);
+				if (res.data.not_ocupied == false) {
+					errors["username"] = intl.formatMessage({
+						id: "AUTH_ALREADY_USED_USERNAME",
+					});
+					isValid = false;
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		axios
+			.post(
+				"/backend/auth/checks/email/",
+				JSON.stringify({ email: input.email }),
+				config
+			)
+			.then((res) => {
+				console.log(res.data);
+				if (res.data.not_ocupied == false) {
+					errors["email"] = intl.formatMessage({
+						id: "AUTH_ALREADY_USED_EMAIL",
+					});
+					isValid = false;
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		if (zxcvbn(input.password).score < 3) {
+			errors["password"] = intl.formatMessage({
+				id: "AUTH_PASSWORD_NOT_STRONG",
+			});
+			isValid = false;
+		}
+
 		setErrors(errors);
 
 		return isValid;
