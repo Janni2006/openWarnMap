@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { useMapEvents, Marker, Popup } from "react-leaflet";
+import { useMapEvents, Popup } from "react-leaflet";
 
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
 import "leaflet-defaulticon-compatibility";
@@ -33,7 +33,8 @@ function MapClick(props) {
 			if (
 				isWidthUp("sm", props.width) &&
 				map.getZoom() > 12 &&
-				props.clickToAdd
+				props.clickToAdd &&
+				props.isAuthenticated
 			) {
 				map.flyTo(e.latlng, 18);
 				setPosition(e.latlng);
@@ -85,10 +86,12 @@ function MapClick(props) {
 
 MapClick.propTypes = {
 	clickToAdd: PropTypes.bool.isRequired,
+	isAuthenticated: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	clickToAdd: state.general.settings.map.clickToAdd,
+	isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps)(withWidth()(MapClick));
