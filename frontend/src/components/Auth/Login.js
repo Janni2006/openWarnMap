@@ -27,6 +27,8 @@ import SubmitButton from "../SubmitButton";
 
 import ResetPasswordDialog from "./ResetPasswordDialog";
 
+import InputField from "../InputField";
+
 function Login(props) {
 	const [input, setInput] = React.useState({ username: "", password: "" });
 	const [errors, setErrors] = React.useState({});
@@ -91,7 +93,7 @@ function Login(props) {
 					<FormattedMessage id="AUTH_LOGIN_TITLE" />
 				</p>
 				<form onSubmit={handleSubmit}>
-					<div
+					{/* <div
 						className={"wrapper"}
 						style={{ marginLeft: "-10px", marginRight: "-10px" }}
 					>
@@ -121,8 +123,21 @@ function Login(props) {
 						}}
 					>
 						{errors.username}
-					</div>
-					<div
+					</div> */}
+					<InputField
+						placeholder={intl.formatMessage({
+							id: "AUTH_LOGIN_USERNAME_PLACEHOLDER",
+						})}
+						onChange={(e) => {
+							setInput({ ...input, username: e.target.value });
+						}}
+						type="text"
+						name="username"
+						disabled={props.progress}
+						value={input.username}
+						error={errors.username}
+					/>
+					{/* <div
 						className={"wrapper"}
 						style={{ marginLeft: "-10px", marginRight: "-10px" }}
 					>
@@ -151,7 +166,20 @@ function Login(props) {
 						}}
 					>
 						{errors.password}
-					</div>
+					</div> */}
+					<InputField
+						placeholder={intl.formatMessage({
+							id: "AUTH_LOGIN_PASSWORD_PLACEHOLDER",
+						})}
+						onChange={(e) => {
+							setInput({ ...input, password: e.target.value });
+						}}
+						type="password"
+						name="password"
+						disabled={props.progress}
+						value={input.password}
+						error={errors.password}
+					/>
 					<div style={{ display: "flex", justifyContent: "flex-start" }}>
 						<SubmitButton
 							loading={props.progress}

@@ -24,7 +24,7 @@ import zxcvbn from "zxcvbn";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { motion, AnimateSharedLayout } from "framer-motion";
-import InputField from "./InputField";
+import InputField from "../../InputField";
 import axios from "axios";
 
 function Register(props) {
@@ -41,6 +41,7 @@ function Register(props) {
 		password: "",
 		conf_password: "",
 	});
+	const [errorSteps, setErrorSteps] = React.useState(new Set());
 	const [activeStep, setActiveStep] = React.useState(0);
 	const intl = useIntl();
 
@@ -71,6 +72,10 @@ function Register(props) {
 			);
 		}
 	}
+
+	React.useEffect(() => {
+		console.log(input);
+	}, [input]);
 
 	React.useEffect(() => {
 		setErrors({
@@ -168,6 +173,20 @@ function Register(props) {
 		}
 	};
 
+	const isErrorStep = (step) => {
+		return errorSteps.has(step);
+	};
+
+	const addErrorStep = (step) => {
+		if (!isErrorStep(step)) {
+			setErrorSteps((prevError) => {
+				const newError = new Set(prevError.values());
+				newError.add(step);
+				return newError;
+			});
+		}
+	};
+
 	function validate() {
 		let errors = {};
 		let isValid = true;
@@ -238,7 +257,7 @@ function Register(props) {
 		axios
 			.post(
 				"/backend/auth/checks/username/",
-				JSON.stringify({ username: username }),
+				JSON.stringify({ username: input.username }),
 				config
 			)
 			.then((res) => {
@@ -277,6 +296,7 @@ function Register(props) {
 			errors["password"] = intl.formatMessage({
 				id: "AUTH_PASSWORD_NOT_STRONG",
 			});
+			addErrorStep(2);
 			isValid = false;
 		}
 
@@ -287,7 +307,7 @@ function Register(props) {
 
 	const registerContent = [
 		{
-			label: "Username and Password",
+			label: intl.formatMessage({ id: "AUTH_REGISTER_STEPS_FIRST" }),
 			content: (
 				<StepWrapper
 					handleNext={handleNext}
@@ -331,7 +351,7 @@ function Register(props) {
 			),
 		},
 		{
-			label: "Pasword",
+			label: intl.formatMessage({ id: "AUTH_REGISTER_STEPS_SECOND" }),
 			content: (
 				<StepWrapper
 					handleNext={handleNext}
@@ -385,7 +405,7 @@ function Register(props) {
 			),
 		},
 		{
-			label: "Registrierung abschließen",
+			label: intl.formatMessage({ id: "AUTH_REGISTER_STEPS_THIRD" }),
 			content: (
 				<StepWrapper
 					handleNext={handleNext}

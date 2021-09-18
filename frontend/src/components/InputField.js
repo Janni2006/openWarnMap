@@ -5,8 +5,6 @@ import { makeStyles } from "@material-ui/core";
 
 import { motion, AnimateSharedLayout } from "framer-motion";
 
-import "../input.css";
-
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		width: "100%",

@@ -98,13 +98,14 @@ class WebRegisterView(APIView):
                 error["code"] = 400
 
             if error != {
+                "code": 200,
                 "username": {"error": False, "msg_code": None, "msg": ""},
                 "email": {"error": False, "msg_code": None, "msg": ""},
                 "password": {"error": False, "msg_code": None, "msg": ""},
                 "conf_password": {"error": False, "msg_code": None, "msg": ""}
             }:
                 return Response(data=error, status=status.HTTP_400_BAD_REQUEST)
-            serializer.create()
+            serializer.create(validated_data=serializer.validated_data)
             return Response({"success": True, "message": "The user was successsfully created"})
         return Response({"Bad Request": "Invalid data provided"}, status=status.HTTP_400_BAD_REQUEST)
 

@@ -9,6 +9,8 @@ export const TRANSLATIONS = {
 	OK: "Ok",
 	SAVE: "Save",
 	READY: "Ready",
+	NEXT: "Next",
+	BACK: "Back",
 
 	COOKIE_CONSENT: "This website uses cookies to enhance the user experience.",
 

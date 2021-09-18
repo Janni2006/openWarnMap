@@ -5,6 +5,8 @@ import { Button } from "@material-ui/core";
 
 import "../input.css";
 
+import { FormattedMessage } from "react-intl";
+
 function StepWrapper(props) {
 	return (
 		<>
@@ -32,7 +34,7 @@ function StepWrapper(props) {
 						}}
 						onClick={props.handleBack}
 					>
-						Zurück
+						<FormattedMessage id="BACK" />
 					</Button>
 				)}
 
@@ -52,7 +54,7 @@ function StepWrapper(props) {
 						}}
 						onClick={props.register}
 					>
-						Registrieren
+						<FormattedMessage id="AUTH_REGISTER" />
 					</Button>
 				) : (
 					<Button
@@ -70,7 +72,7 @@ function StepWrapper(props) {
 						}}
 						onClick={props.handleNext}
 					>
-						Nächstes
+						<FormattedMessage id="NEXT" />
 					</Button>
 				)}
 			</div>
