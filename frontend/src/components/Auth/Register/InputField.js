@@ -82,6 +82,8 @@ function InputField(props) {
 		}
 	}, [props.input]);
 
+	React.useEffect(() => console.log(props.underline), [props.underline]);
+
 	function onFocus() {
 		setOpen(true);
 		console.log("Focus");
@@ -112,13 +114,31 @@ function InputField(props) {
 					<AnimateSharedLayout>
 						{props.error ? (
 							<motion.div
-								layoutId={`_${props.name}-secondBar`}
+								layoutId={`_${props.name}-underline`}
 								className={classes.errorUnderline}
 							/>
 						) : (
 							<motion.div
-								layoutId={`_${props.name}-secondBar`}
+								layoutId={`_${props.name}-underline`}
 								className={classes.underline}
+							/>
+						)}
+						{props.underline ? (
+							<motion.div
+								layoutId={`_${props.name}-secondUnderline`}
+								className={classes.underline}
+								style={{
+									width: `${props.underline.width}%`,
+									backgroundColor: props.underline.color,
+								}}
+							/>
+						) : (
+							<motion.div
+								layoutId={`_${props.name}-secondUnderline`}
+								className={classes.underline}
+								style={{
+									width: `0%`,
+								}}
 							/>
 						)}
 						{open ? (
@@ -147,6 +167,7 @@ function InputField(props) {
 }
 
 InputField.propTypes = {
+	underline: PropTypes.object,
 	error: PropTypes.any,
 	placeholder: PropTypes.string.isRequired,
 	disabled: PropTypes.bool,

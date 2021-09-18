@@ -4,17 +4,11 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import {
-	Grid,
-	Card,
-	Hidden,
-	Typography,
 	withWidth,
-	isWidthUp,
 	Step,
 	Stepper,
 	StepLabel,
 	StepContent,
-	Button,
 } from "@material-ui/core";
 
 import AuthWrapper from "../AuthWrapper";
@@ -30,8 +24,6 @@ import zxcvbn from "zxcvbn";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { motion, AnimateSharedLayout } from "framer-motion";
-
-import SubmitButton from "../../SubmitButton";
 import InputField from "./InputField";
 import axios from "axios";
 
@@ -303,51 +295,6 @@ function Register(props) {
 					register={register}
 					first
 				>
-					{/* <div
-						className="wrapper"
-						style={{ marginLeft: "-10px", marginRight: "-10px" }}
-					>
-						<div className="input-data">
-							<input
-								type="text"
-								name="username"
-								required
-								value={input.username}
-								onChange={(event) => {
-									setInput({
-										...input,
-										username: event.target.value,
-									});
-								}}
-								id="username"
-								disabled={props.progress}
-							/>
-							<div className="underline" />
-							{errors.username ? (
-								<div
-									style={{
-										height: "2px",
-										width: "100%",
-										backgroundColor: "red",
-										position: "absolute",
-										bottom: "2px",
-									}}
-								/>
-							) : null}
-							<label>
-								<FormattedMessage id="AUTH_REGISTER_USERNAME_PLACEHOLDER" />
-							</label>
-						</div>
-					</div>
-
-					<div
-						style={{
-							color: "red",
-							fontSize: "12px",
-						}}
-					>
-						{errors.username}
-					</div> */}
 					<InputField
 						placeholder={intl.formatMessage({
 							id: "AUTH_REGISTER_USERNAME_PLACEHOLDER",
@@ -364,47 +311,6 @@ function Register(props) {
 						}}
 						disabled={props.progress}
 					/>
-					{/* <div
-						className="wrapper"
-						style={{ marginLeft: "-10px", marginRight: "-10px" }}
-					>
-						<div className="input-data">
-							<input
-								type="email"
-								name="email"
-								required
-								value={input.email}
-								onChange={(event) => {
-									setInput({ ...input, email: event.target.value });
-								}}
-								id="email"
-								disabled={props.progress}
-							/>
-							<div className="underline" />
-							{errors.email ? (
-								<div
-									style={{
-										height: "2px",
-										width: "100%",
-										backgroundColor: "red",
-										position: "absolute",
-										bottom: "2px",
-									}}
-								/>
-							) : null}
-							<label>
-								<FormattedMessage id="AUTH_REGISTER_EMAIL_PLACEHOLDER" />
-							</label>
-						</div>
-					</div>
-					<div
-						style={{
-							color: "red",
-							fontSize: "12px",
-						}}
-					>
-						{errors.email}
-					</div> */}
 					<InputField
 						placeholder={intl.formatMessage({
 							id: "AUTH_REGISTER_EMAIL_PLACEHOLDER",
@@ -432,103 +338,32 @@ function Register(props) {
 					handleBack={handleBack}
 					register={register}
 				>
-					<div
-						className={"wrapper"}
-						style={{ marginLeft: "-10px", marginRight: "-10px" }}
-					>
-						<div className={"input-data"}>
-							<input
-								type="password"
-								required
-								onChange={(e) => {
-									setPasswordScore(zxcvbn(e.target.value).score);
-									setInput({ ...input, password: e.target.value });
-								}}
-								value={input.password}
-								disabled={props.progress}
-								autoComplete="new-password"
-							/>
-							<div className={"underline"} />
-							<AnimateSharedLayout>
-								<motion.div
-									layoutId="password_score_underline"
-									style={{
-										height: "2px",
-										width: `${passwordScore * 25}%`,
-										backgroundColor:
-											passwordScore == 1
-												? "red"
-												: passwordScore == 2
-												? "orange"
-												: passwordScore == 3
-												? "yellow"
-												: passwordScore == 4
-												? "green"
-												: "#cccccc",
-										position: "absolute",
-										bottom: "2px",
-									}}
-								/>
-							</AnimateSharedLayout>
-
-							<label>
-								<FormattedMessage id="AUTH_REGISTER_PASSWORD_PLACEHOLDER" />
-							</label>
-						</div>
-					</div>
-					<div
-						style={{
-							color: "red",
-							fontSize: "12px",
+					<InputField
+						type="password"
+						name="password"
+						error={errors.password}
+						input={input.password}
+						placeholder={intl.formatMessage({
+							id: "AUTH_REGISTER_PASSWORD_PLACEHOLDER",
+						})}
+						onChange={(e) => {
+							setPasswordScore(zxcvbn(e.target.value).score);
+							setInput({ ...input, password: e.target.value });
 						}}
-					>
-						{errors.password}
-					</div>
-					{/* <div
-						className={"wrapper"}
-						style={{ marginLeft: "-10px", marginRight: "-10px" }}
-					>
-						<div className={"input-data"}>
-							<input
-								type="password"
-								required
-								onChange={(e) => {
-									setInput({
-										...input,
-										conf_password: e.target.value,
-									});
-								}}
-								value={input.conf_password}
-								disabled={props.progress}
-								autoComplete="new-password"
-							/>
-							<div className={"underline"} />
-							{(input.password != input.conf_password) |
-							errors.conf_password ? (
-								<div
-									style={{
-										height: "2px",
-										width: "100%",
-										backgroundColor: "red",
-										position: "absolute",
-										bottom: "2px",
-									}}
-								/>
-							) : null}
-
-							<label>
-								<FormattedMessage id="AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER" />
-							</label>
-						</div>
-					</div>
-					<div
-						style={{
-							color: "red",
-							fontSize: "12px",
+						underline={{
+							width: passwordScore * 25,
+							color:
+								passwordScore == 1
+									? "red"
+									: passwordScore == 2
+									? "orange"
+									: passwordScore == 3
+									? "yellow"
+									: passwordScore == 4
+									? "green"
+									: "#cccccc",
 						}}
-					>
-						{errors.conf_password}
-					</div> */}
+					/>
 					<InputField
 						type="password"
 						name="conf-password"
@@ -558,150 +393,38 @@ function Register(props) {
 					register={register}
 					last
 				>
-					<div
-						className="wrapper"
-						style={{ marginLeft: "-10px", marginRight: "-10px" }}
-					>
-						<div className="input-data">
-							<input
-								type="text"
-								name="username"
-								required
-								value={input.username}
-								onChange={(event) => {
-									setInput({
-										...input,
-										username: event.target.value,
-									});
-								}}
-								id="username"
-								disabled={props.progress}
-							/>
-							<div className="underline" />
-							{errors.username ? (
-								<div
-									style={{
-										height: "2px",
-										width: "100%",
-										backgroundColor: "red",
-										position: "absolute",
-										bottom: "2px",
-									}}
-								/>
-							) : null}
-							<label>
-								<FormattedMessage id="AUTH_REGISTER_USERNAME_PLACEHOLDER" />
-							</label>
-						</div>
-					</div>
-
-					<div
-						style={{
-							color: "red",
-							fontSize: "12px",
+					<InputField
+						placeholder={intl.formatMessage({
+							id: "AUTH_REGISTER_USERNAME_PLACEHOLDER",
+						})}
+						error={errors.username}
+						input={input.username}
+						type="text"
+						name="username"
+						onChange={(event) => {
+							setInput({
+								...input,
+								username: event.target.value,
+							});
 						}}
-					>
-						{errors.username}
-					</div>
-					<div
-						className="wrapper"
-						style={{ marginLeft: "-10px", marginRight: "-10px" }}
-					>
-						<div className="input-data">
-							<input
-								type="email"
-								name="email"
-								required
-								value={input.email}
-								onChange={(event) => {
-									setInput({
-										...input,
-										email: event.target.value,
-									});
-								}}
-								id="email"
-								disabled={props.progress}
-							/>
-							<div className="underline" />
-							{errors.email ? (
-								<div
-									style={{
-										height: "2px",
-										width: "100%",
-										backgroundColor: "red",
-										position: "absolute",
-										bottom: "2px",
-									}}
-								/>
-							) : null}
-							<label>
-								<FormattedMessage id="AUTH_REGISTER_EMAIL_PLACEHOLDER" />
-							</label>
-						</div>
-					</div>
-					<div
-						style={{
-							color: "red",
-							fontSize: "12px",
+						disabled={props.progress}
+					/>
+					<InputField
+						placeholder={intl.formatMessage({
+							id: "AUTH_REGISTER_EMAIL_PLACEHOLDER",
+						})}
+						error={errors.email}
+						input={input.email}
+						type="email"
+						name="email"
+						onChange={(event) => {
+							setInput({
+								...input,
+								email: event.target.value,
+							});
 						}}
-					>
-						{errors.email}
-					</div>
-					<div
-						className={"wrapper"}
-						style={{ marginLeft: "-10px", marginRight: "-10px" }}
-					>
-						<div className={"input-data"}>
-							<input
-								type="password"
-								required
-								onChange={(e) => {
-									setPasswordScore(zxcvbn(e.target.value).score);
-									setInput({
-										...input,
-										password: e.target.value,
-									});
-								}}
-								value={input.password}
-								disabled
-								autoComplete="new-password"
-							/>
-							<div className={"underline"} />
-							<AnimateSharedLayout>
-								<motion.div
-									layoutId="password_score_underline"
-									style={{
-										height: "2px",
-										width: `${passwordScore * 25}%`,
-										backgroundColor:
-											passwordScore == 1
-												? "red"
-												: passwordScore == 2
-												? "orange"
-												: passwordScore == 3
-												? "yellow"
-												: passwordScore == 4
-												? "green"
-												: "#cccccc",
-										position: "absolute",
-										bottom: "2px",
-									}}
-								/>
-							</AnimateSharedLayout>
-
-							<label>
-								<FormattedMessage id="AUTH_REGISTER_PASSWORD_PLACEHOLDER" />
-							</label>
-						</div>
-					</div>
-					<div
-						style={{
-							color: "red",
-							fontSize: "12px",
-						}}
-					>
-						{errors.password}
-					</div>
+						disabled={props.progress}
+					/>
 				</StepWrapper>
 			),
 		},
