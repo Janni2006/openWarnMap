@@ -4,22 +4,12 @@ import { connect } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-import {
-	Grid,
-	Card,
-	Hidden,
-	Typography,
-	Button,
-	withWidth,
-	isWidthUp,
-} from "@material-ui/core";
+import { Button, withWidth } from "@material-ui/core";
 
 import AuthWrapper from "./AuthWrapper";
 
 import { login } from "../../actions/authActions";
 import { setTitle } from "../../actions/generalActions";
-
-import "./input.css";
 
 import { useIntl, FormattedMessage } from "react-intl";
 
@@ -93,37 +83,6 @@ function Login(props) {
 					<FormattedMessage id="AUTH_LOGIN_TITLE" />
 				</p>
 				<form onSubmit={handleSubmit}>
-					{/* <div
-						className={"wrapper"}
-						style={{ marginLeft: "-10px", marginRight: "-10px" }}
-					>
-						<div className={"input-data"}>
-							<input
-								type="text"
-								required
-								onChange={(e) => {
-									setInput({ ...input, username: e.target.value });
-								}}
-								value={input.username}
-								disabled={props.progress}
-								id="username"
-								name="username"
-							/>
-							<div className={"underline"} />
-
-							<label>
-								<FormattedMessage id="AUTH_LOGIN_USERNAME_PLACEHOLDER" />
-							</label>
-						</div>
-					</div>
-					<div
-						style={{
-							color: "red",
-							fontSize: "12px",
-						}}
-					>
-						{errors.username}
-					</div> */}
 					<InputField
 						placeholder={intl.formatMessage({
 							id: "AUTH_LOGIN_USERNAME_PLACEHOLDER",
@@ -137,36 +96,6 @@ function Login(props) {
 						value={input.username}
 						error={errors.username}
 					/>
-					{/* <div
-						className={"wrapper"}
-						style={{ marginLeft: "-10px", marginRight: "-10px" }}
-					>
-						<div className={"input-data"}>
-							<input
-								type="password"
-								required
-								onChange={(e) => {
-									setInput({ ...input, password: e.target.value });
-								}}
-								value={input.password}
-								disabled={props.progress}
-								autoComplete="new-password"
-							/>
-							<div className={"underline"} />
-
-							<label>
-								<FormattedMessage id="AUTH_LOGIN_PASSWORD_PLACEHOLDER" />
-							</label>
-						</div>
-					</div>
-					<div
-						style={{
-							color: "red",
-							fontSize: "12px",
-						}}
-					>
-						{errors.password}
-					</div> */}
 					<InputField
 						placeholder={intl.formatMessage({
 							id: "AUTH_LOGIN_PASSWORD_PLACEHOLDER",
