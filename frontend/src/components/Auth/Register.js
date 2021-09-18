@@ -10,6 +10,11 @@ import {
 	Typography,
 	withWidth,
 	isWidthUp,
+	Step,
+	Stepper,
+	StepLabel,
+	StepContent,
+	Button,
 } from "@material-ui/core";
 
 import { register } from "../../actions/authActions";
@@ -40,6 +45,7 @@ function Register(props) {
 		password: "",
 		conf_password: "",
 	});
+	const [activeStep, setActiveStep] = React.useState(0);
 	const [cardHeight, setCardHeight] = React.useState(0);
 	const cardRef = React.useRef(null);
 	const intl = useIntl();
@@ -62,8 +68,12 @@ function Register(props) {
 		}
 	}, [cardRef]);
 
-	function handleSubmit(event) {
+	function register(event) {
 		event.preventDefault();
+
+		if (activeStep < 4) {
+			setActiveStep((prevActiveStep) => prevActiveStep + 1);
+		}
 
 		if (validate()) {
 			props.register(
@@ -145,18 +155,32 @@ function Register(props) {
 	}, [input.email]);
 
 	React.useEffect(() => {
-		if (zxcvbn(input.password).score < 3) {
-			setErrors({
-				...errors,
-				password: intl.formatMessage({ id: "AUTH_PASSWORD_NOT_STRONG" }),
-			});
-		} else {
-			setErrors({
-				...errors,
-				password: "",
-			});
+		if (input.errors) {
+			if (zxcvbn(input.password).score < 3) {
+				setErrors({
+					...errors,
+					password: intl.formatMessage({ id: "AUTH_PASSWORD_NOT_STRONG" }),
+				});
+			} else {
+				setErrors({
+					...errors,
+					password: "",
+				});
+			}
 		}
 	}, [input.password]);
+
+	const handleNext = () => {
+		if (activeStep < 4) {
+			setActiveStep((prevActiveStep) => prevActiveStep + 1);
+		}
+	};
+
+	const handleBack = () => {
+		if (activeStep > 0) {
+			setActiveStep((prevActiveStep) => prevActiveStep - 1);
+		}
+	};
 
 	function validate() {
 		let errors = {};
@@ -275,6 +299,543 @@ function Register(props) {
 		return isValid;
 	}
 
+	const registerContent = [
+		{
+			label: "Username and Password",
+			content: (
+				<>
+					<div
+						className="wrapper"
+						style={{ marginLeft: "-10px", marginRight: "-10px" }}
+					>
+						<div className="input-data">
+							<input
+								type="text"
+								name="username"
+								required
+								value={input.username}
+								onChange={(event) => {
+									setInput({
+										...input,
+										username: event.target.value,
+									});
+								}}
+								id="username"
+								disabled={props.progress}
+							/>
+							<div className="underline" />
+							{errors.username ? (
+								<div
+									style={{
+										height: "2px",
+										width: "100%",
+										backgroundColor: "red",
+										position: "absolute",
+										bottom: "2px",
+									}}
+								/>
+							) : null}
+							<label>
+								<FormattedMessage id="AUTH_REGISTER_USERNAME_PLACEHOLDER" />
+							</label>
+						</div>
+					</div>
+
+					<div
+						style={{
+							color: "red",
+							fontSize: "12px",
+						}}
+					>
+						{errors.username}
+					</div>
+					<div
+						className="wrapper"
+						style={{ marginLeft: "-10px", marginRight: "-10px" }}
+					>
+						<div className="input-data">
+							<input
+								type="email"
+								name="email"
+								required
+								value={input.email}
+								onChange={(event) => {
+									setInput({ ...input, email: event.target.value });
+								}}
+								id="email"
+								disabled={props.progress}
+							/>
+							<div className="underline" />
+							{errors.email ? (
+								<div
+									style={{
+										height: "2px",
+										width: "100%",
+										backgroundColor: "red",
+										position: "absolute",
+										bottom: "2px",
+									}}
+								/>
+							) : null}
+							<label>
+								<FormattedMessage id="AUTH_REGISTER_EMAIL_PLACEHOLDER" />
+							</label>
+						</div>
+					</div>
+					<div
+						style={{
+							color: "red",
+							fontSize: "12px",
+						}}
+					>
+						{errors.email}
+					</div>
+					<div
+						style={{
+							width: "calc(100% - 48px)",
+							display: "flex",
+							justifyContent: "flex-end",
+							padding: "24px",
+						}}
+					>
+						<Button
+							style={{
+								background: "#bbbbbb",
+								padding: "7.5px 25px",
+								color: "white",
+								fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+								fontSize: "15px",
+								textTransform: "uppercase",
+								borderRadius: "5px",
+								border: "none",
+								height: "40px",
+							}}
+							onClick={handleBack}
+						>
+							Zurück
+						</Button>
+						{activeStep >= 2 ? (
+							<Button
+								style={{
+									background: "linear-gradient(90deg, #378d40, #008259)",
+									padding: "7.5px 25px",
+									color: "white",
+									fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+									fontSize: "15px",
+									textTransform: "uppercase",
+									borderRadius: "5px",
+									border: "none",
+									height: "40px",
+									marginLeft: "10px",
+								}}
+								onClick={register}
+							>
+								Registrieren
+							</Button>
+						) : (
+							<Button
+								style={{
+									background: "linear-gradient(90deg, #378d40, #008259)",
+									padding: "7.5px 25px",
+									color: "white",
+									fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+									fontSize: "15px",
+									textTransform: "uppercase",
+									borderRadius: "5px",
+									border: "none",
+									height: "40px",
+									marginLeft: "10px",
+								}}
+								onClick={handleNext}
+							>
+								Nächstes
+							</Button>
+						)}
+					</div>
+				</>
+			),
+		},
+		{
+			label: "Pasword",
+			content: (
+				<>
+					<div
+						className={"wrapper"}
+						style={{ marginLeft: "-10px", marginRight: "-10px" }}
+					>
+						<div className={"input-data"}>
+							<input
+								type="password"
+								required
+								onChange={(e) => {
+									setPasswordScore(zxcvbn(e.target.value).score);
+									setInput({ ...input, password: e.target.value });
+								}}
+								value={input.password}
+								disabled={props.progress}
+								autoComplete="new-password"
+							/>
+							<div className={"underline"} />
+							<AnimateSharedLayout>
+								<motion.div
+									layoutId="password_score_underline"
+									style={{
+										height: "2px",
+										width: `${passwordScore * 25}%`,
+										backgroundColor:
+											passwordScore == 1
+												? "red"
+												: passwordScore == 2
+												? "orange"
+												: passwordScore == 3
+												? "yellow"
+												: passwordScore == 4
+												? "green"
+												: "#cccccc",
+										position: "absolute",
+										bottom: "2px",
+									}}
+								/>
+							</AnimateSharedLayout>
+
+							<label>
+								<FormattedMessage id="AUTH_REGISTER_PASSWORD_PLACEHOLDER" />
+							</label>
+						</div>
+					</div>
+					<div
+						style={{
+							color: "red",
+							fontSize: "12px",
+						}}
+					>
+						{errors.password}
+					</div>
+					<div
+						className={"wrapper"}
+						style={{ marginLeft: "-10px", marginRight: "-10px" }}
+					>
+						<div className={"input-data"}>
+							<input
+								type="password"
+								required
+								onChange={(e) => {
+									setInput({
+										...input,
+										conf_password: e.target.value,
+									});
+								}}
+								value={input.conf_password}
+								disabled={props.progress}
+								autoComplete="new-password"
+							/>
+							<div className={"underline"} />
+							{(input.password != input.conf_password) |
+							errors.conf_password ? (
+								<div
+									style={{
+										height: "2px",
+										width: "100%",
+										backgroundColor: "red",
+										position: "absolute",
+										bottom: "2px",
+									}}
+								/>
+							) : null}
+
+							<label>
+								<FormattedMessage id="AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER" />
+							</label>
+						</div>
+					</div>
+					<div
+						style={{
+							color: "red",
+							fontSize: "12px",
+						}}
+					>
+						{errors.conf_password}
+					</div>
+					<div
+						style={{
+							width: "calc(100% - 48px)",
+							display: "flex",
+							justifyContent: "flex-end",
+							padding: "24px",
+						}}
+					>
+						<Button
+							style={{
+								background: "#bbbbbb",
+								padding: "7.5px 25px",
+								color: "white",
+								fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+								fontSize: "15px",
+								textTransform: "uppercase",
+								borderRadius: "5px",
+								border: "none",
+								height: "40px",
+							}}
+							onClick={handleBack}
+						>
+							Zurück
+						</Button>
+						{activeStep >= 2 ? (
+							<Button
+								style={{
+									background: "linear-gradient(90deg, #378d40, #008259)",
+									padding: "7.5px 25px",
+									color: "white",
+									fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+									fontSize: "15px",
+									textTransform: "uppercase",
+									borderRadius: "5px",
+									border: "none",
+									height: "40px",
+									marginLeft: "10px",
+								}}
+								onClick={register}
+							>
+								Registrieren
+							</Button>
+						) : (
+							<Button
+								style={{
+									background: "linear-gradient(90deg, #378d40, #008259)",
+									padding: "7.5px 25px",
+									color: "white",
+									fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+									fontSize: "15px",
+									textTransform: "uppercase",
+									borderRadius: "5px",
+									border: "none",
+									height: "40px",
+									marginLeft: "10px",
+								}}
+								onClick={handleNext}
+							>
+								Nächstes
+							</Button>
+						)}
+					</div>
+				</>
+			),
+		},
+		{
+			label: "Registrierung abschließen",
+			content: (
+				<>
+					<div
+						className="wrapper"
+						style={{ marginLeft: "-10px", marginRight: "-10px" }}
+					>
+						<div className="input-data">
+							<input
+								type="text"
+								name="username"
+								required
+								value={input.username}
+								onChange={(event) => {
+									setInput({
+										...input,
+										username: event.target.value,
+									});
+								}}
+								id="username"
+								disabled={props.progress}
+							/>
+							<div className="underline" />
+							{errors.username ? (
+								<div
+									style={{
+										height: "2px",
+										width: "100%",
+										backgroundColor: "red",
+										position: "absolute",
+										bottom: "2px",
+									}}
+								/>
+							) : null}
+							<label>
+								<FormattedMessage id="AUTH_REGISTER_USERNAME_PLACEHOLDER" />
+							</label>
+						</div>
+					</div>
+
+					<div
+						style={{
+							color: "red",
+							fontSize: "12px",
+						}}
+					>
+						{errors.username}
+					</div>
+					<div
+						className="wrapper"
+						style={{ marginLeft: "-10px", marginRight: "-10px" }}
+					>
+						<div className="input-data">
+							<input
+								type="email"
+								name="email"
+								required
+								value={input.email}
+								onChange={(event) => {
+									setInput({
+										...input,
+										email: event.target.value,
+									});
+								}}
+								id="email"
+								disabled={props.progress}
+							/>
+							<div className="underline" />
+							{errors.email ? (
+								<div
+									style={{
+										height: "2px",
+										width: "100%",
+										backgroundColor: "red",
+										position: "absolute",
+										bottom: "2px",
+									}}
+								/>
+							) : null}
+							<label>
+								<FormattedMessage id="AUTH_REGISTER_EMAIL_PLACEHOLDER" />
+							</label>
+						</div>
+					</div>
+					<div
+						style={{
+							color: "red",
+							fontSize: "12px",
+						}}
+					>
+						{errors.email}
+					</div>
+					<div
+						className={"wrapper"}
+						style={{ marginLeft: "-10px", marginRight: "-10px" }}
+					>
+						<div className={"input-data"}>
+							<input
+								type="password"
+								required
+								onChange={(e) => {
+									setPasswordScore(zxcvbn(e.target.value).score);
+									setInput({
+										...input,
+										password: e.target.value,
+									});
+								}}
+								value={input.password}
+								disabled
+								autoComplete="new-password"
+							/>
+							<div className={"underline"} />
+							<AnimateSharedLayout>
+								<motion.div
+									layoutId="password_score_underline"
+									style={{
+										height: "2px",
+										width: `${passwordScore * 25}%`,
+										backgroundColor:
+											passwordScore == 1
+												? "red"
+												: passwordScore == 2
+												? "orange"
+												: passwordScore == 3
+												? "yellow"
+												: passwordScore == 4
+												? "green"
+												: "#cccccc",
+										position: "absolute",
+										bottom: "2px",
+									}}
+								/>
+							</AnimateSharedLayout>
+
+							<label>
+								<FormattedMessage id="AUTH_REGISTER_PASSWORD_PLACEHOLDER" />
+							</label>
+						</div>
+					</div>
+					<div
+						style={{
+							color: "red",
+							fontSize: "12px",
+						}}
+					>
+						{errors.password}
+					</div>
+					<div
+						style={{
+							width: "calc(100% - 48px)",
+							display: "flex",
+							justifyContent: "flex-end",
+							padding: "24px",
+						}}
+					>
+						<Button
+							style={{
+								background: "#bbbbbb",
+								padding: "7.5px 25px",
+								color: "white",
+								fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+								fontSize: "15px",
+								textTransform: "uppercase",
+								borderRadius: "5px",
+								border: "none",
+								height: "40px",
+							}}
+							onClick={handleBack}
+						>
+							Zurück
+						</Button>
+						{activeStep >= 2 ? (
+							<Button
+								style={{
+									background: "linear-gradient(90deg, #378d40, #008259)",
+									padding: "7.5px 25px",
+									color: "white",
+									fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+									fontSize: "15px",
+									textTransform: "uppercase",
+									borderRadius: "5px",
+									border: "none",
+									height: "40px",
+									marginLeft: "10px",
+								}}
+								onClick={register}
+							>
+								Registrieren
+							</Button>
+						) : (
+							<Button
+								style={{
+									background: "linear-gradient(90deg, #378d40, #008259)",
+									padding: "7.5px 25px",
+									color: "white",
+									fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+									fontSize: "15px",
+									textTransform: "uppercase",
+									borderRadius: "5px",
+									border: "none",
+									height: "40px",
+									marginLeft: "10px",
+								}}
+								onClick={handleNext}
+							>
+								Nächstes
+							</Button>
+						)}
+					</div>
+				</>
+			),
+		},
+	];
+
 	return (
 		<div
 			style={{
@@ -360,216 +921,40 @@ function Register(props) {
 						</Grid>
 					</Hidden>
 
-					<Grid
-						item
-						md={7}
-						xs={12}
-						style={{ padding: "50px 10%", height: "100%" }}
-						ref={cardRef}
-					>
-						<p
-							style={{
-								textTransform: "uppercase",
-								marginBottom: "50px",
-								color: "#008259",
-								fontSize: "25px",
-							}}
-						>
-							<FormattedMessage id="AUTH_REGISTER_TITLE" />
-						</p>
-						<form onSubmit={handleSubmit}>
-							<div
-								className="wrapper"
-								style={{ marginLeft: "-10px", marginRight: "-10px" }}
+					<Grid item md={7} xs={12} ref={cardRef}>
+						<div style={{ padding: "50px 10% 0px", width: "80%" }}>
+							<p
+								style={{
+									textTransform: "uppercase",
+									marginBottom: "50px",
+									color: "#008259",
+									fontSize: "25px",
+								}}
 							>
-								<div className="input-data">
-									<input
-										type="text"
-										name="username"
-										required
-										value={input.username}
-										onChange={(event) => {
-											setInput({ ...input, username: event.target.value });
-										}}
-										id="username"
-										disabled={props.progress}
-									/>
-									<div className="underline" />
-									{errors.username ? (
-										<div
-											style={{
-												height: "2px",
-												width: "100%",
-												backgroundColor: "red",
-												position: "absolute",
-												bottom: "2px",
-											}}
-										/>
-									) : null}
-									<label>
-										<FormattedMessage id="AUTH_REGISTER_USERNAME_PLACEHOLDER" />
-									</label>
-								</div>
-							</div>
+								<FormattedMessage id="AUTH_REGISTER_TITLE" />
+							</p>
+						</div>
 
-							<div
-								style={{
-									color: "red",
-									fontSize: "12px",
-								}}
-							>
-								{errors.username}
-							</div>
-							<div
-								className="wrapper"
-								style={{ marginLeft: "-10px", marginRight: "-10px" }}
-							>
-								<div className="input-data">
-									<input
-										type="email"
-										name="email"
-										required
-										value={input.email}
-										onChange={(event) => {
-											setInput({ ...input, email: event.target.value });
-										}}
-										id="email"
-										disabled={props.progress}
-									/>
-									<div className="underline" />
-									{errors.email ? (
-										<div
-											style={{
-												height: "2px",
-												width: "100%",
-												backgroundColor: "red",
-												position: "absolute",
-												bottom: "2px",
-											}}
-										/>
-									) : null}
-									<label>
-										<FormattedMessage id="AUTH_REGISTER_EMAIL_PLACEHOLDER" />
-									</label>
-								</div>
-							</div>
-							<div
-								style={{
-									color: "red",
-									fontSize: "12px",
-								}}
-							>
-								{errors.email}
-							</div>
-							<div
-								className={"wrapper"}
-								style={{ marginLeft: "-10px", marginRight: "-10px" }}
-							>
-								<div className={"input-data"}>
-									<input
-										type="password"
-										required
-										onChange={(e) => {
-											setPasswordScore(zxcvbn(e.target.value).score);
-											setInput({ ...input, password: e.target.value });
-										}}
-										value={input.password}
-										disabled={props.progress}
-										autoComplete="new-password"
-									/>
-									<div className={"underline"} />
-									<AnimateSharedLayout>
-										<motion.div
-											layoutId="password_score_underline"
-											style={{
-												height: "2px",
-												width: `${passwordScore * 25}%`,
-												backgroundColor:
-													passwordScore == 1
-														? "red"
-														: passwordScore == 2
-														? "orange"
-														: passwordScore == 3
-														? "yellow"
-														: passwordScore == 4
-														? "green"
-														: "#cccccc",
-												position: "absolute",
-												bottom: "2px",
-											}}
-										/>
-									</AnimateSharedLayout>
+						{activeStep == 0 ? (
+							<p style={{ marginLeft: "5px", textAlign: "center" }}>
+								<FormattedMessage id="AUTH_REGISTER_QUESTION" />{" "}
+								<Link
+									style={{ color: "#008259", textDecoration: "none" }}
+									to={"/login"}
+								>
+									<FormattedMessage id="AUTH_REGISTER_QUESTION_LINK" />
+								</Link>
+							</p>
+						) : null}
 
-									<label>
-										<FormattedMessage id="AUTH_REGISTER_PASSWORD_PLACEHOLDER" />
-									</label>
-								</div>
-							</div>
-							<div
-								style={{
-									color: "red",
-									fontSize: "12px",
-								}}
-							>
-								{errors.password}
-							</div>
-							<div
-								className={"wrapper"}
-								style={{ marginLeft: "-10px", marginRight: "-10px" }}
-							>
-								<div className={"input-data"}>
-									<input
-										type="password"
-										required
-										onChange={(e) => {
-											setInput({ ...input, conf_password: e.target.value });
-										}}
-										value={input.conf_password}
-										disabled={props.progress}
-										autoComplete="new-password"
-									/>
-									<div className={"underline"} />
-									{(input.password != input.conf_password) |
-									errors.conf_password ? (
-										<div
-											style={{
-												height: "2px",
-												width: "100%",
-												backgroundColor: "red",
-												position: "absolute",
-												bottom: "2px",
-											}}
-										/>
-									) : null}
-
-									<label>
-										<FormattedMessage id="AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER" />
-									</label>
-								</div>
-							</div>
-							<div
-								style={{
-									color: "red",
-									fontSize: "12px",
-								}}
-							>
-								{errors.conf_password}
-							</div>
-							<SubmitButton
-								loading={props.progress}
-								success={false}
-								title={intl.formatMessage({ id: "AUTH_REGISTER" })}
-							/>
-						</form>
-						<p style={{ marginLeft: "5px" }}>
-							<FormattedMessage id="AUTH_REGISTER_QUESTION" />{" "}
-							<Link
-								style={{ color: "#008259", textDecoration: "none" }}
-								to={"/login"}
-							>
-								<FormattedMessage id="AUTH_REGISTER_QUESTION_LINK" />
-							</Link>
-						</p>
+						<Stepper activeStep={activeStep} orientation="vertical">
+							{registerContent.map((item, index) => (
+								<Step key={index}>
+									<StepLabel>{item.label}</StepLabel>
+									<StepContent>{item.content}</StepContent>
+								</Step>
+							))}
+						</Stepper>
 					</Grid>
 				</Grid>
 			</Card>

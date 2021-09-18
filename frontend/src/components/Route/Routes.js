@@ -5,6 +5,8 @@ import { visitPage, setTitle } from "../../actions/generalActions";
 
 import { Switch, withRouter, Route, Redirect } from "react-router-dom";
 
+import { withWidth } from "@material-ui/core";
+
 import PublicRoute from "./PublicRoute";
 import AuthRoute from "./AuthRoute";
 
@@ -12,7 +14,7 @@ import About from "../About/About";
 import Map from "../Map/Map";
 
 import Login from "../Auth/Login";
-import Register from "../Auth/Register";
+import Register from "../Auth/Register/Register";
 import Logout from "../Auth/Logout";
 import AddEntry from "../AddEntry";
 import Profile from "../Private/Profile/Profile";
@@ -107,5 +109,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { visitPage, setTitle })(
-	withRouter(Routes)
+	withWidth()(withRouter(Routes))
 );
