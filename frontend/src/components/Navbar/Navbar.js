@@ -127,6 +127,16 @@ function Header(props) {
 									<FormattedMessage id="NAVBAR_ABOUT" />
 								</ListItem>
 							</Link>
+							<Link
+								to={"/functions"}
+								style={{
+									textDecoration: "none",
+								}}
+							>
+								<ListItem className={classes.linkText}>
+									<FormattedMessage id="NAVBAR_FUNCTIONS" />
+								</ListItem>
+							</Link>
 							{!props.progress ? (
 								<>
 									{!props.isAuthenticated ? (

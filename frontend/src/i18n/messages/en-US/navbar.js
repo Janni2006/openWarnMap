@@ -11,4 +11,5 @@ export const NAVBAR = {
 	NAVBAR_IMPRESSUM: "Impressum",
 	NAVBAR_PRIVACY: "Privacy",
 	NAVBAR_NEWS: "News",
+	NAVBAR_FUNCTIONS: "More functions",
 };
