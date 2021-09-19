@@ -28,7 +28,7 @@ function AddActionButton(props) {
 
 	return (
 		<>
-			{props.isAuthenticated && props.popupOpened ? (
+			{props.isAuthenticated && !props.popupOpened ? (
 				<Hidden smUp>
 					<Link to="/add">
 						<Fab

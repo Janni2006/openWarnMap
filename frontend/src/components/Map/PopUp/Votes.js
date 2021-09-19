@@ -60,12 +60,12 @@ function Votes(props) {
 	}, [props.content.code]);
 
 	React.useEffect(() => {
-		setVoted(props.content.voted);
-	}, [props.content.voted]);
+		setVoted(props.content?.voted);
+	}, [props.content?.voted]);
 
 	React.useEffect(() => {
-		setConfirm(props.content.vote.confirm);
-	}, [props.content.vote.confirm]);
+		setConfirm(props.content?.vote?.confirm);
+	}, [props.content?.vote?.confirm]);
 
 	function checkForErrors() {
 		var error = false;

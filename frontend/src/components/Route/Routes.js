@@ -10,16 +10,18 @@ import { withWidth } from "@material-ui/core";
 import PublicRoute from "./PublicRoute";
 import AuthRoute from "./AuthRoute";
 
-import About from "../About/About";
-import Map from "../Map/Map";
+import About from "../About";
+import Map from "../Map";
 
 import Login from "../Auth/Login";
-import Register from "../Auth/Register/Register";
+import Register from "../Auth/Register";
 import Logout from "../Auth/Logout";
 import AddEntry from "../AddEntry";
-import Profile from "../Private/Profile/Profile";
+import Profile from "../Private/Profile";
 import PrivateEntrys from "../Private/PrivateEntrys";
 import PublicProfile from "../PublicProfile";
+
+import FunctionsOverview from "../Functions";
 
 import NotFound from "../NotFound";
 
@@ -33,6 +35,9 @@ class Routes extends Component {
 			<Switch>
 				<PublicRoute path="/" exact>
 					<Map />
+				</PublicRoute>
+				<PublicRoute path="/functions" exact>
+					<FunctionsOverview />
 				</PublicRoute>
 				<PublicRoute path="/about" exact>
 					<About />
