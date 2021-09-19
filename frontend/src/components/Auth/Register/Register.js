@@ -9,6 +9,7 @@ import {
 	Stepper,
 	StepLabel,
 	StepContent,
+	CircularProgress,
 } from "@material-ui/core";
 
 import AuthWrapper from "../AuthWrapper";
@@ -34,12 +35,16 @@ function Register(props) {
 		email: "",
 		password: "",
 		conf_password: "",
+		firstname: "",
+		lastname: "",
 	});
 	const [errors, setErrors] = React.useState({
 		username: "",
 		email: "",
 		password: "",
 		conf_password: "",
+		firstname: "",
+		lastname: "",
 	});
 	const [errorSteps, setErrorSteps] = React.useState(new Set());
 	const [activeStep, setActiveStep] = React.useState(0);
@@ -55,6 +60,15 @@ function Register(props) {
 			props.setTitle();
 		};
 	}, []);
+
+	React.useEffect(() => {
+		for (var x = 0; x < registerContent.length; x++) {
+			if (isErrorStep(x) && activeStep > x) {
+				setActiveStep(x);
+				return;
+			}
+		}
+	}, [errorSteps]);
 
 	function register(event) {
 		event.preventDefault();
@@ -74,14 +88,13 @@ function Register(props) {
 	}
 
 	React.useEffect(() => {
-		console.log(input);
-	}, [input]);
-
-	React.useEffect(() => {
 		setErrors({
 			...errors,
 			username: "",
 		});
+		if (!errors.email) {
+			removeErrorStep(0);
+		}
 		setTimeout((username = input.username) => {
 			if (username == input.username && username) {
 				const config = {
@@ -94,7 +107,6 @@ function Register(props) {
 				axios
 					.post("/backend/auth/checks/username/", body, config)
 					.then((res) => {
-						console.log(res.data);
 						if (res.data.not_ocupied == false) {
 							setErrors({
 								...errors,
@@ -102,6 +114,15 @@ function Register(props) {
 									id: "AUTH_ALREADY_USED_USERNAME",
 								}),
 							});
+							addErrorStep(0);
+						} else {
+							setErrors({
+								...errors,
+								username: "",
+							});
+							if (!errors.email) {
+								removeErrorStep(0);
+							}
 						}
 					})
 					.catch((err) => {
@@ -117,6 +138,9 @@ function Register(props) {
 			...errors,
 			email: "",
 		});
+		if (!errors.username) {
+			removeErrorStep(0);
+		}
 		setTimeout(() => {
 			if (email == input.email && email && patternEmail.test(email)) {
 				const config = {
@@ -126,16 +150,23 @@ function Register(props) {
 					},
 				};
 				const body = JSON.stringify({ email: input.email });
-				console.log(body);
 				axios
 					.post("/backend/auth/checks/email/", body, config)
 					.then((res) => {
-						console.log(res.data);
 						if (res.data.not_ocupied == false) {
 							setErrors({
 								...errors,
 								email: intl.formatMessage({ id: "AUTH_ALREADY_USED_EMAIL" }),
 							});
+							addErrorStep(0);
+						} else {
+							setErrors({
+								...errors,
+								email: "",
+							});
+							if (!errors.username) {
+								removeErrorStep(0);
+							}
 						}
 					})
 					.catch((err) => {
@@ -162,7 +193,7 @@ function Register(props) {
 	}, [input.password]);
 
 	const handleNext = () => {
-		if (activeStep < 4) {
+		if (activeStep < registerContent.length) {
 			setActiveStep((prevActiveStep) => prevActiveStep + 1);
 		}
 	};
@@ -187,7 +218,18 @@ function Register(props) {
 		}
 	};
 
+	const removeErrorStep = (step) => {
+		if (isErrorStep(step)) {
+			setErrorSteps((prevError) => {
+				const newError = new Set(prevError.values());
+				newError.delete(step);
+				return newError;
+			});
+		}
+	};
+
 	function validate() {
+		let errorSteps_cache = new Set();
 		let errors = {};
 		let isValid = true;
 
@@ -196,6 +238,9 @@ function Register(props) {
 			errors["username"] = intl.formatMessage({
 				id: "AUTH_REGISTER_ERROR_USERNAME_UNDEFINED",
 			});
+			if (!errorSteps_cache.has(0)) {
+				errorSteps_cache.add(0);
+			}
 		}
 
 		if (!input["email"]) {
@@ -203,6 +248,9 @@ function Register(props) {
 			errors["email"] = intl.formatMessage({
 				id: "AUTH_REGISTER_ERROR_EMAIL_UNDEFINED",
 			});
+			if (!errorSteps_cache.has(0)) {
+				errorSteps_cache.add(0);
+			}
 		}
 
 		if (!input["password"]) {
@@ -210,6 +258,9 @@ function Register(props) {
 			errors["password"] = intl.formatMessage({
 				id: "AUTH_REGISTER_ERROR_PASSWORD_UNDEFINED",
 			});
+			if (!errorSteps_cache.has(1)) {
+				errorSteps_cache.add(1);
+			}
 		}
 
 		if (!input["conf_password"]) {
@@ -217,6 +268,9 @@ function Register(props) {
 			errors["conf_password"] = intl.formatMessage({
 				id: "AUTH_REGISTER_ERROR_CONFIRM_PASSWORD_UNDEFINED",
 			});
+			if (!errorSteps_cache.has(1)) {
+				errorSteps_cache.add(1);
+			}
 		}
 
 		if (input["email"]) {
@@ -225,6 +279,9 @@ function Register(props) {
 				errors["email"] = intl.formatMessage({
 					id: "AUTH_REGISTER_ERROR_EMAIL_INVALID",
 				});
+				if (!errorSteps_cache.has(0)) {
+					errorSteps_cache.add(0);
+				}
 			}
 		}
 
@@ -234,6 +291,9 @@ function Register(props) {
 				errors["username"] = intl.formatMessage({
 					id: "AUTH_REGISTER_ERROR_USERNAME_INVALID",
 				});
+				if (!errorSteps_cache.has(0)) {
+					errorSteps_cache.add(0);
+				}
 			}
 		}
 
@@ -245,6 +305,9 @@ function Register(props) {
 			errors["conf_password"] = intl.formatMessage({
 				id: "AUTH_REGISTER_ERROR_PASSWORD_NO_MATCH",
 			});
+			if (!errorSteps_cache.has(1)) {
+				errorSteps_cache.add(1);
+			}
 		}
 
 		const config = {
@@ -261,12 +324,14 @@ function Register(props) {
 				config
 			)
 			.then((res) => {
-				console.log(res.data);
 				if (res.data.not_ocupied == false) {
 					errors["username"] = intl.formatMessage({
 						id: "AUTH_ALREADY_USED_USERNAME",
 					});
 					isValid = false;
+					if (!errorSteps_cache.has(0)) {
+						errorSteps_cache.add(0);
+					}
 				}
 			})
 			.catch((err) => {
@@ -280,28 +345,32 @@ function Register(props) {
 				config
 			)
 			.then((res) => {
-				console.log(res.data);
 				if (res.data.not_ocupied == false) {
 					errors["email"] = intl.formatMessage({
 						id: "AUTH_ALREADY_USED_EMAIL",
 					});
 					isValid = false;
+					if (!errorSteps_cache.has(0)) {
+						errorSteps_cache.add(0);
+					}
 				}
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 
-		if (zxcvbn(input.password).score < 3) {
+		if (zxcvbn(input.password).score < 2) {
 			errors["password"] = intl.formatMessage({
 				id: "AUTH_PASSWORD_NOT_STRONG",
 			});
-			addErrorStep(2);
+			if (!errorSteps_cache.has(1)) {
+				errorSteps_cache.add(1);
+			}
 			isValid = false;
 		}
 
 		setErrors(errors);
-
+		setErrorSteps(errorSteps_cache);
 		return isValid;
 	}
 
@@ -411,6 +480,44 @@ function Register(props) {
 					handleNext={handleNext}
 					handleBack={handleBack}
 					register={register}
+				>
+					<InputField
+						type="text"
+						name="lastname"
+						error={errors.firstname}
+						input={input.firstname}
+						placeholder={intl.formatMessage({
+							id: "AUTH_REGISTER_FIRSTNAME_PLACEHOLDER",
+						})}
+						onChange={(e) => {
+							setInput({ ...input, firstname: e.target.value });
+						}}
+					/>
+					<InputField
+						type="text"
+						name="lastname"
+						error={errors.lastname}
+						input={input.lastname}
+						placeholder={intl.formatMessage({
+							id: "AUTH_REGISTER_LASTNAME_PLACEHOLDER",
+						})}
+						onChange={(e) => {
+							setInput({
+								...input,
+								lastname: e.target.value,
+							});
+						}}
+					/>
+				</StepWrapper>
+			),
+		},
+		{
+			label: intl.formatMessage({ id: "AUTH_REGISTER_STEPS_FOURTH" }),
+			content: (
+				<StepWrapper
+					handleNext={handleNext}
+					handleBack={handleBack}
+					register={register}
 					last
 				>
 					<InputField
@@ -441,6 +548,35 @@ function Register(props) {
 							setInput({
 								...input,
 								email: event.target.value,
+							});
+						}}
+						disabled={props.progress}
+					/>
+					<InputField
+						type="text"
+						name="lastname"
+						error={errors.firstname}
+						input={input.firstname}
+						placeholder={intl.formatMessage({
+							id: "AUTH_REGISTER_FIRSTNAME_PLACEHOLDER",
+						})}
+						onChange={(e) => {
+							setInput({ ...input, firstname: e.target.value });
+						}}
+						disabled={props.progress}
+					/>
+					<InputField
+						type="text"
+						name="lastname"
+						error={errors.lastname}
+						input={input.lastname}
+						placeholder={intl.formatMessage({
+							id: "AUTH_REGISTER_LASTNAME_PLACEHOLDER",
+						})}
+						onChange={(e) => {
+							setInput({
+								...input,
+								lastname: e.target.value,
 							});
 						}}
 						disabled={props.progress}
@@ -477,13 +613,33 @@ function Register(props) {
 				) : null}
 
 				<Stepper activeStep={activeStep} orientation="vertical">
-					{registerContent.map((item, index) => (
-						<Step key={index}>
-							<StepLabel>{item.label}</StepLabel>
-							<StepContent>{item.content}</StepContent>
-						</Step>
-					))}
+					{registerContent.map((item, index) => {
+						const labelProps = {};
+						if (isErrorStep(index)) {
+							labelProps.error = true;
+						}
+
+						return (
+							<Step key={index}>
+								<StepLabel {...labelProps}>{item.label}</StepLabel>
+								<StepContent>{item.content}</StepContent>
+							</Step>
+						);
+					})}
 				</Stepper>
+				{props.progress && (
+					<div
+						style={{
+							height: "100%",
+							width: "100%",
+							display: "flex",
+							justifyContent: "center",
+							alignItems: "center",
+						}}
+					>
+						<CircularProgress color="#378d40" />
+					</div>
+				)}
 			</div>
 		</AuthWrapper>
 	);

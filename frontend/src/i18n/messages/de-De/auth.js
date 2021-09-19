@@ -15,13 +15,19 @@ export const AUTH = {
 	AUTH_REGISTER_TITLE: "Bei openWarnMap registrieren",
 	AUTH_REGISTER_QUESTION: "Sie haben bereits einen Account?",
 	AUTH_REGISTER_QUESTION_LINK: "Jetzt anmelden!",
+
 	AUTH_REGISTER_STEPS_FIRST: "Benutzername und Email",
 	AUTH_REGISTER_STEPS_SECOND: "Passwort festlegen",
-	AUTH_REGISTER_STEPS_THIRD: "Registrierung abschließen",
+	AUTH_REGISTER_STEPS_THIRD: "Persönliche Daten",
+	AUTH_REGISTER_STEPS_FOURTH: "Registrierung abschließen",
+
 	AUTH_REGISTER_USERNAME_PLACEHOLDER: "Benutzername",
 	AUTH_REGISTER_EMAIL_PLACEHOLDER: "E-Mail",
 	AUTH_REGISTER_PASSWORD_PLACEHOLDER: "Passwort",
 	AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER: "Passwort bestätigen",
+	AUTH_REGISTER_LASTNAME_PLACEHOLDER: "Nachname",
+	AUTH_REGISTER_FIRSTNAME_PLACEHOLDER: "Vorname",
+
 	AUTH_REGISTER_ERROR_USERNAME_UNDEFINED:
 		"Bitte geben Sie hier sen Benutzername ein",
 	AUTH_REGISTER_ERROR_EMAIL_UNDEFINED:
