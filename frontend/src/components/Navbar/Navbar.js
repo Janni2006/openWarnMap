@@ -14,8 +14,6 @@ import { FormattedMessage } from "react-intl";
 
 import { Settings } from "@material-ui/icons";
 
-import { LOCALES } from "../../i18n/languages";
-
 import SettingsDialog from "./SettingsDialog";
 
 import {
@@ -183,11 +181,6 @@ function Header(props) {
 							<IconButton
 								onClick={() => {
 									setOpen(true);
-									// if (props.language == LOCALES.GERMAN) {
-									// 	props.setLanguage(LOCALES.ENGLISH);
-									// } else {
-									// 	props.setLanguage(LOCALES.GERMAN);
-									// }
 								}}
 								className={classes.buttonSettings}
 							>
