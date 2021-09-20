@@ -173,7 +173,7 @@ export const register =
 			.catch((err) => {
 				console.log(err.response);
 				dispatch({ type: REGISTER_FAILED });
-				toast.error(intl.formatMessage({ id: "AUTH_REGISTER_SUCCESS" }));
+				toast.error("Error");
 			});
 	};
 

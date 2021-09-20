@@ -20,6 +20,7 @@ import AddEntry from "../AddEntry";
 import Profile from "../Private/Profile";
 import PrivateEntrys from "../Private/PrivateEntrys";
 import PublicProfile from "../PublicProfile";
+import News from "../News";
 
 import FunctionsOverview from "../Functions";
 
@@ -41,6 +42,9 @@ class Routes extends Component {
 				</PublicRoute>
 				<PublicRoute path="/about" exact>
 					<About />
+				</PublicRoute>
+				<PublicRoute path="/news" exact>
+					<News />
 				</PublicRoute>
 				<PublicRoute path="/user/:user">
 					<PublicProfile />
