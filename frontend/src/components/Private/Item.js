@@ -110,7 +110,6 @@ function Item(props) {
 	React.useEffect(() => {
 		if (props.loading == false && props.data) {
 			var cache_data = props.data.find((item) => item.code === props.id);
-			console.log(cache_data);
 			cache_data.created_date = Date.parse(cache_data.created);
 			setData(cache_data);
 		}
@@ -138,7 +137,7 @@ function Item(props) {
 								layoutId={`card-map-container-${props.id}`}
 							>
 								<MapContainer
-									center={[data.gps_lat, data.gps_long]}
+									center={[data.gps_coords[1], data.gps_coords[0]]}
 									zoom={13}
 									scrollWheelZoom={false}
 									closePopupOnClick={false}
@@ -158,7 +157,7 @@ function Item(props) {
 										attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 										url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 									/>
-									<Marker position={[data.gps_lat, data.gps_long]} />
+									<Marker position={[data.gps_coords[1], data.gps_coords[0]]} />
 								</MapContainer>
 							</motion.div>
 							<motion.div

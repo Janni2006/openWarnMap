@@ -18,18 +18,23 @@ from api.models import Issue, generate_unique_code
 from django.contrib.gis.geos import Point
 
 
-class WebGetData(APIView):
+# class WebGetData(APIView):
+#     permission_classes = (AllowAny,)
+
+#     def get(self, request):
+#         data = []
+#         queryset = Issue.objects.all()
+
+#         for object in queryset:
+#             data.append({'code': object.code, 'active': object.active,
+#                         'verified': object.verified, 'gps_lat': object.gps.coords[1], 'gps_long': object.gps.coords[0], 'size': object.size, 'height': object.height, 'localization': object.localization, 'created': object.created})
+
+#         return Response(data=data, status=status.HTTP_200_OK)
+
+class WebGetData(generics.ListAPIView):
     permission_classes = (AllowAny,)
-
-    def get(self, request):
-        data = []
-        queryset = Issue.objects.all()
-
-        for object in queryset:
-            data.append({'code': object.code, 'active': object.active,
-                        'verified': object.verified, 'gps_lat': object.gps.coords[1], 'gps_long': object.gps.coords[0], 'size': object.size, 'height': object.height, 'localization': object.localization, 'created': object.created})
-
-        return Response(data=data, status=status.HTTP_200_OK)
+    serializer_class = IssueSerializer
+    queryset = Issue.objects.all()
 
 
 class WebCreateIssueView(APIView):
@@ -81,18 +86,12 @@ class WebCreateIssueView(APIView):
         return Response({'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class WebGetPrivateData(APIView):
+class WebGetPrivateData(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
+    serializer_class = IssueSerializer
 
-    def get(self, request, format=None):
-        queryset = request.user.profile.private_data.all()
-        if queryset.exists():
-            issues = []
-            for object in queryset:
-                issues.append({'code': object.code, 'active': object.active,
-                               'verified': object.verified, 'gps_lat': object.gps.coords[1], 'gps_long': object.gps.coords[0], 'size': object.size, 'height': object.height, 'localization': object.localization, 'created': object.created})
-            return Response(data=issues, status=status.HTTP_200_OK)
-        return Response(data={'Error': 'No data found'}, status=status.HTTP_404_NOT_FOUND)
+    def get_queryset(self):
+        return self.request.user.profile.private_data.all()
 
 
 class WebSendFeedback(APIView):

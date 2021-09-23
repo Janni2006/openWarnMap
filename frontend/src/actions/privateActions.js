@@ -8,7 +8,7 @@ export const loadPrivateData = () => (dispatch) => {
 	});
 
 	axios
-		.get("/react/private-data/")
+		.get("/react/private-data/?verified=true")
 		.then((res) => {
 			dispatch({
 				type: LOAD_PRIVATE_DATA_SUCCESS,

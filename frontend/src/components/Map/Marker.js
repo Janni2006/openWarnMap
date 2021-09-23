@@ -6,18 +6,14 @@ import { openMarkerPopup } from "../../actions/mapActions";
 
 import { Marker, Popup } from "react-leaflet";
 
-// import { VerifiedUser, Warning } from "@material-ui/icons";
-
 import { withWidth, isWidthUp } from "@material-ui/core";
-
-// import { ConvertMillisecondsToString } from "../../helpers/ConvertMillisecondsToString";
 
 import MobilePopup from "./PopUp/Mobile";
 
 function MapMarker(props) {
 	return (
 		<Marker
-			position={[props.item.gps_lat, props.item.gps_long]}
+			position={[props.item.gps_coords[1], props.item.gps_coords[0]]}
 			key={props.item.code}
 			eventHandlers={{
 				click: () => {

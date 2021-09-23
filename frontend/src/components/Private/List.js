@@ -82,8 +82,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Card({
 	code,
-	gps_lat,
-	gps_long,
+	gps_coords,
 	setID,
 	active,
 	verified,
@@ -106,7 +105,7 @@ function Card({
 						layoutId={`card-map-container-${code}`}
 					>
 						<MapContainer
-							center={[gps_lat, gps_long]}
+							center={[gps_coords[1], gps_coords[0]]}
 							zoom={16}
 							scrollWheelZoom={false}
 							closePopupOnClick={false}
@@ -124,7 +123,7 @@ function Card({
 								key={code + listType}
 							/>
 							<Marker
-								position={[gps_lat, gps_long]}
+								position={[gps_coords[1], gps_coords[0]]}
 								key={"marker" + code + listType}
 							/>
 						</MapContainer>

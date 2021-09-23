@@ -25,10 +25,10 @@ function MarkerPopup(props) {
 	const [zIndex, setZIndex] = React.useState("auto");
 
 	React.useEffect(() => {
-		if (props.map && props.content.gps_lat && props.content.gps_long) {
-			props.map?.flyTo([props.content.gps_lat, props.content.gps_long]);
+		if (props.map && props.content.coords[1] && props.content.coords[0]) {
+			props.map?.flyTo([props.content.coords[1], props.content.coords[0]]);
 		}
-	}, [props.content.gps_lat, props.content.gps_long]);
+	}, [props.content.coords]);
 
 	const spring = {
 		type: "spring",
