@@ -8,6 +8,10 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    
+defaults: 
+   run: 
+     working-directory: frontend 
 
 jobs:
   build:
@@ -16,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -29,8 +33,6 @@ jobs:
       
     - name: Install dependencies 
       run: npm install
-      working-directory: frontend
       
     - name: Build 
       run: npm run build
-      working-directory: frontend
