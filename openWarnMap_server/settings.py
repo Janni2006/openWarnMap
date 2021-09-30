@@ -40,14 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'api.apps.ApiConfig',
-    'frontend.apps.FrontendConfig',
-    'users.apps.UsersConfig',
     'rest_framework',
     'djoser',
     'rest_framework.authtoken',
+    'api.apps.ApiConfig',
+    'frontend.apps.FrontendConfig',
+    'users.apps.UsersConfig',
     'colorfield',
     'reactbackend.apps.ReactbackendConfig',
+    'django_filters',
 ]
 
 MIDDLEWARE = [

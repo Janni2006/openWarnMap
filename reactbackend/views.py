@@ -1,35 +1,16 @@
-from datetime import datetime, timedelta
-from re import A
-from django import http
-from django.contrib.auth import get_user_model
-from rest_framework import serializers, status, generics
+from rest_framework import status, generics
 from rest_framework.response import Response
-from rest_framework import exceptions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
-from django.utils.http import urlsafe_base64_encode
 from reactbackend.serializers import CreateVoteSerializer, IssueSerializer, CreateIssueSerializer
-from django.contrib.auth import get_user_model
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Votes
 
-from api.models import Issue, generate_unique_code
+from api.models import Issue
 
 from django.contrib.gis.geos import Point
 
-
-# class WebGetData(APIView):
-#     permission_classes = (AllowAny,)
-
-#     def get(self, request):
-#         data = []
-#         queryset = Issue.objects.all()
-
-#         for object in queryset:
-#             data.append({'code': object.code, 'active': object.active,
-#                         'verified': object.verified, 'gps_lat': object.gps.coords[1], 'gps_long': object.gps.coords[0], 'size': object.size, 'height': object.height, 'localization': object.localization, 'created': object.created})
-
-#         return Response(data=data, status=status.HTTP_200_OK)
 
 class WebGetData(generics.ListAPIView):
     permission_classes = (AllowAny,)
@@ -87,11 +68,15 @@ class WebCreateIssueView(APIView):
 
 
 class WebGetPrivateData(generics.ListAPIView):
-    permission_classes = (IsAuthenticated,)
+    queryset = Issue.objects.all()
+    permission_classes = (AllowAny,)
     serializer_class = IssueSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["active", "verified"]
 
-    def get_queryset(self):
-        return self.request.user.profile.private_data.all()
+    # def get_queryset(self):
+    # return self.request.user.profile.private_data.all()
+    # return Issue.objects.all()
 
 
 class WebSendFeedback(APIView):
