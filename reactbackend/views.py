@@ -7,7 +7,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Votes
 
-from api.models import Issue
+from server_models.models import Issue
 
 from django.contrib.gis.geos import Point
 

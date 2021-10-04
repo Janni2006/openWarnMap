@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from api.models import Issue
+from server_models.models import Issue
 
 # Create your models here.
 
