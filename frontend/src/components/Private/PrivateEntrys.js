@@ -2,7 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setTitle } from "../../actions/generalActions";
-import { loadPrivateData } from "../../actions/privateActions";
+import {
+	loadPrivateData,
+	setPrivateDataFilters,
+} from "../../actions/privateActions";
 import { Link, withRouter, useLocation, useHistory } from "react-router-dom";
 
 import { makeStyles, withStyles } from "@material-ui/core/styles";
@@ -41,6 +44,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import List from "./List";
 import Item from "./Item";
 import Dropdown from "rc-dropdown";
+import SubmitButton from "../SubmitButton";
 
 const useStyles = makeStyles((theme) => ({
 	cardList: {
@@ -159,93 +163,102 @@ function PrivateEntrys(props) {
 	}, []);
 
 	React.useEffect(() => {
-		setLoading(true);
-		var current_data = props.data;
-		var cache_data = [];
-		if (filters.active == true) {
-			current_data.map((item) => {
-				if (item.active == true) {
-					cache_data.push(item);
-				}
-			});
-		} else {
-			cache_data = current_data;
-		}
-		current_data = cache_data;
-		cache_data = [];
+		setData(props.data);
+		setLoading(false);
+	}, [props.data]);
 
-		if (filters.verified == true) {
-			current_data.map((item) => {
-				if (item.verified == true) {
-					cache_data.push(item);
-				}
-			});
-		} else {
-			cache_data = current_data;
-		}
+	React.useEffect(() => {
+		setFilters(props.filters);
+	}, [props.filters]);
 
-		current_data = cache_data;
-		cache_data = [];
+	// React.useEffect(() => {
+	// 	setLoading(true);
+	// 	var current_data = props.data;
+	// 	var cache_data = [];
+	// 	if (filters.active == true) {
+	// 		current_data.map((item) => {
+	// 			if (item.active == true) {
+	// 				cache_data.push(item);
+	// 			}
+	// 		});
+	// 	} else {
+	// 		cache_data = current_data;
+	// 	}
+	// 	current_data = cache_data;
+	// 	cache_data = [];
 
-		if (filters.size == 0) {
-			cache_data = current_data;
-		} else {
-			current_data.map((item) => {
-				if (item.size == filters.size - 1) {
-					cache_data.push(item);
-				}
-			});
-		}
+	// 	if (filters.verified == true) {
+	// 		current_data.map((item) => {
+	// 			if (item.verified == true) {
+	// 				cache_data.push(item);
+	// 			}
+	// 		});
+	// 	} else {
+	// 		cache_data = current_data;
+	// 	}
 
-		current_data = cache_data;
-		cache_data = [];
+	// 	current_data = cache_data;
+	// 	cache_data = [];
 
-		if (filters.height == 0) {
-			cache_data = current_data;
-		} else {
-			current_data.map((item) => {
-				if (item.height == filters.height - 1) {
-					cache_data.push(item);
-				}
-			});
-		}
+	// 	if (filters.size == 0) {
+	// 		cache_data = current_data;
+	// 	} else {
+	// 		current_data.map((item) => {
+	// 			if (item.size == filters.size - 1) {
+	// 				cache_data.push(item);
+	// 			}
+	// 		});
+	// 	}
 
-		current_data = cache_data;
-		cache_data = [];
+	// 	current_data = cache_data;
+	// 	cache_data = [];
 
-		if (filters.localization == 0) {
-			cache_data = current_data;
-		} else {
-			current_data.map((item) => {
-				if (item.localization == filters.localization - 1) {
-					cache_data.push(item);
-				}
-			});
-		}
+	// 	if (filters.height == 0) {
+	// 		cache_data = current_data;
+	// 	} else {
+	// 		current_data.map((item) => {
+	// 			if (item.height == filters.height - 1) {
+	// 				cache_data.push(item);
+	// 			}
+	// 		});
+	// 	}
 
-		current_data = cache_data;
-		cache_data = [];
+	// 	current_data = cache_data;
+	// 	cache_data = [];
 
-		if (filters.sort == 0) {
-			cache_data = current_data;
-			setData([]);
-			cache_data.sort(function (a, b) {
-				return Date.parse(b.created) - Date.parse(a.created);
-			});
-		} else if (filters.sort == 1) {
-			cache_data = current_data;
-			setData([]);
-			cache_data.sort(function (a, b) {
-				return Date.parse(a.created) - Date.parse(b.created);
-			});
-		}
+	// 	if (filters.localization == 0) {
+	// 		cache_data = current_data;
+	// 	} else {
+	// 		current_data.map((item) => {
+	// 			if (item.localization == filters.localization - 1) {
+	// 				cache_data.push(item);
+	// 			}
+	// 		});
+	// 	}
 
-		current_data = cache_data;
-		cache_data = [];
+	// 	current_data = cache_data;
+	// 	cache_data = [];
 
-		setData(current_data);
-		setTimeout(() => setLoading(false), 1);
-	}, [props.data, filters]);
+	// 	if (filters.sort == 0) {
+	// 		cache_data = current_data;
+	// 		setData([]);
+	// 		cache_data.sort(function (a, b) {
+	// 			return Date.parse(b.created) - Date.parse(a.created);
+	// 		});
+	// 	} else if (filters.sort == 1) {
+	// 		cache_data = current_data;
+	// 		setData([]);
+	// 		cache_data.sort(function (a, b) {
+	// 			return Date.parse(a.created) - Date.parse(b.created);
+	// 		});
+	// 	}
+
+	// 	current_data = cache_data;
+	// 	cache_data = [];
+
+	// 	setData(current_data);
+	// 	setTimeout(() => setLoading(false), 1);
+	// }, [props.data, filters]);
 
 	React.useEffect(() => {
 		setSelectedId(
@@ -580,6 +593,12 @@ function PrivateEntrys(props) {
 									}}
 									// styles={customStyles(error.fields.height.error)}
 								/>
+								<SubmitButton
+									title="Test"
+									onClick={() => {
+										props.setPrivateDataFilters(filters);
+									}}
+								/>
 							</Paper>
 						) : (
 							<Paper style={{ height: "50vh", background: "transparent" }}>
@@ -648,13 +667,17 @@ PrivateEntrys.propTypes = {
 	loadPrivateData: PropTypes.func.isRequired,
 	loading: PropTypes.bool.isRequired,
 	data: PropTypes.array,
+	filters: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	loading: state.private.loading,
 	data: state.private.data,
+	filters: state.private.filters,
 });
 
-export default connect(mapStateToProps, { setTitle, loadPrivateData })(
-	withRouter(PrivateEntrys)
-);
+export default connect(mapStateToProps, {
+	setTitle,
+	loadPrivateData,
+	setPrivateDataFilters,
+})(withRouter(PrivateEntrys));

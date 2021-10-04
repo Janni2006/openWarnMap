@@ -20,12 +20,6 @@ const useStyles = makeStyles((theme) => ({
 function AddActionButton(props) {
 	const classes = useStyles();
 
-	const [popupOpen, setPopupOpen] = React.useState(false);
-
-	React.useEffect(() => {
-		console.log(props);
-	}, [props.popupOpened]);
-
 	return (
 		<>
 			{props.isAuthenticated && !props.popupOpened ? (

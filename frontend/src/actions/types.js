@@ -19,6 +19,7 @@ export const REGISTER_FAILED = "REGISTER_FAILED";
 // private
 export const LOAD_PRIVATE_DATA = "LOAD_PRIVATE_DATA";
 export const LOAD_PRIVATE_DATA_SUCCESS = "LOAD_PRIVATE_DATA_SUCCESS";
+export const SET_PRIVATE_FILTERS = "SET_PRIVATE_FILTERS";
 
 // map
 export const VIEW = "VIEW";
