@@ -10,11 +10,11 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { Typography, makeStyles } from "@material-ui/core";
 
-import { VerifiedUser, Warning, Close } from "@material-ui/icons";
+import { VerifiedUser, Warning, Close, Height } from "@material-ui/icons";
 
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
 
-import { getDistance } from "geolib";
+import getDistance from "geolib/es/getDistance";
 
 const useStyles = makeStyles((theme) => ({
 	cardList: {
@@ -106,16 +106,42 @@ const useStyles = makeStyles((theme) => ({
 
 function Item(props) {
 	const [data, setData] = React.useState(null);
-	const [gps, setGps] = React.useState({ available: false, distance: 0 });
+	const [gps, setGps] = React.useState({ available: true, distance: 0 });
 
 	const classes = useStyles();
+
+	var id;
 
 	React.useEffect(() => {
 		if (props.loading == false && props.data) {
 			var cache_data = props.data.find((item) => item.code === props.id);
 			cache_data.created_date = Date.parse(cache_data.created);
 			setData(cache_data);
+			if (gps.available) {
+				id = navigator.geolocation.watchPosition(
+					function (e) {
+						setGps({
+							...gps,
+							distance: getDistance(
+								{ lat: e.coords.latitude, lon: e.coords.longitude },
+								{
+									lat: cache_data.gps_coords[1],
+									lon: cache_data.gps_coords[0],
+								}
+							),
+						});
+					},
+					function () {
+						console.log("error");
+					}
+				);
+			}
 		}
+		return () => {
+			if (id) {
+				navigator.geolocation.clearWatch(id);
+			}
+		};
 	}, [props.loading, props.data]);
 
 	return (
@@ -222,6 +248,14 @@ function Item(props) {
 										</Typography>
 									</div>
 								) : null}
+								<Height /> <Typography>Höhe: {data.height}</Typography>
+								<Typography>
+									Distance:{" "}
+									{gps.distance >= 1000
+										? Math.round(gps.distance / 100) / 10
+										: gps.distance}
+									{gps.distance >= 1000 ? "km" : "m"}
+								</Typography>
 							</motion.div>
 							<motion.div
 								initial={{ opacity: 0 }}
