@@ -14,6 +14,8 @@ import { VerifiedUser, Warning, Close } from "@material-ui/icons";
 
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
 
+import { getDistance } from "geolib";
+
 const useStyles = makeStyles((theme) => ({
 	cardList: {
 		display: "flex",
@@ -104,6 +106,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Item(props) {
 	const [data, setData] = React.useState(null);
+	const [gps, setGps] = React.useState({ available: false, distance: 0 });
 
 	const classes = useStyles();
 

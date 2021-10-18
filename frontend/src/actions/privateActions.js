@@ -16,9 +16,12 @@ export const loadPrivateData = () => (dispatch, getState) => {
 			params: {
 				active: getState().private.filters.active == true ? true : null,
 				verified: getState().private.filters.verified == true ? true : null,
-				size: getState().private.filters.size,
-				height: getState().private.filters.height,
-				localization: getState().private.filters.localization,
+				size: getState().private.filters.size != 0 ? filters.size : null,
+				height: getState().private.filters.height != 0 ? filters.height : null,
+				localization:
+					getState().private.filters.localization != 0
+						? filters.localization
+						: null,
 			},
 		})
 		.then((res) => {
@@ -44,9 +47,9 @@ export const setPrivateDataFilters = (filters) => (dispatch) => {
 			params: {
 				active: filters.active == true ? true : null,
 				verified: filters.verified == true ? true : null,
-				size: filters.size,
-				height: filters.height,
-				localization: filters.localization,
+				size: filters.size != 0 ? filters.size : null,
+				height: filters.height != 0 ? filters.height : null,
+				localization: filters.localization != 0 ? filters.localization : null,
 			},
 		})
 		.then((res) => {

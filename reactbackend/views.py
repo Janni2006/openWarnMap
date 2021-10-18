@@ -5,6 +5,8 @@ from rest_framework.views import APIView
 from reactbackend.serializers import CreateVoteSerializer, IssueSerializer, CreateIssueSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 
+from rest_framework import filters
+
 from .models import Votes
 
 from server_models.models import Issue
@@ -68,14 +70,14 @@ class WebCreateIssueView(APIView):
 
 
 class WebGetPrivateData(generics.ListAPIView):
-    queryset = Issue.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     serializer_class = IssueSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["active", "verified"]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    ordering_fields = ["created"]
+    filterset_fields = ["active", "verified", "size", "height", "localization"]
 
-    # def get_queryset(self):
-    # return self.request.user.profile.private_data.all()
+    def get_queryset(self):
+        return self.request.user.profile.private_data.all()
     # return Issue.objects.all()
 
 

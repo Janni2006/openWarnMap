@@ -26,3 +26,7 @@ export const VIEW = "VIEW";
 export const MAP_DATA = "MAP_DATA";
 export const OPEN_MARKER_POPUP = "OPEN_MARKER_POPUP";
 export const CLOSE_MARKER_POPUP = "CLOSE_MARKER_POPUP";
+
+// client
+export const CHECK_ONLINE = "CHECK_ONLINE";
+export const CHECK_GPS = "CHECK_GPS";
