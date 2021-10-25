@@ -6,6 +6,7 @@ import { createBrowserHistory } from "history";
 import { Provider } from "react-redux";
 import store from "./store";
 import { loadUser } from "./actions/authActions";
+import { clientCheck } from "./actions/clientActions";
 
 import { HelmetProvider } from "react-helmet-async";
 
@@ -29,6 +30,9 @@ const theme = createTheme({
 class App extends Component {
 	componentDidMount() {
 		store.dispatch(loadUser());
+		setInterval(() => {
+			store.dispatch(clientCheck());
+		}, 500);
 	}
 
 	render() {

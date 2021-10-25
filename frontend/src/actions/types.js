@@ -30,3 +30,4 @@ export const CLOSE_MARKER_POPUP = "CLOSE_MARKER_POPUP";
 // client
 export const CHECK_ONLINE = "CHECK_ONLINE";
 export const CHECK_GPS = "CHECK_GPS";
+export const SET_GPS = "SET_GPS";

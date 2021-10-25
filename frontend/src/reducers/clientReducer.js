@@ -1,27 +1,10 @@
-import { CHECK_ONLINE, CHECK_GPS } from "../actions/types";
-import { toast } from "react-toastify";
-
-const check_GPS_available = () => {
-	if (!navigator.geolocation) {
-		return false;
-	}
-	var available = false;
-	navigator.geolocation.getCurrentPosition(
-		function (e) {
-			console.log(e);
-			available = true;
-		},
-		function () {
-			available = false;
-			toast.error("The user permitted gps access");
-		}
-	);
-	return available;
-};
+import { CHECK_ONLINE, CHECK_GPS, SET_GPS } from "../actions/types";
 
 const initialState = {
 	gps: {
-		available: check_GPS_available(),
+		available: false,
+		error: "",
+		messaged: false,
 	},
 	online: navigator.onLine,
 };
@@ -33,11 +16,8 @@ export default function foo(state = initialState, action) {
 				...state,
 				online: navigator.onLine,
 			};
-		case CHECK_GPS:
-			return {
-				...state,
-				gps: { ...state.gps, available: check_GPS_available() },
-			};
+		case SET_GPS:
+			return { ...state, gps: { ...state.gps, ...action.payload } };
 		default:
 			return state;
 	}
