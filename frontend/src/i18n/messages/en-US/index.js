@@ -10,6 +10,7 @@ import { AUTH } from "./auth";
 import { PROFILE } from "./profile";
 import { FEEDBACK } from "./feedback";
 import { FUNCTIONS } from "./functions";
+import { ACTIONS } from "./actions";
 
 export default {
 	[LOCALES.ENGLISH]: {
@@ -23,5 +24,6 @@ export default {
 		...PROFILE,
 		...FEEDBACK,
 		...FUNCTIONS,
+		...ACTIONS,
 	},
 };
