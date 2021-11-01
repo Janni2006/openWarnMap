@@ -11,8 +11,6 @@ import { VerifiedUser, Warning, Close } from "@material-ui/icons";
 import {
 	Typography,
 	IconButton,
-	Button,
-	makeStyles,
 	withWidth,
 	isWidthDown,
 } from "@material-ui/core";
@@ -20,15 +18,49 @@ import {
 import Votes from "./Votes";
 
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
+import getDistance from "geolib/es/getDistance";
+
+//  Add details accordion
 
 function MarkerPopup(props) {
 	const [zIndex, setZIndex] = React.useState("auto");
+	const [distance, setDistance] = React.useState(null);
+
+	var old_code;
 
 	React.useEffect(() => {
-		if (props.map && props.content.coords[1] && props.content.coords[0]) {
-			props.map?.flyTo([props.content.coords[1], props.content.coords[0]]);
+		if (old_code == props.content.code || props.open) {
+			old_code = props.content.code;
+			if (props.map && props.content.gps_coords) {
+				props.map?.flyTo([
+					props.content.gps_coords[1],
+					props.content.gps_coords[0],
+				]);
+			}
+			if (props.gpsAvailable) {
+				navigator.geolocation.getCurrentPosition(
+					function (e) {
+						setDistance(
+							props.content.gps_coords != undefined
+								? getDistance(
+										{ lat: e.coords.latitude, lon: e.coords.longitude },
+										{
+											lat: props.content.gps_coords[1],
+											lon: props.content.gps_coords[0],
+										}
+								  )
+								: null
+						);
+					},
+					function () {
+						console.log("error");
+					}
+				);
+			}
+		} else {
+			setDistance(null);
 		}
-	}, [props.content.coords]);
+	}, [props.content]);
 
 	const spring = {
 		type: "spring",
@@ -133,6 +165,18 @@ function MarkerPopup(props) {
 									</Typography>
 								</div>
 							) : null}
+							<Typography>Höhe: {props.content.height}</Typography>
+							<Typography>Größe: {props.content.size}</Typography>
+							<Typography>Position: {props.content.localization}</Typography>
+							{distance != null && props.gpsAvailable ? (
+								<Typography>
+									Distance:{" "}
+									{distance >= 1000
+										? Math.round(distance / 100) / 10
+										: distance}
+									{distance >= 1000 ? "km" : "m"}
+								</Typography>
+							) : null}
 							<Votes />
 						</motion.div>
 					) : (
@@ -174,12 +218,14 @@ MarkerPopup.propTypes = {
 	open: PropTypes.bool.isRequired,
 	content: PropTypes.object.isRequired,
 	isAuthenticated: PropTypes.bool.isRequired,
+	gpsAvailable: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	open: state.map.markerPopup.open,
 	content: state.map.markerPopup.content,
 	isAuthenticated: state.auth.isAuthenticated,
+	gpsAvailable: state.client.gps.available,
 });
 
 export default connect(mapStateToProps, { closeMarkerPopup })(
