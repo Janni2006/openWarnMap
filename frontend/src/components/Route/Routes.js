@@ -5,8 +5,6 @@ import { visitPage, setTitle } from "../../actions/generalActions";
 
 import { Switch, withRouter, Route, Redirect } from "react-router-dom";
 
-import { withWidth } from "@material-ui/core";
-
 import PublicRoute from "./PublicRoute";
 import AuthRoute from "./AuthRoute";
 
@@ -25,6 +23,9 @@ import News from "../News";
 import FunctionsOverview from "../Functions";
 
 import NotFound from "../NotFound";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 class Routes extends Component {
 	componentDidUpdate() {

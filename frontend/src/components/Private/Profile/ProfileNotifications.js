@@ -11,7 +11,7 @@ import {
 	Switch,
 	FormControlLabel,
 	FormGroup,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import {
 	FormattedMessage,

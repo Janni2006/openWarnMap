@@ -21,7 +21,7 @@ import {
 	LayersControl,
 } from "react-leaflet";
 
-import { withWidth, Hidden } from "@material-ui/core";
+import { Hidden } from "@mui/material";
 
 import MarkerClusterGroup from "react-leaflet-markercluster";
 
@@ -29,6 +29,9 @@ import MapMarker from "./Marker";
 import MarkerPopup from "./PopUp";
 import AddActionButton from "./AddActionButton";
 import MapClick from "./MapClick";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 function MapObject(props) {
 	const [key, setKey] = new React.useState(0);

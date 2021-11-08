@@ -12,19 +12,12 @@ import ProfileDropdown from "./ProfileDropdown";
 
 import { FormattedMessage } from "react-intl";
 
-import { Settings } from "@material-ui/icons";
+import { Settings } from "@mui/icons-material";
 
 import SettingsDialog from "./SettingsDialog";
 
-import {
-	AppBar,
-	Hidden,
-	IconButton,
-	List,
-	ListItem,
-	makeStyles,
-	Toolbar,
-} from "@material-ui/core";
+import { AppBar, Hidden, IconButton, List, ListItem, Toolbar } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import SideDrawer from "./SideDrawer";
 
 const useStyles = makeStyles((theme) => ({
@@ -88,141 +81,139 @@ function Header(props) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false);
 
-	return (
-		<>
-			<AppBar style={{ position: "fixed" }}>
-				<Toolbar
-					component="nav"
-					style={{ display: "flex", justifyContent: "space-between" }}
-				>
-					<Link to={"/"} className={classes.logoWrapper}>
-						<img src={logo} alt="EPS Warner" style={{ height: "60px" }} />
-					</Link>
+	return <>
+        <AppBar style={{ position: "fixed" }}>
+            <Toolbar
+                component="nav"
+                style={{ display: "flex", justifyContent: "space-between" }}
+            >
+                <Link to={"/"} className={classes.logoWrapper}>
+                    <img src={logo} alt="EPS Warner" style={{ height: "60px" }} />
+                </Link>
 
-					<Hidden smDown>
-						<List
-							component="nav"
-							aria-labelledby="main navigation"
-							className={classes.navListDisplayFlex}
-						>
-							<Link
-								to={"/"}
-								style={{
-									textDecoration: "none",
-								}}
-							>
-								<ListItem className={classes.linkText}>
-									<FormattedMessage id="NAVBAR_HOME" />
-								</ListItem>
-							</Link>
-							<Link
-								to={"/about"}
-								style={{
-									textDecoration: "none",
-								}}
-							>
-								<ListItem className={classes.linkText}>
-									<FormattedMessage id="NAVBAR_ABOUT" />
-								</ListItem>
-							</Link>
-							<Link
-								to={"/functions"}
-								style={{
-									textDecoration: "none",
-								}}
-							>
-								<ListItem className={classes.linkText}>
-									<FormattedMessage id="NAVBAR_FUNCTIONS" />
-								</ListItem>
-							</Link>
-							{!props.progress ? (
-								<>
-									{!props.isAuthenticated ? (
-										<>
-											<Link
-												to={"/login"}
-												style={{
-													textDecoration: "none",
-												}}
-											>
-												<ListItem className={classes.linkLogin}>
-													<FormattedMessage id="NAVBAR_LOGIN" />
-												</ListItem>
-											</Link>
-											<Link
-												to={"/register"}
-												style={{
-													textDecoration: "none",
-													marginLeft: "16px",
-												}}
-											>
-												<ListItem className={classes.linkReg}>
-													<FormattedMessage id="NAVBAR_REGISTER" />
-												</ListItem>
-											</Link>
-										</>
-									) : (
-										<>
-											<Link
-												to="/add"
-												style={{
-													textDecoration: "none",
-												}}
-											>
-												<ListItem className={classes.linkText}>
-													<FormattedMessage id="NAVBAR_ADD" />
-												</ListItem>
-											</Link>
-											<ProfileDropdown />
-										</>
-									)}
-								</>
-							) : null}
-							<IconButton
-								onClick={() => {
-									setOpen(true);
-								}}
-								className={classes.buttonSettings}
-							>
-								<Settings />
-							</IconButton>
-						</List>
-					</Hidden>
-					<Hidden mdUp>
-						<List
-							component="nav"
-							aria-labelledby="main navigation"
-							className={classes.navListDisplayFlex}
-							style={{ padding: "0px" }}
-						>
-							<Hidden xsDown>
-								{!props.progress && props.isAuthenticated ? (
-									<Link
-										to="/add"
-										style={{
-											textDecoration: "none",
-											marginRight: "20px",
-										}}
-									>
-										<ListItem className={classes.linkText}>
-											<FormattedMessage id="NAVBAR_ADD" />
-										</ListItem>
-									</Link>
-								) : null}
-							</Hidden>
+                <Hidden lgDown>
+                    <List
+                        component="nav"
+                        aria-labelledby="main navigation"
+                        className={classes.navListDisplayFlex}
+                    >
+                        <Link
+                            to={"/"}
+                            style={{
+                                textDecoration: "none",
+                            }}
+                        >
+                            <ListItem className={classes.linkText}>
+                                <FormattedMessage id="NAVBAR_HOME" />
+                            </ListItem>
+                        </Link>
+                        <Link
+                            to={"/about"}
+                            style={{
+                                textDecoration: "none",
+                            }}
+                        >
+                            <ListItem className={classes.linkText}>
+                                <FormattedMessage id="NAVBAR_ABOUT" />
+                            </ListItem>
+                        </Link>
+                        <Link
+                            to={"/functions"}
+                            style={{
+                                textDecoration: "none",
+                            }}
+                        >
+                            <ListItem className={classes.linkText}>
+                                <FormattedMessage id="NAVBAR_FUNCTIONS" />
+                            </ListItem>
+                        </Link>
+                        {!props.progress ? (
+                            <>
+                                {!props.isAuthenticated ? (
+                                    <>
+                                        <Link
+                                            to={"/login"}
+                                            style={{
+                                                textDecoration: "none",
+                                            }}
+                                        >
+                                            <ListItem className={classes.linkLogin}>
+                                                <FormattedMessage id="NAVBAR_LOGIN" />
+                                            </ListItem>
+                                        </Link>
+                                        <Link
+                                            to={"/register"}
+                                            style={{
+                                                textDecoration: "none",
+                                                marginLeft: "16px",
+                                            }}
+                                        >
+                                            <ListItem className={classes.linkReg}>
+                                                <FormattedMessage id="NAVBAR_REGISTER" />
+                                            </ListItem>
+                                        </Link>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link
+                                            to="/add"
+                                            style={{
+                                                textDecoration: "none",
+                                            }}
+                                        >
+                                            <ListItem className={classes.linkText}>
+                                                <FormattedMessage id="NAVBAR_ADD" />
+                                            </ListItem>
+                                        </Link>
+                                        <ProfileDropdown />
+                                    </>
+                                )}
+                            </>
+                        ) : null}
+                        <IconButton
+                            onClick={() => {
+                                setOpen(true);
+                            }}
+                            className={classes.buttonSettings}
+                            size="large">
+                            <Settings />
+                        </IconButton>
+                    </List>
+                </Hidden>
+                <Hidden mdUp>
+                    <List
+                        component="nav"
+                        aria-labelledby="main navigation"
+                        className={classes.navListDisplayFlex}
+                        style={{ padding: "0px" }}
+                    >
+                        <Hidden mdDown>
+                            {!props.progress && props.isAuthenticated ? (
+                                <Link
+                                    to="/add"
+                                    style={{
+                                        textDecoration: "none",
+                                        marginRight: "20px",
+                                    }}
+                                >
+                                    <ListItem className={classes.linkText}>
+                                        <FormattedMessage id="NAVBAR_ADD" />
+                                    </ListItem>
+                                </Link>
+                            ) : null}
+                        </Hidden>
 
-							<SideDrawer
-								openSettings={() => {
-									setOpen(true);
-								}}
-							/>
-						</List>
-					</Hidden>
-				</Toolbar>
-			</AppBar>
-			<SettingsDialog open={open} onClose={() => setOpen(false)} />
-		</>
-	);
+                        <SideDrawer
+                            openSettings={() => {
+                                setOpen(true);
+                            }}
+                        />
+                    </List>
+                </Hidden>
+            </Toolbar>
+        </AppBar>
+        <SettingsDialog open={open} onClose={() => setOpen(false)} />
+    </>;
 }
 
 Header.propTypes = {

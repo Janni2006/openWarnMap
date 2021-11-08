@@ -8,9 +8,11 @@ import { Link } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
 
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import { Typography, makeStyles } from "@material-ui/core";
+import { Typography } from "@mui/material";
 
-import { VerifiedUser, Warning, Close, Height } from "@material-ui/icons";
+import makeStyles from '@mui/styles/makeStyles';
+
+import { VerifiedUser, Warning, Close, Height } from "@mui/icons-material";
 
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
 
@@ -41,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 			padding: "10px 0px",
 			marginBottom: "2.55px",
 		},
-		[theme.breakpoints.down("xs")]: {
+		[theme.breakpoints.down('md')]: {
 			flex: "1 0 100%",
 			maxWidth: "calc(100% - 30px)",
 			padding: "10px 0px",
@@ -60,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "block",
 		pointerEvents: "none",
 		padding: "104px 0px 40px 0px",
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down('lg')]: {
 			left: "10px",
 			right: "10px",
 			width: "calc(100% - 20px)",

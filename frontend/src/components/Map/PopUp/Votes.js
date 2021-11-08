@@ -13,9 +13,9 @@ import {
 	ThumbDownOutlined,
 	Send,
 	InfoOutlined,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
-import { Button, withWidth, isWidthDown, Typography } from "@material-ui/core";
+import { Button, isWidthDown, Typography } from "@mui/material";
 
 import Select from "react-select";
 
@@ -24,6 +24,9 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 import { FormattedMessage, useIntl } from "react-intl";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 function Votes(props) {
 	const [confirmButton, setConfirmButton] = React.useState({

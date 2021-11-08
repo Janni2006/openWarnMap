@@ -6,25 +6,23 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 
 import { closeMarkerPopup } from "../../../actions/mapActions";
 
-import { VerifiedUser, Warning, Close, ExpandMore } from "@material-ui/icons";
+import { VerifiedUser, Warning, Close, ExpandMore } from "@mui/icons-material";
 
-import {
-	Typography,
-	IconButton,
-	withWidth,
-	isWidthDown,
-	withStyles,
-	Divider,
-} from "@material-ui/core";
+import { Typography, IconButton, isWidthDown, Divider } from "@mui/material";
 
-import MuiAccordion from "@material-ui/core/Accordion";
-import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
+import withStyles from '@mui/styles/withStyles';
+
+import MuiAccordion from "@mui/material/Accordion";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import MuiAccordionDetails from "@mui/material/AccordionDetails";
 
 import Votes from "./Votes";
 
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
 import getDistance from "geolib/es/getDistance";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 //  Add details accordion
 
@@ -221,160 +219,158 @@ function MarkerPopup(props) {
 		setExpanded(newExpanded ? panel : false);
 	};
 
-	return (
-		<>
-			<AnimateSharedLayout>
-				<div
-					style={{
-						height: "50vh",
-						width: isWidthDown("sm", props.width) ? "calc(100% - 20px)" : "25%",
-						maxWidth: isWidthDown("sm", props.width) ? "100%" : "355px",
-						position: "fixed",
-						right: "10px",
-						top: "74px",
-						zIndex: zIndex,
-					}}
-				>
-					{props.open ? (
-						<motion.div
-							initial={false}
-							animate={{ visibility: "visible" }}
-							transition={spring}
-							layoutId="popup"
-							style={{
-								height: "calc(100% - 44px)",
-								width: "calc(100% - 44px)",
-								position: "relative",
-								zIndex: 9,
-								backgroundColor: "white",
-								borderRadius: "5px",
-								padding: "22px",
-							}}
-						>
-							<IconButton
-								style={{
-									position: "absolute",
-									right: "0px",
-									marginTop: "-22px",
-								}}
-								onClick={props.closeMarkerPopup}
-							>
-								<Close />
-							</IconButton>
-							<h2 style={{ margin: "0px" }}>{props.content.code}</h2>
-							<Typography
-								style={{
-									color: "#D5D5D5",
-									marginTop: "0px",
-									textAlign: "right",
-								}}
-							>
-								<FormattedRelativeTime
-									value={
-										(Date.now() - Date.parse(props.content.created)) * -0.001
-									}
-									numeric="auto"
-									updateIntervalInSeconds={1}
-								/>
-							</Typography>
-							{props.content.active ? (
-								<div style={{ display: "flex", alignItems: "center" }}>
-									<Warning style={{ color: "#CC1B29" }} />
-									<Typography
-										style={{
-											color: "#CC1B29",
-											display: "inline-block",
-											marginLeft: "5px",
-											fontWeight: "bolder",
-										}}
-									>
-										<FormattedMessage id="ACTIVE" />
-									</Typography>
-									<br />
-								</div>
-							) : null}
-							{props.content.verified ? (
-								<div style={{ display: "flex", alignItems: "center" }}>
-									<VerifiedUser style={{ color: "#387600" }} />
-									<Typography
-										style={{
-											color: "#387600",
-											display: "inline-block",
-											marginLeft: "5px",
-											fontWeight: "bolder",
-										}}
-									>
-										<FormattedMessage id="VERIFIED" />
-									</Typography>
-								</div>
-							) : null}
-							<Accordion
-								square
-								expanded={expanded === "details_panel"}
-								onChange={handleChange("details_panel")}
-							>
-								<AccordionSummary
-									expandIcon={<ExpandMore />}
-									aria-controls="details_panel-content"
-									id="details_panel-header"
-								>
-									Details
-									<Divider flexItem />
-								</AccordionSummary>
-								<AccordionDetails>
-									<div style={{ display: "block" }}>
-										<I18nHeight height={props.content.height} />
-										<I18nSize size={props.content.size} />
-										<I18nLocalization
-											localization={props.content.localization}
-										/>
-										{distance != null && props.gpsAvailable ? (
-											<Typography>
-												Distance:{" "}
-												{distance >= 1000
-													? Math.round(distance / 100) / 10
-													: distance}
-												{distance >= 1000 ? "km" : "m"}
-											</Typography>
-										) : null}
-									</div>
-								</AccordionDetails>
-							</Accordion>
+	return <>
+        <AnimateSharedLayout>
+            <div
+                style={{
+                    height: "50vh",
+                    width: isWidthDown("sm", props.width) ? "calc(100% - 20px)" : "25%",
+                    maxWidth: isWidthDown("sm", props.width) ? "100%" : "355px",
+                    position: "fixed",
+                    right: "10px",
+                    top: "74px",
+                    zIndex: zIndex,
+                }}
+            >
+                {props.open ? (
+                    <motion.div
+                        initial={false}
+                        animate={{ visibility: "visible" }}
+                        transition={spring}
+                        layoutId="popup"
+                        style={{
+                            height: "calc(100% - 44px)",
+                            width: "calc(100% - 44px)",
+                            position: "relative",
+                            zIndex: 9,
+                            backgroundColor: "white",
+                            borderRadius: "5px",
+                            padding: "22px",
+                        }}
+                    >
+                        <IconButton
+                            style={{
+                                position: "absolute",
+                                right: "0px",
+                                marginTop: "-22px",
+                            }}
+                            onClick={props.closeMarkerPopup}
+                            size="large">
+                            <Close />
+                        </IconButton>
+                        <h2 style={{ margin: "0px" }}>{props.content.code}</h2>
+                        <Typography
+                            style={{
+                                color: "#D5D5D5",
+                                marginTop: "0px",
+                                textAlign: "right",
+                            }}
+                        >
+                            <FormattedRelativeTime
+                                value={
+                                    (Date.now() - Date.parse(props.content.created)) * -0.001
+                                }
+                                numeric="auto"
+                                updateIntervalInSeconds={1}
+                            />
+                        </Typography>
+                        {props.content.active ? (
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                                <Warning style={{ color: "#CC1B29" }} />
+                                <Typography
+                                    style={{
+                                        color: "#CC1B29",
+                                        display: "inline-block",
+                                        marginLeft: "5px",
+                                        fontWeight: "bolder",
+                                    }}
+                                >
+                                    <FormattedMessage id="ACTIVE" />
+                                </Typography>
+                                <br />
+                            </div>
+                        ) : null}
+                        {props.content.verified ? (
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                                <VerifiedUser style={{ color: "#387600" }} />
+                                <Typography
+                                    style={{
+                                        color: "#387600",
+                                        display: "inline-block",
+                                        marginLeft: "5px",
+                                        fontWeight: "bolder",
+                                    }}
+                                >
+                                    <FormattedMessage id="VERIFIED" />
+                                </Typography>
+                            </div>
+                        ) : null}
+                        <Accordion
+                            square
+                            expanded={expanded === "details_panel"}
+                            onChange={handleChange("details_panel")}
+                        >
+                            <AccordionSummary
+                                expandIcon={<ExpandMore />}
+                                aria-controls="details_panel-content"
+                                id="details_panel-header"
+                            >
+                                Details
+                                <Divider flexItem />
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <div style={{ display: "block" }}>
+                                    <I18nHeight height={props.content.height} />
+                                    <I18nSize size={props.content.size} />
+                                    <I18nLocalization
+                                        localization={props.content.localization}
+                                    />
+                                    {distance != null && props.gpsAvailable ? (
+                                        <Typography>
+                                            Distance:{" "}
+                                            {distance >= 1000
+                                                ? Math.round(distance / 100) / 10
+                                                : distance}
+                                            {distance >= 1000 ? "km" : "m"}
+                                        </Typography>
+                                    ) : null}
+                                </div>
+                            </AccordionDetails>
+                        </Accordion>
 
-							<Votes />
-						</motion.div>
-					) : (
-						<motion.div
-							animate={false}
-							transition={spring}
-							layoutId="popup"
-							style={{
-								height: "calc(100% - 44px)",
-								width: "calc(100% - 44px)",
-								position: "relative",
-								zIndex: 9,
-								backgroundColor: "white",
-								borderRadius: "5px",
-								padding: "22px",
-								marginLeft: "150%",
-							}}
-						>
-							<IconButton
-								style={{
-									position: "absolute",
-									right: "0px",
-									marginTop: "-22px",
-								}}
-								onClick={props.closeMarkerPopup}
-							>
-								<Close />
-							</IconButton>
-						</motion.div>
-					)}
-				</div>
-			</AnimateSharedLayout>
-		</>
-	);
+                        <Votes />
+                    </motion.div>
+                ) : (
+                    <motion.div
+                        animate={false}
+                        transition={spring}
+                        layoutId="popup"
+                        style={{
+                            height: "calc(100% - 44px)",
+                            width: "calc(100% - 44px)",
+                            position: "relative",
+                            zIndex: 9,
+                            backgroundColor: "white",
+                            borderRadius: "5px",
+                            padding: "22px",
+                            marginLeft: "150%",
+                        }}
+                    >
+                        <IconButton
+                            style={{
+                                position: "absolute",
+                                right: "0px",
+                                marginTop: "-22px",
+                            }}
+                            onClick={props.closeMarkerPopup}
+                            size="large">
+                            <Close />
+                        </IconButton>
+                    </motion.div>
+                )}
+            </div>
+        </AnimateSharedLayout>
+    </>;
 }
 
 MarkerPopup.propTypes = {

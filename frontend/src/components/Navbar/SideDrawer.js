@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { Drawer, IconButton, List, ListItem, Divider } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { Menu, Close } from "@material-ui/icons";
+import { Drawer, IconButton, List, ListItem, Divider } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { Menu, Close } from "@mui/icons-material";
 import { useState } from "react";
 
 import { FormattedMessage } from "react-intl";
@@ -46,9 +46,9 @@ function SideDrawer(props) {
 
 	function sideDrawerList(authenticated, progress) {
 		return (
-			<div className={classes.list} role="presentation">
+            <div className={classes.list} role="presentation">
 				<div style={{ display: "flex", justifyContent: "flex-end" }}>
-					<IconButton onClick={toggleDrawer(false)}>
+					<IconButton onClick={toggleDrawer(false)} size="large">
 						<Close fontSize="large" style={{ color: "white" }} />
 					</IconButton>
 				</div>
@@ -154,12 +154,12 @@ function SideDrawer(props) {
 					) : null}
 				</List>
 			</div>
-		);
+        );
 	}
 
 	return (
-		<React.Fragment>
-			<IconButton edge="start" aria-label="menu" onClick={toggleDrawer(true)}>
+        <React.Fragment>
+			<IconButton edge="start" aria-label="menu" onClick={toggleDrawer(true)} size="large">
 				<Menu fontSize="large" style={{ color: `white` }} />
 			</IconButton>
 
@@ -172,7 +172,7 @@ function SideDrawer(props) {
 				{sideDrawerList(isAuthenticated, progress)}
 			</Drawer>
 		</React.Fragment>
-	);
+    );
 }
 
 SideDrawer.propTypes = {

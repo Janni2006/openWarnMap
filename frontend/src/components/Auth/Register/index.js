@@ -3,14 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import {
-	withWidth,
-	Step,
-	Stepper,
-	StepLabel,
-	StepContent,
-	CircularProgress,
-} from "@material-ui/core";
+import { Step, Stepper, StepLabel, StepContent, CircularProgress } from "@mui/material";
 
 import AuthWrapper from "../AuthWrapper";
 import StepWrapper from "./StepWrapper";
@@ -27,6 +20,9 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import InputField from "../../InputField";
 import axios from "axios";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 function Register(props) {
 	const [passwordScore, setPasswordScore] = React.useState(0);

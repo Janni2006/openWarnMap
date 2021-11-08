@@ -6,9 +6,12 @@ import { openMarkerPopup } from "../../actions/mapActions";
 
 import { Marker, Popup } from "react-leaflet";
 
-import { withWidth, isWidthUp } from "@material-ui/core";
+import { isWidthUp } from "@mui/material";
 
 import MobilePopup from "./PopUp/Mobile";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 function MapMarker(props) {
 	return (

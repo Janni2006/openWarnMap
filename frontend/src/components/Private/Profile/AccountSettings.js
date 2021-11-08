@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setTitle } from "../../../actions/generalActions";
 
-import { Grid, Button, Paper, Typography } from "@material-ui/core";
+import { Grid, Button, Paper, Typography } from "@mui/material";
 
 import {
 	FormattedMessage,

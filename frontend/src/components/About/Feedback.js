@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 
 import {
 	Typography,
@@ -10,7 +10,7 @@ import {
 	DialogTitle,
 	DialogActions,
 	Grid,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import { useIntl, FormattedMessage } from "react-intl";
 

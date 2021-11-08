@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setTitle } from "../actions/generalActions";
 
-import { Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography } from "@mui/material";
 
 function PublicProfile(props) {
 	const [username, setUsername] = React.useState("");

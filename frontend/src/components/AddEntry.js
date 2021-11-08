@@ -5,21 +5,13 @@ import { setTitle } from "../actions/generalActions";
 
 import "leaflet/dist/leaflet.css";
 
-import {
-	Typography,
-	withWidth,
-	isWidthDown,
-	makeStyles,
-	Grid,
-	Paper,
-	Button,
-	Backdrop,
-	CircularProgress,
-} from "@material-ui/core";
+import { Typography, isWidthDown, Grid, Paper, Button, Backdrop, CircularProgress } from "@mui/material";
+
+import makeStyles from '@mui/styles/makeStyles';
 
 import { toast } from "react-toastify";
 
-import { Warning, Add, MyLocation, CheckCircle } from "@material-ui/icons";
+import { Warning, Add, MyLocation, CheckCircle } from "@mui/icons-material";
 
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 
@@ -35,6 +27,9 @@ import {
 	FormattedDate,
 	FormattedTime,
 } from "react-intl";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 const useStyles = makeStyles((theme) => ({
 	root: {

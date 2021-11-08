@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 
 import {
 	Card,
@@ -12,7 +12,7 @@ import {
 	Dialog,
 	DialogTitle,
 	DialogActions,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import "./input.css";
 

@@ -7,13 +7,16 @@ import { useMapEvents, Popup } from "react-leaflet";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
 import "leaflet-defaulticon-compatibility";
 
-import { withWidth, isWidthUp, Button, isWidthDown } from "@material-ui/core";
+import { isWidthUp, Button, isWidthDown } from "@mui/material";
 
 import { Link } from "react-router-dom";
 
-import { Add } from "@material-ui/icons";
+import { Add } from "@mui/icons-material";
 
 import { FormattedMessage } from "react-intl";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 function MapClick(props) {
 	const [key, setKey] = React.useState(0);

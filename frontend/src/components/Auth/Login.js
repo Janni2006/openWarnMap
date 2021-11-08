@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-import { Button, withWidth } from "@material-ui/core";
+import { Button } from "@mui/material";
 
 import AuthWrapper from "./AuthWrapper";
 
@@ -18,6 +18,9 @@ import SubmitButton from "../SubmitButton";
 import ResetPasswordDialog from "./ResetPasswordDialog";
 
 import InputField from "../InputField";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 function Login(props) {
 	const [input, setInput] = React.useState({ username: "", password: "" });

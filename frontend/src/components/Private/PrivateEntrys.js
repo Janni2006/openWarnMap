@@ -8,9 +8,10 @@ import {
 } from "../../actions/privateActions";
 import { Link, withRouter, useLocation, useHistory } from "react-router-dom";
 
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
 
-import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import Breadcrumbs from "../Breadcrumbs";
 
@@ -27,16 +28,16 @@ import {
 	Divider,
 	Hidden,
 	Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
-import { Skeleton } from "@material-ui/lab";
+import { Skeleton } from '@mui/material';
 
 import "leaflet/dist/leaflet.css";
-import ListIcon from "@material-ui/icons/List";
-import ViewComfyIcon from "@material-ui/icons/ViewComfy";
-import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
+import ListIcon from "@mui/icons-material/List";
+import ViewComfyIcon from "@mui/icons-material/ViewComfy";
+import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
 
-import Badge from "@material-ui/core/Badge";
+import Badge from "@mui/material/Badge";
 import Select from "react-select";
 
 import { FormattedMessage, useIntl } from "react-intl";
@@ -74,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
 			padding: "10px 0px",
 			marginBottom: "2.55px",
 		},
-		[theme.breakpoints.down("xs")]: {
+		[theme.breakpoints.down('md')]: {
 			flex: "1 0 100%",
 			maxWidth: "calc(100% - 30px)",
 			padding: "10px 0px",
@@ -199,7 +200,7 @@ function PrivateEntrys(props) {
 	}, [listType]);
 
 	return (
-		<div
+        <div
 			style={{
 				padding: "10px 15px 0px 15px",
 				maxWidth: "1300px",
@@ -355,7 +356,7 @@ function PrivateEntrys(props) {
 											style={{ background: "transparent" }}
 										>
 											<Skeleton
-												variant="rect"
+												variant="rectangular"
 												animation="wave"
 												height="100%"
 												width="100%"
@@ -369,7 +370,7 @@ function PrivateEntrys(props) {
 				</Grid>
 			</Grid>
 		</div>
-	);
+    );
 }
 
 PrivateEntrys.propTypes = {

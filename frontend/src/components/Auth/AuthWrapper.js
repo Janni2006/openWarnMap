@@ -1,16 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {
-	Grid,
-	Card,
-	Hidden,
-	Typography,
-	withWidth,
-	isWidthUp,
-} from "@material-ui/core";
+import { Grid, Card, Hidden, Typography, isWidthUp } from "@mui/material";
 
 import { FormattedMessage } from "react-intl";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 function AuthWrapper(props) {
 	const [cardHeight, setCardHeight] = React.useState(0);
@@ -23,7 +19,7 @@ function AuthWrapper(props) {
 	}, [cardRef]);
 
 	return (
-		<div
+        <div
 			style={{
 				width: "100%",
 				minHeight: "calc(100vh - 90px)",
@@ -43,7 +39,7 @@ function AuthWrapper(props) {
 				}}
 			>
 				<Grid container>
-					<Hidden smDown>
+					<Hidden lgDown>
 						<Grid
 							item
 							md={5}
@@ -119,7 +115,7 @@ function AuthWrapper(props) {
 				</Grid>
 			</Card>
 		</div>
-	);
+    );
 }
 
 AuthWrapper.propTypes = {

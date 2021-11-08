@@ -3,14 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import {
-	Grid,
-	Card,
-	Hidden,
-	Typography,
-	withWidth,
-	isWidthUp,
-} from "@material-ui/core";
+import { Grid, Card, Hidden, Typography, isWidthUp } from "@mui/material";
 
 import { register } from "../../actions/authActions";
 import { setTitle } from "../../actions/generalActions";
@@ -27,6 +20,9 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 
 import SubmitButton from "../SubmitButton";
 import axios from "axios";
+
+// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
+const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
 
 function Register(props) {
 	const [passwordScore, setPasswordScore] = React.useState(0);

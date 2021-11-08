@@ -5,17 +5,13 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setTitle } from "../../../actions/generalActions";
 
-import {
-	Grid,
-	Button,
-	Paper,
-	makeStyles,
-	CircularProgress,
-} from "@material-ui/core";
+import { Grid, Button, Paper, CircularProgress } from "@mui/material";
+
+import makeStyles from '@mui/styles/makeStyles';
 
 import { motion, AnimateSharedLayout } from "framer-motion";
 
-import { green, red } from "@material-ui/core/colors";
+import { green, red } from "@mui/material/colors";
 
 import { toast } from "react-toastify";
 
