@@ -3,9 +3,17 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setTitle } from "../../actions/generalActions";
 
-import { Grid, Paper, Typography, Button, Hidden, isWidthDown } from "@mui/material";
+import {
+	Grid,
+	Paper,
+	Typography,
+	Button,
+	Hidden,
+	useTheme,
+	useMediaQuery,
+} from "@mui/material";
 
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 import { Link } from "react-router-dom";
 
@@ -26,7 +34,8 @@ import { FormattedMessage } from "react-intl";
 import Feedback from "./Feedback";
 
 // FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
+const withWidth = () => (WrappedComponent) => (props) =>
+	<WrappedComponent {...props} width="xs" />;
 
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
@@ -130,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
 	buttonWrapper: {
 		display: "flex",
 
-		[theme.breakpoints.down('lg')]: {
+		[theme.breakpoints.down("lg")]: {
 			justifyContent: "center",
 			padding: "25px 0px 0px 0px",
 		},
@@ -147,7 +156,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: "6px 18px",
 		color: "white",
 		fontSize: "16px",
-		[theme.breakpoints.down('lg')]: {
+		[theme.breakpoints.down("lg")]: {
 			// transform: "translate(-50%, 0%)",
 			// left: "50%",
 			// bottom: "25px",
@@ -176,7 +185,7 @@ const useStyles = makeStyles((theme) => ({
 		transform: "translate(0%, -50%)",
 		lineHeight: 0.9,
 
-		[theme.breakpoints.down('lg')]: {
+		[theme.breakpoints.down("lg")]: {
 			fontSize: "27.5px",
 		},
 		[theme.breakpoints.up("md")]: {
@@ -196,7 +205,7 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: "800",
 		transform: "translate(0%, -50%)",
 
-		[theme.breakpoints.down('lg')]: {
+		[theme.breakpoints.down("lg")]: {
 			display: "none",
 		},
 		[theme.breakpoints.only("md")]: {
@@ -227,6 +236,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function About(props) {
+	const theme = useTheme();
 	const classes = useStyles();
 	const [feedbackOpen, setFeedbackOpen] = React.useState(false);
 
@@ -237,440 +247,445 @@ function About(props) {
 		};
 	}, []);
 
-	return <>
-        <div className={classes.wrapper}>
-            <div className={classes.background}>
-                <div
-                    style={{
-                        backgroundColor: "#378d40",
-                        width: "100%",
-                        height: "102.5vh",
-                        marginBottom: "-10px",
-                    }}
-                ></div>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                    <path
-                        fill="#378d40"
-                        fillOpacity={1}
-                        d="M0,224L60,234.7C120,245,240,267,360,240C480,213,600,139,720,117.3C840,96,960,128,1080,128C1200,128,1320,96,1380,80L1440,64L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
-                    ></path>
-                </svg>
-            </div>
-            <div className={classes.foreground}>
-                <section className={classes.section1}>
-                    <div className={classes.section1Content}>
-                        <Grid container spacing={isWidthDown("sm", props.width) ? 0 : 6}>
-                            <Grid item xs={12} md={6}>
-                                <Typography className={classes.title}>
-                                    <FormattedMessage id="ABOUT_TITLE" />
-                                </Typography>
-                                <Typography className={classes.description}>
-                                    <FormattedMessage id="ABOUT_DESCRIPTION" />
-                                </Typography>
-                                <div className={classes.buttonWrapper}>
-                                    <Link to="/" style={{ textDecoration: "none" }}>
-                                        <Button
-                                            endIcon={<PlayCircleOutlineIcon />}
-                                            className={classes.button}
-                                        >
-                                            <FormattedMessage id="GET_STARTED" />
-                                        </Button>
-                                    </Link>
-                                </div>
-                            </Grid>
-                            <Hidden lgDown>
-                                <Grid item md={6} style={{ position: "relative" }}>
-                                    <img src={openSource} className={classes.img} />
-                                </Grid>
-                            </Hidden>
-                        </Grid>
-                    </div>
-                </section>
+	return (
+		<>
+			<div className={classes.wrapper}>
+				<div className={classes.background}>
+					<div
+						style={{
+							backgroundColor: "#378d40",
+							width: "100%",
+							height: "102.5vh",
+							marginBottom: "-10px",
+						}}
+					></div>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+						<path
+							fill="#378d40"
+							fillOpacity={1}
+							d="M0,224L60,234.7C120,245,240,267,360,240C480,213,600,139,720,117.3C840,96,960,128,1080,128C1200,128,1320,96,1380,80L1440,64L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
+						></path>
+					</svg>
+				</div>
+				<div className={classes.foreground}>
+					<section className={classes.section1}>
+						<div className={classes.section1Content}>
+							<Grid
+								container
+								spacing={useMediaQuery(theme.breakpoints.down("sm")) ? 0 : 6}
+							>
+								<Grid item xs={12} md={6}>
+									<Typography className={classes.title}>
+										<FormattedMessage id="ABOUT_TITLE" />
+									</Typography>
+									<Typography className={classes.description}>
+										<FormattedMessage id="ABOUT_DESCRIPTION" />
+									</Typography>
+									<div className={classes.buttonWrapper}>
+										<Link to="/" style={{ textDecoration: "none" }}>
+											<Button
+												endIcon={<PlayCircleOutlineIcon />}
+												className={classes.button}
+											>
+												<FormattedMessage id="GET_STARTED" />
+											</Button>
+										</Link>
+									</div>
+								</Grid>
+								<Hidden lgDown>
+									<Grid item md={6} style={{ position: "relative" }}>
+										<img src={openSource} className={classes.img} />
+									</Grid>
+								</Hidden>
+							</Grid>
+						</div>
+					</section>
 
-                <section className={classes.section}>
-                    <div className={classes.sectionTitle}>
-                        <Typography className={classes.sectionFirstTitle}>
-                            <FormattedMessage id="ABOUT_SECTION_WHY_1TITLE" />
-                        </Typography>
-                        <Typography className={classes.sectionScondTitle}>
-                            <FormattedMessage id="ABOUT_SECTION_WHY_2TITLE" />
-                        </Typography>
-                    </div>
-                    <div className={classes.sectionContent}>
-                        <Grid container spacing={4} style={{ justifyContent: "center" }}>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <Paper className={classes.sectionCard}>
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            marginBottom: "10px",
-                                        }}
-                                    >
-                                        <MoneyOffIcon
-                                            style={{ color: "#378d40", fontSize: "36px" }}
-                                        />
-                                    </div>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            fontWeight: "bold",
-                                            color: "#3f3f3f",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_WHY_1_TITLE" />
-                                    </Typography>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            color: "#444444",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_WHY_1_CONTENT" />
-                                    </Typography>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <Paper className={classes.sectionCard}>
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            marginBottom: "10px",
-                                        }}
-                                    >
-                                        <PlaceIcon
-                                            style={{ color: "#378d40", fontSize: "36px" }}
-                                        />
-                                    </div>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            fontWeight: "bold",
-                                            color: "#3f3f3f",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_WHY_2_TITLE" />
-                                    </Typography>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            color: "#444444",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_WHY_2_CONTENT" />
-                                    </Typography>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <Paper className={classes.sectionCard}>
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            marginBottom: "10px",
-                                        }}
-                                    >
-                                        <CheckCircleOutlineIcon
-                                            style={{ color: "#378d40", fontSize: "36px" }}
-                                        />
-                                    </div>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            fontWeight: "bold",
-                                            color: "#3f3f3f",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_WHY_3_TITLE" />
-                                    </Typography>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            color: "#444444",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_WHY_3_CONTENT" />
-                                    </Typography>
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </section>
+					<section className={classes.section}>
+						<div className={classes.sectionTitle}>
+							<Typography className={classes.sectionFirstTitle}>
+								<FormattedMessage id="ABOUT_SECTION_WHY_1TITLE" />
+							</Typography>
+							<Typography className={classes.sectionScondTitle}>
+								<FormattedMessage id="ABOUT_SECTION_WHY_2TITLE" />
+							</Typography>
+						</div>
+						<div className={classes.sectionContent}>
+							<Grid container spacing={4} style={{ justifyContent: "center" }}>
+								<Grid item xs={12} sm={6} md={4}>
+									<Paper className={classes.sectionCard}>
+										<div
+											style={{
+												width: "100%",
+												display: "flex",
+												justifyContent: "center",
+												marginBottom: "10px",
+											}}
+										>
+											<MoneyOffIcon
+												style={{ color: "#378d40", fontSize: "36px" }}
+											/>
+										</div>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "#3f3f3f",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_1_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												color: "#444444",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_1_CONTENT" />
+										</Typography>
+									</Paper>
+								</Grid>
+								<Grid item xs={12} sm={6} md={4}>
+									<Paper className={classes.sectionCard}>
+										<div
+											style={{
+												width: "100%",
+												display: "flex",
+												justifyContent: "center",
+												marginBottom: "10px",
+											}}
+										>
+											<PlaceIcon
+												style={{ color: "#378d40", fontSize: "36px" }}
+											/>
+										</div>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "#3f3f3f",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_2_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												color: "#444444",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_2_CONTENT" />
+										</Typography>
+									</Paper>
+								</Grid>
+								<Grid item xs={12} sm={6} md={4}>
+									<Paper className={classes.sectionCard}>
+										<div
+											style={{
+												width: "100%",
+												display: "flex",
+												justifyContent: "center",
+												marginBottom: "10px",
+											}}
+										>
+											<CheckCircleOutlineIcon
+												style={{ color: "#378d40", fontSize: "36px" }}
+											/>
+										</div>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "#3f3f3f",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_3_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												color: "#444444",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_WHY_3_CONTENT" />
+										</Typography>
+									</Paper>
+								</Grid>
+							</Grid>
+						</div>
+					</section>
 
-                <section className={classes.section}>
-                    <div className={classes.sectionTitle}>
-                        <Typography className={classes.sectionFirstTitle}>
-                            <FormattedMessage id="ABOUT_SECTION_FEATURES_1TITLE" />
-                        </Typography>
-                        <Typography className={classes.sectionScondTitle}>
-                            <FormattedMessage id="ABOUT_SECTION_FEATURES_2TITLE" />
-                        </Typography>
-                    </div>
-                    <div className={classes.sectionContent}>
-                        <Grid container spacing={4} style={{ justifyContent: "center" }}>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <Paper className={classes.sectionCard}>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            fontWeight: "bold",
-                                            color: "#3f3f3f",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_FEATURES_1_TITLE" />
-                                    </Typography>
-                                    <Typography
-                                        style={{
-                                            padding: "8px 16px",
-                                            textAlign: "center",
-                                            width: "calc(100% - 40px)",
-                                            backgroundColor: "#ff837e",
-                                            color: "white",
-                                            borderRadius: "10px",
-                                            border: "2.5px solid #ff3a32",
-                                            marginBottom: "10px",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_FEATURES_UPCOMMING" />
-                                    </Typography>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            color: "#444444",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_FEATURES_1_CONTENT" />
-                                    </Typography>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <Paper className={classes.sectionCard}>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            fontWeight: "bold",
-                                            color: "#3f3f3f",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_FEATURES_2_TITLE" />
-                                    </Typography>
-                                    <Typography
-                                        style={{
-                                            padding: "8px 16px",
-                                            textAlign: "center",
-                                            width: "calc(100% - 40px)",
-                                            backgroundColor: "#ff837e",
-                                            color: "white",
-                                            borderRadius: "10px",
-                                            border: "2.5px solid #ff3a32",
-                                            marginBottom: "10px",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_FEATURES_UPCOMMING" />
-                                    </Typography>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            color: "#444444",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_FEATURES_2_CONTENT" />
-                                    </Typography>
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </section>
+					<section className={classes.section}>
+						<div className={classes.sectionTitle}>
+							<Typography className={classes.sectionFirstTitle}>
+								<FormattedMessage id="ABOUT_SECTION_FEATURES_1TITLE" />
+							</Typography>
+							<Typography className={classes.sectionScondTitle}>
+								<FormattedMessage id="ABOUT_SECTION_FEATURES_2TITLE" />
+							</Typography>
+						</div>
+						<div className={classes.sectionContent}>
+							<Grid container spacing={4} style={{ justifyContent: "center" }}>
+								<Grid item xs={12} sm={6} md={4}>
+									<Paper className={classes.sectionCard}>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "#3f3f3f",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_1_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												padding: "8px 16px",
+												textAlign: "center",
+												width: "calc(100% - 40px)",
+												backgroundColor: "#ff837e",
+												color: "white",
+												borderRadius: "10px",
+												border: "2.5px solid #ff3a32",
+												marginBottom: "10px",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_UPCOMMING" />
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												color: "#444444",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_1_CONTENT" />
+										</Typography>
+									</Paper>
+								</Grid>
+								<Grid item xs={12} sm={6} md={4}>
+									<Paper className={classes.sectionCard}>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "#3f3f3f",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_2_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												padding: "8px 16px",
+												textAlign: "center",
+												width: "calc(100% - 40px)",
+												backgroundColor: "#ff837e",
+												color: "white",
+												borderRadius: "10px",
+												border: "2.5px solid #ff3a32",
+												marginBottom: "10px",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_UPCOMMING" />
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												color: "#444444",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_FEATURES_2_CONTENT" />
+										</Typography>
+									</Paper>
+								</Grid>
+							</Grid>
+						</div>
+					</section>
 
-                <section className={classes.section}>
-                    <div className={classes.sectionTitle}>
-                        <Typography className={classes.sectionFirstTitle}>
-                            <FormattedMessage id="ABOUT_SECTION_SUPPORT_1TITLE" />
-                        </Typography>
-                        <Typography className={classes.sectionScondTitle}>
-                            <FormattedMessage id="ABOUT_SECTION_SUPPORT_2TITLE" />
-                        </Typography>
-                    </div>
-                    <div className={classes.sectionContent}>
-                        <Grid container spacing={4} style={{ justifyContent: "center" }}>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <Paper className={classes.sectionCard}>
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            marginBottom: "10px",
-                                        }}
-                                    >
-                                        <FeedbackOutlinedIcon
-                                            style={{ color: "#378d40", fontSize: "36px" }}
-                                        />
-                                    </div>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            fontWeight: "bold",
-                                            color: "#3f3f3f",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_SUPPORT_1_TITLE" />
-                                    </Typography>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            color: "#444444",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_SUPPORT_1_CONTENT" />
-                                    </Typography>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            marginTop: "15px",
-                                        }}
-                                    >
-                                        <Button
-                                            variant="outlined"
-                                            style={{ borderRadius: "18px" }}
-                                            onClick={() => setFeedbackOpen(true)}
-                                        >
-                                            Feedback
-                                        </Button>
-                                    </div>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <Paper className={classes.sectionCard}>
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            marginBottom: "10px",
-                                        }}
-                                    >
-                                        <MonetizationOnOutlinedIcon
-                                            style={{
-                                                color: "#378d40",
-                                                fontSize: "36px",
-                                            }}
-                                        />
-                                    </div>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            fontWeight: "bold",
-                                            color: "#3f3f3f",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_SUPPORT_2_TITLE" />
-                                    </Typography>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            color: "#444444",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_SUPPORT_2_CONTENT" />
-                                    </Typography>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            marginTop: "15px",
-                                        }}
-                                    >
-                                        <Button
-                                            variant="outlined"
-                                            style={{ borderRadius: "18px" }}
-                                        >
-                                            Buy me a coffee!
-                                        </Button>
-                                    </div>
-                                </Paper>
-                            </Grid>
-                            <Grid item xs={12} sm={6} md={4}>
-                                <Paper className={classes.sectionCard}>
-                                    <div
-                                        style={{
-                                            width: "100%",
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            marginBottom: "10px",
-                                        }}
-                                    >
-                                        <GitHubIcon
-                                            style={{ color: "#378d40", fontSize: "36px" }}
-                                        />
-                                    </div>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            fontWeight: "bold",
-                                            color: "#3f3f3f",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_SUPPORT_3_TITLE" />
-                                    </Typography>
-                                    <Typography
-                                        style={{
-                                            width: "100%",
-                                            textAlign: "center",
-                                            color: "#444444",
-                                        }}
-                                    >
-                                        <FormattedMessage id="ABOUT_SECTION_SUPPORT_3_CONTENT" />
-                                    </Typography>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            justifyContent: "center",
-                                            marginTop: "15px",
-                                        }}
-                                    >
-                                        <a
-                                            href="https://github.com/Janni2006/openWarnMap"
-                                            target="_blank"
-                                            style={{ textDecoration: "none" }}
-                                        >
-                                            <Button
-                                                variant="outlined"
-                                                style={{ borderRadius: "18px" }}
-                                            >
-                                                GitHub
-                                            </Button>
-                                        </a>
-                                    </div>
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                    </div>
-                </section>
-            </div>
-        </div>
-        <Feedback open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
-    </>;
+					<section className={classes.section}>
+						<div className={classes.sectionTitle}>
+							<Typography className={classes.sectionFirstTitle}>
+								<FormattedMessage id="ABOUT_SECTION_SUPPORT_1TITLE" />
+							</Typography>
+							<Typography className={classes.sectionScondTitle}>
+								<FormattedMessage id="ABOUT_SECTION_SUPPORT_2TITLE" />
+							</Typography>
+						</div>
+						<div className={classes.sectionContent}>
+							<Grid container spacing={4} style={{ justifyContent: "center" }}>
+								<Grid item xs={12} sm={6} md={4}>
+									<Paper className={classes.sectionCard}>
+										<div
+											style={{
+												width: "100%",
+												display: "flex",
+												justifyContent: "center",
+												marginBottom: "10px",
+											}}
+										>
+											<FeedbackOutlinedIcon
+												style={{ color: "#378d40", fontSize: "36px" }}
+											/>
+										</div>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "#3f3f3f",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_SUPPORT_1_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												color: "#444444",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_SUPPORT_1_CONTENT" />
+										</Typography>
+										<div
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												marginTop: "15px",
+											}}
+										>
+											<Button
+												variant="outlined"
+												style={{ borderRadius: "18px" }}
+												onClick={() => setFeedbackOpen(true)}
+											>
+												Feedback
+											</Button>
+										</div>
+									</Paper>
+								</Grid>
+								<Grid item xs={12} sm={6} md={4}>
+									<Paper className={classes.sectionCard}>
+										<div
+											style={{
+												width: "100%",
+												display: "flex",
+												justifyContent: "center",
+												marginBottom: "10px",
+											}}
+										>
+											<MonetizationOnOutlinedIcon
+												style={{
+													color: "#378d40",
+													fontSize: "36px",
+												}}
+											/>
+										</div>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "#3f3f3f",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_SUPPORT_2_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												color: "#444444",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_SUPPORT_2_CONTENT" />
+										</Typography>
+										<div
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												marginTop: "15px",
+											}}
+										>
+											<Button
+												variant="outlined"
+												style={{ borderRadius: "18px" }}
+											>
+												Buy me a coffee!
+											</Button>
+										</div>
+									</Paper>
+								</Grid>
+								<Grid item xs={12} sm={6} md={4}>
+									<Paper className={classes.sectionCard}>
+										<div
+											style={{
+												width: "100%",
+												display: "flex",
+												justifyContent: "center",
+												marginBottom: "10px",
+											}}
+										>
+											<GitHubIcon
+												style={{ color: "#378d40", fontSize: "36px" }}
+											/>
+										</div>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												fontWeight: "bold",
+												color: "#3f3f3f",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_SUPPORT_3_TITLE" />
+										</Typography>
+										<Typography
+											style={{
+												width: "100%",
+												textAlign: "center",
+												color: "#444444",
+											}}
+										>
+											<FormattedMessage id="ABOUT_SECTION_SUPPORT_3_CONTENT" />
+										</Typography>
+										<div
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												marginTop: "15px",
+											}}
+										>
+											<a
+												href="https://github.com/Janni2006/openWarnMap"
+												target="_blank"
+												style={{ textDecoration: "none" }}
+											>
+												<Button
+													variant="outlined"
+													style={{ borderRadius: "18px" }}
+												>
+													GitHub
+												</Button>
+											</a>
+										</div>
+									</Paper>
+								</Grid>
+							</Grid>
+						</div>
+					</section>
+				</div>
+			</div>
+			<Feedback open={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
+		</>
+	);
 }
 
 About.propTypes = {

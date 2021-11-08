@@ -1,14 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { Grid, Card, Hidden, Typography, isWidthUp } from "@mui/material";
+import {
+	Grid,
+	Card,
+	Hidden,
+	Typography,
+	useMediaQuery,
+	useTheme,
+} from "@mui/material";
 
 import { FormattedMessage } from "react-intl";
 
 // FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
+const withWidth = () => (WrappedComponent) => (props) =>
+	<WrappedComponent {...props} width="xs" />;
 
 function AuthWrapper(props) {
+	const theme = useTheme();
 	const [cardHeight, setCardHeight] = React.useState(0);
 	const cardRef = React.useRef(null);
 
@@ -19,7 +28,7 @@ function AuthWrapper(props) {
 	}, [cardRef]);
 
 	return (
-        <div
+		<div
 			style={{
 				width: "100%",
 				minHeight: "calc(100vh - 90px)",
@@ -68,7 +77,9 @@ function AuthWrapper(props) {
 										fontFamily: "sans-serif",
 										color: "white",
 										fontWeight: "300",
-										fontSize: isWidthUp("lg", props.width) ? "25px" : "20px",
+										fontSize: useMediaQuery(theme.breakpoints.up("lg"))
+											? "25px"
+											: "20px",
 									}}
 								>
 									<FormattedMessage id="AUTH_TITLE" />
@@ -80,7 +91,9 @@ function AuthWrapper(props) {
 										fontFamily: "sans-serif",
 										color: "white",
 										fontWeight: "300",
-										fontSize: isWidthUp("lg", props.width) ? "50px" : "40px",
+										fontSize: useMediaQuery(theme.breakpoints.up("lg"))
+											? "50px"
+											: "40px",
 										margin: "0px",
 									}}
 								>
@@ -93,7 +106,9 @@ function AuthWrapper(props) {
 										fontFamily: "sans-serif",
 										color: "white",
 										fontWeight: "300",
-										fontSize: isWidthUp("lg", props.width) ? "16.5px" : "14px",
+										fontSize: useMediaQuery(theme.breakpoints.up("lg"))
+											? "16.5px"
+											: "14px",
 										marginTop: "50px",
 									}}
 								>
@@ -115,7 +130,7 @@ function AuthWrapper(props) {
 				</Grid>
 			</Card>
 		</div>
-    );
+	);
 }
 
 AuthWrapper.propTypes = {

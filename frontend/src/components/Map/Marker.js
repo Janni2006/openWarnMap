@@ -4,23 +4,27 @@ import { connect } from "react-redux";
 
 import { openMarkerPopup } from "../../actions/mapActions";
 
-import { Marker, Popup } from "react-leaflet";
+import { Marker } from "react-leaflet";
 
-import { isWidthUp } from "@mui/material";
+import { useTheme } from "@mui/material";
+
+import { useMediaQuery } from "@mui/material";
 
 import MobilePopup from "./PopUp/Mobile";
 
 // FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
+const withWidth = () => (WrappedComponent) => (props) =>
+	<WrappedComponent {...props} width="xs" />;
 
 function MapMarker(props) {
+	const theme = useTheme();
 	return (
 		<Marker
 			position={[props.item.gps_coords[1], props.item.gps_coords[0]]}
 			key={props.item.code}
 			eventHandlers={{
 				click: () => {
-					if (isWidthUp("md", props.width)) {
+					if (useMediaQuery(theme.breakpoints.up("md"))) {
 						props.openMarkerPopup(props.item);
 					}
 				},

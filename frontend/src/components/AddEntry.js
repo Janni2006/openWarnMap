@@ -5,9 +5,19 @@ import { setTitle } from "../actions/generalActions";
 
 import "leaflet/dist/leaflet.css";
 
-import { Typography, isWidthDown, Grid, Paper, Button, Backdrop, CircularProgress } from "@mui/material";
+import {
+	Typography,
+	isWidthDown,
+	Grid,
+	Paper,
+	Button,
+	Backdrop,
+	CircularProgress,
+	useMediaQuery,
+	useTheme,
+} from "@mui/material";
 
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
 import { toast } from "react-toastify";
 
@@ -29,7 +39,8 @@ import {
 } from "react-intl";
 
 // FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
+const withWidth = () => (WrappedComponent) => (props) =>
+	<WrappedComponent {...props} width="xs" />;
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -53,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AddEntry(props) {
+	const theme = useTheme();
 	const classes = useStyles();
 	const intl = useIntl();
 
@@ -306,7 +318,7 @@ function AddEntry(props) {
 						<Paper
 							style={{
 								width: "100%",
-								height: isWidthDown("sm", props.width)
+								height: useMediaQuery(theme.breakpoints.down("sm"))
 									? "50vh"
 									: "calc(100vh - 134px)",
 								backgroundColor: "white",
@@ -323,7 +335,7 @@ function AddEntry(props) {
 								trackResize={false}
 								zoomControl={false}
 								style={{
-									height: isWidthDown("sm", props.width)
+									height: useMediaQuery(theme.breakpoints.down("sm"))
 										? "50vh"
 										: "calc(100vh - 134px)",
 									width: "100%",

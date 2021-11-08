@@ -15,7 +15,7 @@ import {
 	InfoOutlined,
 } from "@mui/icons-material";
 
-import { Button, isWidthDown, Typography } from "@mui/material";
+import { Button, Typography, useMediaQuery } from "@mui/material";
 
 import Select from "react-select";
 
@@ -25,10 +25,14 @@ import axios from "axios";
 
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { useTheme } from "@mui/material";
+
 // FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
+const withWidth = () => (WrappedComponent) => (props) =>
+	<WrappedComponent {...props} width="xs" />;
 
 function Votes(props) {
+	const theme = useTheme();
 	const [confirmButton, setConfirmButton] = React.useState({
 		hover: false,
 		selected: false,
@@ -134,7 +138,7 @@ function Votes(props) {
 									}}
 									disabled={true}
 								>
-									{isWidthDown("md", props.width) ? (
+									{useMediaQuery(theme.breakpoints.down("md")) ? (
 										<ThumbUp />
 									) : (
 										<div style={{ display: "flex", justifyContent: "center" }}>
@@ -157,7 +161,7 @@ function Votes(props) {
 									}}
 									disabled={true}
 								>
-									{isWidthDown("md", props.width) ? (
+									{useMediaQuery(theme.breakpoints.down("md")) ? (
 										<ThumbDown />
 									) : (
 										<div
@@ -206,7 +210,7 @@ function Votes(props) {
 											}
 										}}
 									>
-										{isWidthDown("md", props.width) ? (
+										{useMediaQuery(theme.breakpoints.down("md")) ? (
 											<ThumbUp />
 										) : (
 											<div
@@ -279,7 +283,7 @@ function Votes(props) {
 											}
 										}}
 									>
-										{isWidthDown("md", props.width) ? (
+										{useMediaQuery(theme.breakpoints.down("md")) ? (
 											<ThumbDown />
 										) : (
 											<div

@@ -7,7 +7,7 @@ import { useMapEvents, Popup } from "react-leaflet";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
 import "leaflet-defaulticon-compatibility";
 
-import { isWidthUp, Button, isWidthDown } from "@mui/material";
+import { Button, useMediaQuery, useTheme } from "@mui/material";
 
 import { Link } from "react-router-dom";
 
@@ -16,15 +16,17 @@ import { Add } from "@mui/icons-material";
 import { FormattedMessage } from "react-intl";
 
 // FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
+const withWidth = () => (WrappedComponent) => (props) =>
+	<WrappedComponent {...props} width="xs" />;
 
 function MapClick(props) {
+	const theme = useTheme();
 	const [key, setKey] = React.useState(0);
 	const [position, setPosition] = React.useState([0, 0]);
 	const [show, setShow] = React.useState(false);
 
 	React.useEffect(() => {
-		if (isWidthDown("xs", props.width) || !props.clickToAdd) {
+		if (useMediaQuery(theme.breakpoints.down("xs")) || !props.clickToAdd) {
 			setPosition([0, 0]);
 			setShow(false);
 			setKey(key + 1);
@@ -34,7 +36,7 @@ function MapClick(props) {
 	const map = useMapEvents({
 		click(e) {
 			if (
-				isWidthUp("sm", props.width) &&
+				useMediaQuery(theme.breakpoints.up("sm")) &&
 				map.getZoom() > 12 &&
 				props.clickToAdd &&
 				props.isAuthenticated
