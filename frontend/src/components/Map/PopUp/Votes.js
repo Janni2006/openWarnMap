@@ -13,9 +13,9 @@ import {
 	ThumbDownOutlined,
 	Send,
 	InfoOutlined,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
-import { Button, withWidth, isWidthDown, Typography } from "@material-ui/core";
+import { Button, Typography, useMediaQuery } from "@mui/material";
 
 import Select from "react-select";
 
@@ -25,7 +25,10 @@ import axios from "axios";
 
 import { FormattedMessage, useIntl } from "react-intl";
 
+import { useTheme } from "@mui/material";
+
 function Votes(props) {
+	const theme = useTheme();
 	const [confirmButton, setConfirmButton] = React.useState({
 		hover: false,
 		selected: false,
@@ -131,7 +134,7 @@ function Votes(props) {
 									}}
 									disabled={true}
 								>
-									{isWidthDown("md", props.width) ? (
+									{useMediaQuery(theme.breakpoints.down("md")) ? (
 										<ThumbUp />
 									) : (
 										<div style={{ display: "flex", justifyContent: "center" }}>
@@ -154,7 +157,7 @@ function Votes(props) {
 									}}
 									disabled={true}
 								>
-									{isWidthDown("md", props.width) ? (
+									{useMediaQuery(theme.breakpoints.down("md")) ? (
 										<ThumbDown />
 									) : (
 										<div
@@ -203,7 +206,7 @@ function Votes(props) {
 											}
 										}}
 									>
-										{isWidthDown("md", props.width) ? (
+										{useMediaQuery(theme.breakpoints.down("md")) ? (
 											<ThumbUp />
 										) : (
 											<div
@@ -276,7 +279,7 @@ function Votes(props) {
 											}
 										}}
 									>
-										{isWidthDown("md", props.width) ? (
+										{useMediaQuery(theme.breakpoints.down("md")) ? (
 											<ThumbDown />
 										) : (
 											<div
@@ -444,6 +447,4 @@ const mapStateToProps = (state) => ({
 	csrf_token: state.security.csrf_token,
 });
 
-export default connect(mapStateToProps, { closeMarkerPopup })(
-	withWidth()(Votes)
-);
+export default connect(mapStateToProps, { closeMarkerPopup })(Votes);

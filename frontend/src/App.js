@@ -10,10 +10,13 @@ import { clientCheck } from "./actions/clientActions";
 
 import { HelmetProvider } from "react-helmet-async";
 
-import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+import {
+	ThemeProvider,
+	StyledEngineProvider,
+	createTheme,
+} from "@mui/material/styles";
 
 import Content from "./components/Content";
-import { render } from "react-dom";
 
 const theme = createTheme({
 	palette: {
@@ -38,15 +41,17 @@ class App extends Component {
 	render() {
 		const customHistory = createBrowserHistory();
 		return (
-			<ThemeProvider theme={theme}>
-				<Provider store={store}>
-					<HelmetProvider>
-						<Router history={customHistory}>
-							<Content />
-						</Router>
-					</HelmetProvider>
-				</Provider>
-			</ThemeProvider>
+			<StyledEngineProvider injectFirst>
+				<ThemeProvider theme={theme}>
+					<Provider store={store}>
+						<HelmetProvider>
+							<Router history={customHistory}>
+								<Content />
+							</Router>
+						</HelmetProvider>
+					</Provider>
+				</ThemeProvider>
+			</StyledEngineProvider>
 		);
 	}
 }

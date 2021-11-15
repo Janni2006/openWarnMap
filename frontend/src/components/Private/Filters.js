@@ -7,7 +7,8 @@ import {
 	setPrivateDataFilters,
 } from "../../actions/privateActions";
 
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
 
 import {
 	Paper,
@@ -20,9 +21,9 @@ import {
 	Divider,
 	Hidden,
 	Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
-import { Skeleton } from "@material-ui/lab";
+import { Skeleton } from '@mui/material';
 
 import Select from "react-select";
 
@@ -46,7 +47,7 @@ function Filters(props) {
 	}, [props.filters]);
 
 	return (
-		<Hidden smDown>
+        <Hidden lgDown>
 			<Grid item md={2}>
 				{!props.loading ? (
 					<Paper style={{ height: "calc(50vh - 40px)", padding: "20px" }}>
@@ -310,7 +311,7 @@ function Filters(props) {
 				) : (
 					<Paper style={{ height: "50vh", background: "transparent" }}>
 						<Skeleton
-							variant="rect"
+							variant="rectangular"
 							width="100%"
 							height="100%"
 							animation="wave"
@@ -319,7 +320,7 @@ function Filters(props) {
 				)}
 			</Grid>
 		</Hidden>
-	);
+    );
 }
 
 Filters.propTypes = {

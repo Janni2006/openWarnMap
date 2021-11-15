@@ -10,9 +10,9 @@ import {
 	Grid,
 	Switch,
 	Tooltip,
-} from "@material-ui/core";
+} from "@mui/material";
 
-import { Language, MapOutlined, InfoOutlined } from "@material-ui/icons";
+import { Language, MapOutlined, InfoOutlined } from "@mui/icons-material";
 
 import { useIntl, FormattedMessage } from "react-intl";
 

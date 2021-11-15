@@ -3,14 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import {
-	Grid,
-	Card,
-	Hidden,
-	Typography,
-	withWidth,
-	isWidthUp,
-} from "@material-ui/core";
+import { Grid, Card, Hidden, Typography, isWidthUp } from "@mui/material";
 
 import { register } from "../../actions/authActions";
 import { setTitle } from "../../actions/generalActions";
@@ -500,6 +493,4 @@ const mapStateToProps = (state) => ({
 	csrf_token: state.security.csrf_token,
 });
 
-export default connect(mapStateToProps, { register, setTitle })(
-	withWidth()(Register)
-);
+export default connect(mapStateToProps, { register, setTitle })(Register);

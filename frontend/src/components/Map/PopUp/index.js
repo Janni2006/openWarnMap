@@ -6,27 +6,37 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 
 import { closeMarkerPopup } from "../../../actions/mapActions";
 
-import { VerifiedUser, Warning, Close, ExpandMore } from "@material-ui/icons";
+import { VerifiedUser, Warning, Close, ExpandMore } from "@mui/icons-material";
 
-import {
-	Typography,
-	IconButton,
-	withWidth,
-	isWidthDown,
-	withStyles,
-	Divider,
-} from "@material-ui/core";
+import { Typography, IconButton, Divider } from "@mui/material";
 
-import MuiAccordion from "@material-ui/core/Accordion";
-import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
+import { makeStyles } from "@mui/styles";
+
+import withStyles from "@mui/styles/withStyles";
+
+import MuiAccordion from "@mui/material/Accordion";
+import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import MuiAccordionDetails from "@mui/material/AccordionDetails";
 
 import Votes from "./Votes";
 
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
 import getDistance from "geolib/es/getDistance";
 
-//  Add details accordion
+const useStyles = makeStyles((theme) => ({
+	z_wrapper: {
+		height: "50vh",
+		width: "25%",
+		maxWidth: "355px",
+		position: "fixed",
+		right: "10px",
+		top: "74px",
+		[theme.breakpoints.down("sm")]: {
+			width: "calc(100% - 20px)",
+			maxWidth: "100%",
+		},
+	},
+}));
 
 const Accordion = withStyles({
 	root: {
@@ -161,6 +171,7 @@ function I18nLocalization(props) {
 }
 
 function MarkerPopup(props) {
+	const classes = useStyles();
 	const [zIndex, setZIndex] = React.useState("auto");
 	const [distance, setDistance] = React.useState(null);
 	const [expanded, setExpanded] = React.useState(false);
@@ -225,13 +236,8 @@ function MarkerPopup(props) {
 		<>
 			<AnimateSharedLayout>
 				<div
+					className={classes.z_wrapper}
 					style={{
-						height: "50vh",
-						width: isWidthDown("sm", props.width) ? "calc(100% - 20px)" : "25%",
-						maxWidth: isWidthDown("sm", props.width) ? "100%" : "355px",
-						position: "fixed",
-						right: "10px",
-						top: "74px",
 						zIndex: zIndex,
 					}}
 				>
@@ -258,6 +264,7 @@ function MarkerPopup(props) {
 									marginTop: "-22px",
 								}}
 								onClick={props.closeMarkerPopup}
+								size="large"
 							>
 								<Close />
 							</IconButton>
@@ -366,6 +373,7 @@ function MarkerPopup(props) {
 									marginTop: "-22px",
 								}}
 								onClick={props.closeMarkerPopup}
+								size="large"
 							>
 								<Close />
 							</IconButton>
@@ -392,6 +400,4 @@ const mapStateToProps = (state) => ({
 	gpsAvailable: state.client.gps.available,
 });
 
-export default connect(mapStateToProps, { closeMarkerPopup })(
-	withWidth()(MarkerPopup)
-);
+export default connect(mapStateToProps, { closeMarkerPopup })(MarkerPopup);

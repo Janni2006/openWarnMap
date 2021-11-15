@@ -5,9 +5,11 @@ import { setTitle } from "../../actions/generalActions";
 
 import { useIntl, FormattedMessage } from "react-intl";
 
-import { Grid, Paper, Typography, makeStyles, Hidden } from "@material-ui/core";
+import { Grid, Paper, Typography, Hidden } from "@mui/material";
 
-import { MoneyOff, Place, CheckCircleOutline } from "@material-ui/icons";
+import makeStyles from '@mui/styles/makeStyles';
+
+import { MoneyOff, Place, CheckCircleOutline } from "@mui/icons-material";
 
 import Map from "../Map";
 
@@ -113,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
 	buttonWrapper: {
 		display: "flex",
 
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down('lg')]: {
 			justifyContent: "center",
 			padding: "25px 0px 0px 0px",
 		},
@@ -130,7 +132,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: "6px 18px",
 		color: "white",
 		fontSize: "16px",
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down('lg')]: {
 			// transform: "translate(-50%, 0%)",
 			// left: "50%",
 			// bottom: "25px",
@@ -159,7 +161,7 @@ const useStyles = makeStyles((theme) => ({
 		transform: "translate(0%, -50%)",
 		lineHeight: 0.9,
 
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down('lg')]: {
 			fontSize: "27.5px",
 		},
 		[theme.breakpoints.up("md")]: {
@@ -179,7 +181,7 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: "800",
 		transform: "translate(0%, -50%)",
 
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down('lg')]: {
 			display: "none",
 		},
 		[theme.breakpoints.only("md")]: {

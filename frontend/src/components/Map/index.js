@@ -17,11 +17,8 @@ import {
 	useMapEvents,
 	useMap,
 	ScaleControl,
-	CircleMarker,
 	LayersControl,
 } from "react-leaflet";
-
-import { withWidth, Hidden } from "@material-ui/core";
 
 import MarkerClusterGroup from "react-leaflet-markercluster";
 
@@ -96,9 +93,7 @@ function MapObject(props) {
 				<LayersControl />
 			</MapContainer>
 			<AddActionButton />
-			{/* <Hidden smDown> */}
 			<MarkerPopup map={map} />
-			{/* </Hidden> */}
 		</>
 	);
 }
@@ -121,5 +116,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { viewChanges, updateData, setTitle })(
-	withWidth()(MapObject)
+	MapObject
 );

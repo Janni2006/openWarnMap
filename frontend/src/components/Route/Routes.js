@@ -5,8 +5,6 @@ import { visitPage, setTitle } from "../../actions/generalActions";
 
 import { Switch, withRouter, Route, Redirect } from "react-router-dom";
 
-import { withWidth } from "@material-ui/core";
-
 import PublicRoute from "./PublicRoute";
 import AuthRoute from "./AuthRoute";
 
@@ -118,5 +116,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { visitPage, setTitle })(
-	withWidth()(withRouter(Routes))
+	withRouter(Routes)
 );

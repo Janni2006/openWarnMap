@@ -4,13 +4,12 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import {
-	withWidth,
 	Step,
 	Stepper,
 	StepLabel,
 	StepContent,
 	CircularProgress,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import AuthWrapper from "../AuthWrapper";
 import StepWrapper from "./StepWrapper";
@@ -659,6 +658,4 @@ const mapStateToProps = (state) => ({
 	csrf_token: state.security.csrf_token,
 });
 
-export default connect(mapStateToProps, { register, setTitle })(
-	withWidth()(Register)
-);
+export default connect(mapStateToProps, { register, setTitle })(Register);

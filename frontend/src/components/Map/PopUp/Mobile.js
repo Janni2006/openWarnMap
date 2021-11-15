@@ -6,9 +6,9 @@ import { openMarkerPopup } from "../../../actions/mapActions";
 
 import { Popup } from "react-leaflet";
 
-import { VerifiedUser, Warning } from "@material-ui/icons";
+import { VerifiedUser, Warning } from "@mui/icons-material";
 
-import { Tooltip, Hidden } from "@material-ui/core";
+import { Tooltip, Hidden } from "@mui/material";
 
 import { FormattedRelativeTime } from "react-intl";
 

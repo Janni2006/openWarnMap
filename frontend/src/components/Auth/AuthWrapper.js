@@ -6,13 +6,14 @@ import {
 	Card,
 	Hidden,
 	Typography,
-	withWidth,
-	isWidthUp,
-} from "@material-ui/core";
+	useMediaQuery,
+	useTheme,
+} from "@mui/material";
 
 import { FormattedMessage } from "react-intl";
 
 function AuthWrapper(props) {
+	const theme = useTheme();
 	const [cardHeight, setCardHeight] = React.useState(0);
 	const cardRef = React.useRef(null);
 
@@ -43,7 +44,7 @@ function AuthWrapper(props) {
 				}}
 			>
 				<Grid container>
-					<Hidden smDown>
+					<Hidden lgDown>
 						<Grid
 							item
 							md={5}
@@ -72,7 +73,9 @@ function AuthWrapper(props) {
 										fontFamily: "sans-serif",
 										color: "white",
 										fontWeight: "300",
-										fontSize: isWidthUp("lg", props.width) ? "25px" : "20px",
+										fontSize: useMediaQuery(theme.breakpoints.up("lg"))
+											? "25px"
+											: "20px",
 									}}
 								>
 									<FormattedMessage id="AUTH_TITLE" />
@@ -84,7 +87,9 @@ function AuthWrapper(props) {
 										fontFamily: "sans-serif",
 										color: "white",
 										fontWeight: "300",
-										fontSize: isWidthUp("lg", props.width) ? "50px" : "40px",
+										fontSize: useMediaQuery(theme.breakpoints.up("lg"))
+											? "50px"
+											: "40px",
 										margin: "0px",
 									}}
 								>
@@ -97,7 +102,9 @@ function AuthWrapper(props) {
 										fontFamily: "sans-serif",
 										color: "white",
 										fontWeight: "300",
-										fontSize: isWidthUp("lg", props.width) ? "16.5px" : "14px",
+										fontSize: useMediaQuery(theme.breakpoints.up("lg"))
+											? "16.5px"
+											: "14px",
 										marginTop: "50px",
 									}}
 								>
@@ -126,4 +133,4 @@ AuthWrapper.propTypes = {
 	children: PropTypes.any.isRequired,
 };
 
-export default withWidth()(AuthWrapper);
+export default AuthWrapper;

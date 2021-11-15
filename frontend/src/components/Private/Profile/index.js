@@ -12,14 +12,14 @@ import {
 	Avatar,
 	Typography,
 	Hidden,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import {
 	VpnKey,
 	SecurityRounded,
 	AccountCircle,
 	Notifications,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 
 import { useLocation, Link } from "react-router-dom";
 
@@ -32,7 +32,7 @@ import { useIntl } from "react-intl";
 
 function SiteItem({ isSelected, icon, title, label }) {
 	return (
-		<Link
+        <Link
 			to={`/profile?page=${label}`}
 			style={{ width: "100%", padding: "0px", textDecoration: "none" }}
 		>
@@ -52,7 +52,7 @@ function SiteItem({ isSelected, icon, title, label }) {
 					}}
 					spacing={1}
 				>
-					<Hidden smDown>
+					<Hidden lgDown>
 						<Grid item xs={3} style={{ color: "#3f3f3f" }}>
 							{icon}
 						</Grid>
@@ -85,7 +85,7 @@ function SiteItem({ isSelected, icon, title, label }) {
 				) : null}
 			</ListItem>
 		</Link>
-	);
+    );
 }
 
 function Profile(props) {
@@ -143,7 +143,7 @@ function Profile(props) {
 	}, [page]);
 
 	return (
-		<div
+        <div
 			style={{
 				padding: "22px",
 				maxWidth: "1200px",
@@ -184,14 +184,14 @@ function Profile(props) {
 								</Avatar>
 							</ListItem>
 							<ListItem>
-								<Hidden lgDown>
+								<Hidden xlDown>
 									<Typography style={{ textAlign: "center", width: "100%" }}>
 										{props.firstname && props.lastname
 											? `${props.firstname} ${props.lastname}`
 											: props.email}
 									</Typography>
 								</Hidden>
-								<Hidden xlUp xsDown>
+								<Hidden xlUp mdDown>
 									{props.firstname && props.lastname ? (
 										<>
 											<Typography
@@ -259,7 +259,7 @@ function Profile(props) {
 				</Grid>
 			</Grid>
 		</div>
-	);
+    );
 }
 
 Profile.propTypes = {

@@ -7,24 +7,25 @@ import {
 	Grid,
 	Paper,
 	Typography,
-	makeStyles,
 	Button,
 	Hidden,
-	withWidth,
-	isWidthDown,
-} from "@material-ui/core";
+	useTheme,
+	useMediaQuery,
+} from "@mui/material";
+
+import makeStyles from "@mui/styles/makeStyles";
 
 import { Link } from "react-router-dom";
 
-import PlayCircleOutlineIcon from "@material-ui/icons/PlayCircleOutline";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
-import MoneyOffIcon from "@material-ui/icons/MoneyOff";
-import PlaceIcon from "@material-ui/icons/Place";
-import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
+import MoneyOffIcon from "@mui/icons-material/MoneyOff";
+import PlaceIcon from "@mui/icons-material/Place";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
-import GitHubIcon from "@material-ui/icons/GitHub";
-import MonetizationOnOutlinedIcon from "@material-ui/icons/MonetizationOnOutlined";
-import FeedbackOutlinedIcon from "@material-ui/icons/FeedbackOutlined";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import FeedbackOutlinedIcon from "@mui/icons-material/FeedbackOutlined";
 
 import openSource from "./openSource.svg";
 
@@ -134,7 +135,7 @@ const useStyles = makeStyles((theme) => ({
 	buttonWrapper: {
 		display: "flex",
 
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down("lg")]: {
 			justifyContent: "center",
 			padding: "25px 0px 0px 0px",
 		},
@@ -151,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
 		padding: "6px 18px",
 		color: "white",
 		fontSize: "16px",
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down("lg")]: {
 			// transform: "translate(-50%, 0%)",
 			// left: "50%",
 			// bottom: "25px",
@@ -180,7 +181,7 @@ const useStyles = makeStyles((theme) => ({
 		transform: "translate(0%, -50%)",
 		lineHeight: 0.9,
 
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down("lg")]: {
 			fontSize: "27.5px",
 		},
 		[theme.breakpoints.up("md")]: {
@@ -200,7 +201,7 @@ const useStyles = makeStyles((theme) => ({
 		fontWeight: "800",
 		transform: "translate(0%, -50%)",
 
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down("lg")]: {
 			display: "none",
 		},
 		[theme.breakpoints.only("md")]: {
@@ -231,6 +232,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function About(props) {
+	const theme = useTheme();
 	const classes = useStyles();
 	const [feedbackOpen, setFeedbackOpen] = React.useState(false);
 
@@ -264,7 +266,10 @@ function About(props) {
 				<div className={classes.foreground}>
 					<section className={classes.section1}>
 						<div className={classes.section1Content}>
-							<Grid container spacing={isWidthDown("sm", props.width) ? 0 : 6}>
+							<Grid
+								container
+								spacing={useMediaQuery(theme.breakpoints.down("sm")) ? 0 : 6}
+							>
 								<Grid item xs={12} md={6}>
 									<Typography className={classes.title}>
 										<FormattedMessage id="ABOUT_TITLE" />
@@ -283,7 +288,7 @@ function About(props) {
 										</Link>
 									</div>
 								</Grid>
-								<Hidden smDown>
+								<Hidden lgDown>
 									<Grid item md={6} style={{ position: "relative" }}>
 										<img src={openSource} className={classes.img} />
 									</Grid>
@@ -683,4 +688,4 @@ About.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setTitle })(withWidth()(About));
+export default connect(null, { setTitle })(About);

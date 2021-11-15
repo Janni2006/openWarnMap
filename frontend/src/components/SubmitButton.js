@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles, Button } from "@material-ui/core";
-import { green } from "@material-ui/core/colors";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Button } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
+import { green } from "@mui/material/colors";
 
 const useStyles = makeStyles({
 	root: {

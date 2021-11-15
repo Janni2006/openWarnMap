@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-import { Button, withWidth } from "@material-ui/core";
+import { Button } from "@mui/material";
 
 import AuthWrapper from "./AuthWrapper";
 
@@ -156,6 +156,4 @@ const mapStateToProps = (state) => ({
 	progress: state.auth.progress,
 });
 
-export default withWidth()(
-	connect(mapStateToProps, { login, setTitle })(Login)
-);
+export default connect(mapStateToProps, { login, setTitle })(Login);

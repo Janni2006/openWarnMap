@@ -7,11 +7,13 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 
 // import "./style.css";
-import { VerifiedUser, Warning } from "@material-ui/icons";
+import { VerifiedUser, Warning } from "@mui/icons-material";
 
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
 
-import { makeStyles, Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
 	cardList: {
@@ -39,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 			padding: "10px 0px",
 			marginBottom: "2.55px",
 		},
-		[theme.breakpoints.down("xs")]: {
+		[theme.breakpoints.down('md')]: {
 			flex: "1 0 100%",
 			maxWidth: "calc(100% - 30px)",
 			padding: "10px 0px",
