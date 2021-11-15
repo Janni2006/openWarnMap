@@ -82,7 +82,7 @@ function MapObject(props) {
 				/>
 				<LastPosition />
 				<ScaleControl />
-				{/* <MapClick /> */}
+				<MapClick />
 				{props.data ? (
 					<MarkerClusterGroup>
 						{props.data.map((item, index) => (
@@ -93,9 +93,7 @@ function MapObject(props) {
 				<LayersControl />
 			</MapContainer>
 			<AddActionButton />
-			{/* <Hidden smDown> */}
 			<MarkerPopup map={map} />
-			{/* </Hidden> */}
 		</>
 	);
 }

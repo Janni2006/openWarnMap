@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 
 import { useMapEvents, Popup } from "react-leaflet";
 
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
-import "leaflet-defaulticon-compatibility";
+// import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
+// import "leaflet-defaulticon-compatibility";
 
 import { Button, useMediaQuery, useTheme } from "@mui/material";
 
@@ -21,8 +21,11 @@ function MapClick(props) {
 	const [position, setPosition] = React.useState([0, 0]);
 	const [show, setShow] = React.useState(false);
 
+	var xs = useMediaQuery(theme.breakpoints.down("xs")); // CHECK if the useMediaQuery updates its state on screen resize
+
 	React.useEffect(() => {
-		if (useMediaQuery(theme.breakpoints.down("xs")) || !props.clickToAdd) {
+		// if (useMediaQuery(theme.breakpoints.down("xs")) || !props.clickToAdd) {
+		if (xs || !props.clickToAdd) {
 			setPosition([0, 0]);
 			setShow(false);
 			setKey(key + 1);

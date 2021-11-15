@@ -33,7 +33,6 @@ function MapMarker(props) {
 
 MapMarker.propTypes = {
 	openMarkerPopup: PropTypes.func.isRequired,
-	width: PropTypes.string.isRequired,
 };
 
 export default connect(null, { openMarkerPopup })(MapMarker);
