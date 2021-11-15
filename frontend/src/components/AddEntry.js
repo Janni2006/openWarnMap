@@ -7,7 +7,6 @@ import "leaflet/dist/leaflet.css";
 
 import {
 	Typography,
-	isWidthDown,
 	Grid,
 	Paper,
 	Button,
@@ -17,7 +16,7 @@ import {
 	useTheme,
 } from "@mui/material";
 
-import makeStyles from "@mui/styles/makeStyles";
+import { makeStyles } from "@mui/styles";
 
 import { toast } from "react-toastify";
 

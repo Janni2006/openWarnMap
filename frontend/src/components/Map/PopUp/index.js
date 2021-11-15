@@ -13,8 +13,9 @@ import {
 	IconButton,
 	// isWidthDown,
 	Divider,
-	makeStyles,
 } from "@mui/material";
+
+import { makeStyles } from "@mui/styles";
 
 import withStyles from "@mui/styles/withStyles";
 
