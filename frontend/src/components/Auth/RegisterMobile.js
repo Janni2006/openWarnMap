@@ -21,9 +21,6 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 import SubmitButton from "../SubmitButton";
 import axios from "axios";
 
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
-
 function Register(props) {
 	const [passwordScore, setPasswordScore] = React.useState(0);
 	const [input, setInput] = React.useState({
@@ -496,6 +493,4 @@ const mapStateToProps = (state) => ({
 	csrf_token: state.security.csrf_token,
 });
 
-export default connect(mapStateToProps, { register, setTitle })(
-	withWidth()(Register)
-);
+export default connect(mapStateToProps, { register, setTitle })(Register);

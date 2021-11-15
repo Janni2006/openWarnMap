@@ -12,10 +12,6 @@ import { useMediaQuery } from "@mui/material";
 
 import MobilePopup from "./PopUp/Mobile";
 
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) =>
-	<WrappedComponent {...props} width="xs" />;
-
 function MapMarker(props) {
 	const theme = useTheme();
 	return (
@@ -40,4 +36,4 @@ MapMarker.propTypes = {
 	width: PropTypes.string.isRequired,
 };
 
-export default connect(null, { openMarkerPopup })(withWidth()(MapMarker));
+export default connect(null, { openMarkerPopup })(MapMarker);

@@ -12,10 +12,6 @@ import {
 
 import { FormattedMessage } from "react-intl";
 
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) =>
-	<WrappedComponent {...props} width="xs" />;
-
 function AuthWrapper(props) {
 	const theme = useTheme();
 	const [cardHeight, setCardHeight] = React.useState(0);
@@ -137,4 +133,4 @@ AuthWrapper.propTypes = {
 	children: PropTypes.any.isRequired,
 };
 
-export default withWidth()(AuthWrapper);
+export default AuthWrapper;

@@ -37,10 +37,6 @@ import {
 	FormattedTime,
 } from "react-intl";
 
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) =>
-	<WrappedComponent {...props} width="xs" />;
-
 const useStyles = makeStyles((theme) => ({
 	root: {
 		maxWidth: "100%",
@@ -767,4 +763,4 @@ const mapStateToProps = (state) => ({
 	map_view: state.map.view,
 });
 
-export default withWidth()(connect(mapStateToProps, { setTitle })(AddEntry));
+export default connect(mapStateToProps, { setTitle })(AddEntry);

@@ -24,9 +24,6 @@ import FunctionsOverview from "../Functions";
 
 import NotFound from "../NotFound";
 
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
-
 class Routes extends Component {
 	componentDidUpdate() {
 		this.props.visitPage();
@@ -119,5 +116,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, { visitPage, setTitle })(
-	withWidth()(withRouter(Routes))
+	withRouter(Routes)
 );

@@ -19,9 +19,6 @@ import ResetPasswordDialog from "./ResetPasswordDialog";
 
 import InputField from "../InputField";
 
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) => <WrappedComponent {...props} width="xs" />;
-
 function Login(props) {
 	const [input, setInput] = React.useState({ username: "", password: "" });
 	const [errors, setErrors] = React.useState({});
@@ -159,6 +156,4 @@ const mapStateToProps = (state) => ({
 	progress: state.auth.progress,
 });
 
-export default withWidth()(
-	connect(mapStateToProps, { login, setTitle })(Login)
-);
+export default connect(mapStateToProps, { login, setTitle })(Login);

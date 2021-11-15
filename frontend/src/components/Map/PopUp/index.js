@@ -8,12 +8,7 @@ import { closeMarkerPopup } from "../../../actions/mapActions";
 
 import { VerifiedUser, Warning, Close, ExpandMore } from "@mui/icons-material";
 
-import {
-	Typography,
-	IconButton,
-	// isWidthDown,
-	Divider,
-} from "@mui/material";
+import { Typography, IconButton, Divider } from "@mui/material";
 
 import { makeStyles } from "@mui/styles";
 
@@ -28,16 +23,10 @@ import Votes from "./Votes";
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
 import getDistance from "geolib/es/getDistance";
 
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) =>
-	<WrappedComponent {...props} width="xs" />;
-
 const useStyles = makeStyles((theme) => ({
 	z_wrapper: {
 		height: "50vh",
-		// width: isWidthDown("sm", props.width) ? "calc(100% - 20px)" : "25%",
 		width: "25%",
-		// maxWidth: isWidthDown("sm", props.width) ? "100%" : "355px",
 		maxWidth: "355px",
 		position: "fixed",
 		right: "10px",
@@ -411,6 +400,4 @@ const mapStateToProps = (state) => ({
 	gpsAvailable: state.client.gps.available,
 });
 
-export default connect(mapStateToProps, { closeMarkerPopup })(
-	withWidth()(MarkerPopup)
-);
+export default connect(mapStateToProps, { closeMarkerPopup })(MarkerPopup);

@@ -15,10 +15,6 @@ import { Add } from "@mui/icons-material";
 
 import { FormattedMessage } from "react-intl";
 
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) =>
-	<WrappedComponent {...props} width="xs" />;
-
 function MapClick(props) {
 	const theme = useTheme();
 	const [key, setKey] = React.useState(0);
@@ -99,4 +95,4 @@ const mapStateToProps = (state) => ({
 	isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps)(withWidth()(MapClick));
+export default connect(mapStateToProps)(MapClick);

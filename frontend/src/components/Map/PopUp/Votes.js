@@ -27,10 +27,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 
 import { useTheme } from "@mui/material";
 
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) =>
-	<WrappedComponent {...props} width="xs" />;
-
 function Votes(props) {
 	const theme = useTheme();
 	const [confirmButton, setConfirmButton] = React.useState({
@@ -451,6 +447,4 @@ const mapStateToProps = (state) => ({
 	csrf_token: state.security.csrf_token,
 });
 
-export default connect(mapStateToProps, { closeMarkerPopup })(
-	withWidth()(Votes)
-);
+export default connect(mapStateToProps, { closeMarkerPopup })(Votes);

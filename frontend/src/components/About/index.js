@@ -33,10 +33,6 @@ import { FormattedMessage } from "react-intl";
 
 import Feedback from "./Feedback";
 
-// FIXME checkout https://mui.com/components/use-media-query/#migrating-from-withwidth
-const withWidth = () => (WrappedComponent) => (props) =>
-	<WrappedComponent {...props} width="xs" />;
-
 const useStyles = makeStyles((theme) => ({
 	wrapper: {
 		position: "relative",
@@ -692,4 +688,4 @@ About.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setTitle })(withWidth()(About));
+export default connect(null, { setTitle })(About);
