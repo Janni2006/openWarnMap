@@ -4,9 +4,6 @@ import { connect } from "react-redux";
 
 import { useMapEvents, Popup } from "react-leaflet";
 
-// import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
-// import "leaflet-defaulticon-compatibility";
-
 import { Button, useMediaQuery, useTheme } from "@mui/material";
 
 import { Link } from "react-router-dom";
