@@ -22,7 +22,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install GDAL Dendencies
-      run: apt install binutils libproj-dev gdal-bin
+      run: sudo apt install binutils libproj-dev gdal-bin
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
