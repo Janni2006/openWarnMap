@@ -33,7 +33,7 @@ class Routes extends Component {
 		return (
 			<Switch>
 				<PublicRoute path="/" exact>
-					<Map />
+					<Map key="TEST" />
 				</PublicRoute>
 				<PublicRoute path="/functions" exact>
 					<FunctionsOverview />

@@ -7,8 +7,8 @@ import {
 	setPrivateDataFilters,
 } from "../../actions/privateActions";
 
-import makeStyles from '@mui/styles/makeStyles';
-import withStyles from '@mui/styles/withStyles';
+import makeStyles from "@mui/styles/makeStyles";
+import withStyles from "@mui/styles/withStyles";
 
 import {
 	Paper,
@@ -18,12 +18,10 @@ import {
 	FormControlLabel,
 	FormControl,
 	FormLabel,
-	Divider,
 	Hidden,
-	Typography,
 } from "@mui/material";
 
-import { Skeleton } from '@mui/material';
+import { Skeleton } from "@mui/material";
 
 import Select from "react-select";
 
@@ -47,7 +45,7 @@ function Filters(props) {
 	}, [props.filters]);
 
 	return (
-        <Hidden lgDown>
+		<Hidden lgDown>
 			<Grid item md={2}>
 				{!props.loading ? (
 					<Paper style={{ height: "calc(50vh - 40px)", padding: "20px" }}>
@@ -302,7 +300,7 @@ function Filters(props) {
 							// styles={customStyles(error.fields.height.error)}
 						/>
 						<SubmitButton
-							title="Test"
+							title={intl.formatMessage({ id: "FILTER" })}
 							onClick={() => {
 								props.setPrivateDataFilters(filters);
 							}}
@@ -320,7 +318,7 @@ function Filters(props) {
 				)}
 			</Grid>
 		</Hidden>
-    );
+	);
 }
 
 Filters.propTypes = {

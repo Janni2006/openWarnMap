@@ -42,6 +42,8 @@ export const TRANSLATIONS = {
 	ENTRYS_FILTERS_SORT_NEWEST: "Newest",
 	ENTRYS_FILTERS_SORT_OLDEST: "Oldest",
 
+	FILTER: "Filter",
+
 	POPUP_REQUEST_CHANGE_OPTION_IP: "Invalid position",
 	POPUP_REQUEST_CHANGE_OPTION_NT: "No trees nearby",
 
