@@ -14,13 +14,14 @@ import MobilePopup from "./PopUp/Mobile";
 
 function MapMarker(props) {
 	const theme = useTheme();
+	const mdUp = useMediaQuery(theme.breakpoints.up("md"));
 	return (
 		<Marker
 			position={[props.item.gps_coords[1], props.item.gps_coords[0]]}
 			key={props.item.code}
 			eventHandlers={{
 				click: () => {
-					if (useMediaQuery(theme.breakpoints.up("md"))) {
+					if (mdUp) {
 						props.openMarkerPopup(props.item);
 					}
 				},

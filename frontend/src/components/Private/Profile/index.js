@@ -32,7 +32,7 @@ import { useIntl } from "react-intl";
 
 function SiteItem({ isSelected, icon, title, label }) {
 	return (
-        <Link
+		<Link
 			to={`/profile?page=${label}`}
 			style={{ width: "100%", padding: "0px", textDecoration: "none" }}
 		>
@@ -85,7 +85,7 @@ function SiteItem({ isSelected, icon, title, label }) {
 				) : null}
 			</ListItem>
 		</Link>
-    );
+	);
 }
 
 function Profile(props) {
@@ -143,7 +143,7 @@ function Profile(props) {
 	}, [page]);
 
 	return (
-        <div
+		<div
 			style={{
 				padding: "22px",
 				maxWidth: "1200px",
@@ -259,7 +259,7 @@ function Profile(props) {
 				</Grid>
 			</Grid>
 		</div>
-    );
+	);
 }
 
 Profile.propTypes = {

@@ -34,7 +34,7 @@ function Profile(props) {
 		return () => {
 			props.setTitle(intl.formatMessage({ id: "PROFILE" }));
 		};
-	});
+	}, []);
 
 	function updateProfile() {
 		setLoading(true);

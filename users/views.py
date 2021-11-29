@@ -193,7 +193,15 @@ class WebUserLoader(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        return Response(data={"username": request.user.username, "avatar_color": request.user.profile.avatar_color, "email": request.user.email, "firstname": request.user.first_name, "lastname": request.user.last_name, "last_login": request.user.last_login})
+        print(request.user.last_login)
+        return Response(data={
+            "username": request.user.username,
+            "avatar_color": request.user.profile.avatar_color,
+            "email": request.user.email,
+            "firstname": request.user.first_name,
+            "lastname": request.user.last_name,
+            "last_login": str(request.user.last_login)
+        })
 
 
 class WebChangeProfile(APIView):
