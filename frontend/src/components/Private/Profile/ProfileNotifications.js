@@ -28,7 +28,7 @@ import { loadUser } from "../../../actions/authActions";
 
 import axios from "axios";
 
-function Profile(props) {
+function ProfileNotifications(props) {
 	const [input, setInput] = React.useState({
 		firstname: props.firstname,
 		lastname: props.lastname,
@@ -69,9 +69,7 @@ function Profile(props) {
 							onChange={(event) => setTest(event.target.checked)}
 						/>
 					}
-					label="Abonieren Sie unseren Newsletter. Wir bringen ungefähr 
-						einmal pro Jahr einen Newsletter mit allen wichtigen 
-						Informationen zum Status dieses Projekts raus."
+					label="Benachrichtigen Sie mich bitte über weitere Neuerungen"
 				/>
 			</FormGroup>
 
@@ -115,7 +113,7 @@ function Profile(props) {
 	);
 }
 
-Profile.propTypes = {
+ProfileNotifications.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 	loadUser: PropTypes.func.isRequired,
 	firstname: PropTypes.string.isRequired,
@@ -131,4 +129,6 @@ const mapStateToProps = (state) => ({
 	csrf: state.security.csrf_token,
 });
 
-export default connect(mapStateToProps, { setTitle, loadUser })(Profile);
+export default connect(mapStateToProps, { setTitle, loadUser })(
+	ProfileNotifications
+);

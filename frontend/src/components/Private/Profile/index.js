@@ -26,7 +26,7 @@ import { useLocation, Link } from "react-router-dom";
 import AccountSettings from "./AccountSettings";
 import Password from "./Password";
 // import Security from "./Security";
-// import ProfileNotifications from "./ProfileNotifications";
+import ProfileNotifications from "./ProfileNotifications";
 
 import { useIntl } from "react-intl";
 
@@ -114,13 +114,13 @@ function Profile(props) {
 		// 	title: intl.formatMessage({ id: "PROFILE_PAGE_TITLE_SECURITY" }),
 		// 	content: () => <Security />,
 		// },
-		// {
-		// 	label: "notifications",
-		// 	index: 3,
-		// 	icon: <Notifications />,
-		// 	title: intl.formatMessage({ id: "PROFILE_PAGE_TITLE_NOTIFICATIONS" }),
-		// 	content: () => <ProfileNotifications />,
-		// },
+		{
+			label: "notifications",
+			index: 2,
+			icon: <Notifications />,
+			title: intl.formatMessage({ id: "PROFILE_PAGE_TITLE_NOTIFICATIONS" }),
+			content: () => <ProfileNotifications />,
+		},
 	];
 
 	React.useEffect(() => {

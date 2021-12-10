@@ -59,6 +59,7 @@
     "leaflet": "^1.7.1",
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "leaflet.markercluster": "^1.5.0",
+    "nth-check": "^2.0.1",
     "path-parse": "^1.0.7",
     "rc-dropdown": "^3.2.0",
     "react": "^17.0.2",
