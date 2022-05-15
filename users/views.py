@@ -354,3 +354,8 @@ class WebCheckEmail(APIView):
 
             return Response({"email": email, "not_ocupied": False}, status=status.HTTP_200_OK)
         return Response({"code": 400, "message": "Invalid data was provided."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WebSetNotificationSettings(generics.UpdateAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = WebChangeNotificationSettings

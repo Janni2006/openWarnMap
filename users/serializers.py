@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
+from .models import Profile
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -81,3 +82,9 @@ class WebCheckUsernameSerializer(serializers.Serializer):
 
 class WebCheckEmailSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
+
+
+class WebChangeNotificationSettings(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['notifications']

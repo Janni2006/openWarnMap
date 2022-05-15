@@ -11,5 +11,6 @@ urlpatterns = [
     path('login/reset/', WebPasswordResetRequest.as_view()),
     path('change-profile/', WebChangeProfile.as_view()),
     path('checks/username/', WebCheckUsername.as_view()),
-    path('checks/email/', WebCheckEmail.as_view())
+    path('checks/email/', WebCheckEmail.as_view()),
+    path('notifications/settings', WebSetNotificationSettings.as_view())
 ]

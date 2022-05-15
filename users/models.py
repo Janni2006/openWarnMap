@@ -18,6 +18,7 @@ class Profile(models.Model):
     private_data = models.ManyToManyField(Issue, blank=True)
     published_count = models.IntegerField(default=0)
     votes = models.ManyToManyField(Votes, blank=True)
+    notifications = models.BooleanField(default=False)
     avatar_color = ColorField(default='#bdbdbd')
 
     def __str__(self):
