@@ -2,7 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { openMarkerPopup, confirmMarker } from "../../../actions/mapActions";
+import {
+	openMarkerPopup,
+	confirmMarker,
+	changeMarker,
+} from "../../../actions/mapActions";
 
 import { motion, AnimateSharedLayout } from "framer-motion";
 
@@ -344,6 +348,9 @@ function Votes(props) {
 												borderRadius: "5px",
 												height: "44px",
 											}}
+											onClick={() => {
+												props.changeMarker(changeButton.appliedChange);
+											}}
 										>
 											<FormattedMessage id="ADD_SUBMIT" />
 										</Button>
@@ -681,6 +688,7 @@ function Votes(props) {
 Votes.propTypes = {
 	openMarkerPopup: PropTypes.func.isRequired,
 	confirmMarker: PropTypes.func.isRequired,
+	changeMarker: PropTypes.func.isRequired,
 	open: PropTypes.bool.isRequired,
 	content: PropTypes.object.isRequired,
 	isAuthenticated: PropTypes.bool.isRequired,
@@ -694,6 +702,8 @@ const mapStateToProps = (state) => ({
 	csrf_token: state.security.csrf_token,
 });
 
-export default connect(mapStateToProps, { openMarkerPopup, confirmMarker })(
-	Votes
-);
+export default connect(mapStateToProps, {
+	openMarkerPopup,
+	confirmMarker,
+	changeMarker,
+})(Votes);

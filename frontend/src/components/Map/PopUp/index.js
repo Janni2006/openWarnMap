@@ -8,7 +8,12 @@ import { closeMarkerPopup } from "../../../actions/mapActions";
 
 import { VerifiedUser, Warning, Close, ExpandMore } from "@mui/icons-material";
 
-import { Typography, IconButton, Divider } from "@mui/material";
+import {
+	Typography,
+	IconButton,
+	Divider,
+	CircularProgress,
+} from "@mui/material";
 
 import { makeStyles } from "@mui/styles";
 
@@ -349,6 +354,7 @@ function MarkerPopup(props) {
 									</div>
 								</AccordionDetails>
 							</Accordion>
+							{props.loading ? <CircularProgress /> : <></>}
 							<ErrirBoundary>
 								<Votes />
 							</ErrirBoundary>
@@ -394,6 +400,7 @@ MarkerPopup.propTypes = {
 	content: PropTypes.object.isRequired,
 	isAuthenticated: PropTypes.bool.isRequired,
 	gpsAvailable: PropTypes.bool.isRequired,
+	loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -401,6 +408,7 @@ const mapStateToProps = (state) => ({
 	content: state.map.markerPopup.content,
 	isAuthenticated: state.auth.isAuthenticated,
 	gpsAvailable: state.client.gps.available,
+	loading: state.map.markerPopup.loading,
 });
 
 export default connect(mapStateToProps, { closeMarkerPopup })(MarkerPopup);
