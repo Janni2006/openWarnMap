@@ -84,19 +84,18 @@ export const confirmMarker = () => (dispatch, getState) => {
 	};
 	const body = JSON.stringify({
 		entry_id: getState().map.markerPopup.content.code,
-		confirm: true,
-		change: false,
-		applied_change: 0,
 	});
 	axios
-		.post("/react/vote/create/", body, config)
+		.post("/react/vote/confirm/", body, config)
 		.then((res) => {
 			toast.success("Wir danken Ihnen für die Rückmeldung zu diesem Eintrag");
+			item.voted = res.data.voted;
+			item.vote = { confirm: res.data.confirm, change: res.data.change };
 			dispatch({ type: OPEN_MARKER_POPUP, payload: item });
 			dispatch({ type: MARKER_POPUP_LOADED });
 		})
 		.catch((err) => {
-			if (err.response.status == 409) {
+			if (err.response.status == 409 && err.response.msg == "") {
 				toast.warn(
 					"Sie haben uns zu diesem Eintrag bereits eine Rückmeldung erstattet."
 				);

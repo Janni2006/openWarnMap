@@ -1,8 +1,9 @@
+from django.forms import ValidationError
 from rest_framework import status, generics
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
-from reactbackend.serializers import CreateVoteSerializer, IssueSerializer, CreateIssueSerializer
+from reactbackend.serializers import CreateVoteSerializer, IssueSerializer, CreateIssueSerializer, ConfirmVoteSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import filters
@@ -142,6 +143,36 @@ class WebCreateIssueVote(APIView):
                     return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
             return Response(data={"Error": "You have ranked this entry already!"}, status=status.HTTP_409_CONFLICT)
         print(serializer.errors)
+        return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WebConfirmIssueVote(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ConfirmVoteSerializer
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            entry_id = serializer.data.get("entry_id")
+            entry = Issue.objects.get(code__iexact=entry_id)
+
+            if not entry:
+                return Response(data={'err': 'Not found', 'err_msg': 'The entry you are looking for does not exist.', 'err_code': 404}, status=status.HTTP_404_NOT_FOUND)
+
+            if entry.creator == request.user:
+                return Response(data={'err': 'owner', 'err_msg': 'You are the owner of the entry so you are not allowed to vote', 'err_code': 400}, status=status.HTTP_400_BAD_REQUEST)
+
+            existing_queryset = Votes.objects.filter(
+                entry=entry, user=request.user)
+
+            if not existing_queryset.exists():
+                vote = Votes(entry=entry, user=request.user,
+                             confirm=True, change=False)
+                vote.save()
+
+                return Response({"issue": vote.entry.code, "voted": True, "confirm": vote.confirm, "change": vote.change}, status=status.HTTP_200_OK)
+            return Response(data={"err_msg": "You have ranked this entry already!"}, status=status.HTTP_409_CONFLICT)
         return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
 
 
