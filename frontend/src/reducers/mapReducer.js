@@ -7,13 +7,26 @@ import {
 	MARKER_POPUP_LOADED,
 } from "../actions/types";
 
+const initialPopupContent = {
+	code: "",
+	active: false,
+	verified: false,
+	gps_coords: [0, 0],
+	size: 0,
+	height: 0,
+	localization: 0,
+	created: "",
+	voted: false,
+	vote: { confirm: false, change: false },
+};
+
 const initialState = {
 	view: {
 		latitude: 51.163375,
 		longitude: 10.447683,
 		zoom: 6,
 	},
-	markerPopup: { open: false, content: {}, loading: false },
+	markerPopup: { open: false, content: initialPopupContent, loading: false },
 	data: [],
 };
 
@@ -45,7 +58,11 @@ export default function foo(state = initialState, action) {
 		case CLOSE_MARKER_POPUP:
 			return {
 				...state,
-				markerPopup: { ...state.markerPopup, open: false, content: {} },
+				markerPopup: {
+					...state.markerPopup,
+					open: false,
+					content: initialPopupContent,
+				},
 			};
 		case MARKER_POPUP_LOADING:
 			return { ...state, markerPopup: { ...state.markerPopup, loading: true } };

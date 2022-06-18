@@ -122,282 +122,560 @@ function Votes(props) {
 	// 	}
 	// }
 
-	return (
-		<>
-			{props.isAuthenticated && !props.content.private ? (
-				<>
-					{voted ? (
-						<>
-							{props.content.vote.confirm ? (
-								<button
-									style={{
-										border: "2.5px solid green",
-										borderRadius: "5px",
-										height: "41px",
-										backgroundColor: "white",
-										color: "green",
-									}}
-									disabled={true}
-								>
-									{useMediaQuery(theme.breakpoints.down("md")) ? (
-										<ThumbUp />
-									) : (
-										<div style={{ display: "flex", justifyContent: "center" }}>
-											<ThumbUp />
-											<Typography style={{ marginLeft: "2.5px" }}>
-												<FormattedMessage id="POPUP_CONFIRMED" />
-											</Typography>
-										</div>
-									)}
-								</button>
-							) : (
-								<button
-									style={{
-										border: "2.5px solid red",
-										borderRadius: "5px",
-										height: "41px",
-										marginLeft: "5px",
-										backgroundColor: "white",
-										color: "red",
-									}}
-									disabled={true}
-								>
-									{useMediaQuery(theme.breakpoints.down("md")) ? (
-										<ThumbDown />
-									) : (
-										<div
-											style={{
-												display: "flex",
-												justifyContent: "center",
-											}}
-										>
-											<ThumbDown />
-											<Typography style={{ marginLeft: "2.5px" }}>
-												<FormattedMessage id="POPUP_CHANGED" />
-											</Typography>
-										</div>
-									)}
-								</button>
-							)}
-						</>
-					) : (
-						<>
-							<AnimateSharedLayout>
-								<motion.button
-									layoutId="confirmButton"
-									initial={
-										confirmButtonHovered
-											? { backgroundColor: "white", color: "green" }
-											: { backgroundColor: "green", color: "white" }
-									}
-									animate={
-										confirmButtonHovered
-											? { backgroundColor: "green", color: "white" }
-											: { backgroundColor: "white", color: "green" }
-									}
-									exit={
-										confirmButtonHovered
-											? { backgroundColor: "white", color: "green" }
-											: { backgroundColor: "green", color: "white" }
-									}
-									style={{
-										border: "2.5px solid green",
-										borderRadius: "5px",
-										height: "41px",
-									}}
-									disabled={
-										changeButton.selected ||
-										confirmButton.selected ||
-										props.content.voted
-									}
-									// onClick={() => {
-									// 	if (!changeButton.selected) {
-									// 		setConfirmButton({ ...confirmButton, selected: true });
-									// 	}
-									// }}
-									onClick={() => {
-										if (!changeButton.selected) {
-											props.confirmMarker();
-										}
-									}}
-									ref={confirmButtonRef}
-								>
-									{useMediaQuery(theme.breakpoints.down("md")) |
-									!confirmButtonHovered ? (
-										<>
-											{confirmButtonHovered ? <ThumbUp /> : <ThumbUpOutlined />}
-										</>
-									) : (
-										<div style={{ display: "flex", justifyContent: "center" }}>
-											<ThumbUp />
-											<Typography style={{ marginLeft: "2.5px" }}>
-												<FormattedMessage id="POPUP_CONFIRM" />
-											</Typography>
-										</div>
-									)}
-								</motion.button>
-								<motion.button
-									layoutId="changeButton"
-									// initial={{ backgroundColor: "white", color: "red" }}
-									initial={
-										changeButtonHovered
-											? { backgroundColor: "white", color: "red" }
-											: { backgroundColor: "red", color: "white" }
-									}
-									animate={
-										changeButtonHovered
-											? { backgroundColor: "red", color: "white" }
-											: { backgroundColor: "white", color: "red" }
-									}
-									exit={
-										changeButtonHovered
-											? { backgroundColor: "white", color: "red" }
-											: { backgroundColor: "red", color: "white" }
-									}
-									style={{
-										border: "2.5px solid red",
-										borderRadius: "5px",
-										height: "41px",
-										marginLeft: "5px",
-									}}
-									disabled={
-										changeButton.selected ||
-										confirmButton.selected ||
-										props.content.voted
-									}
-									// onClick={() => {
-									// 	if (!confirmButton.selected) {
-									// 		setChangeButton({ ...changeButton, selected: true });
-									// 	}
-									// }}
-									ref={changeButtonRef}
-								>
-									{useMediaQuery(theme.breakpoints.down("md")) |
-									!changeButtonHovered ? (
-										<>
-											{changeButtonHovered ? (
-												<ThumbDown />
-											) : (
-												<ThumbDownOutlined />
-											)}
-										</>
-									) : (
-										<div
-											style={{
-												display: "flex",
-												justifyContent: "center",
-											}}
-										>
-											<ThumbDown />
-											<Typography style={{ marginLeft: "2.5px" }}>
-												<FormattedMessage id="POPUP_CHANGE" />
-											</Typography>
-										</div>
-									)}
-								</motion.button>
-							</AnimateSharedLayout>
-							<AnimateSharedLayout>
-								{changeButton.selected ? (
-									<motion.div
-										layoutId="changeStatusOptions"
-										style={{ width: "100%", marginTop: "15px" }}
-									>
-										<Select
-											placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
-											options={[
-												{
-													value: 0,
-													label: intl.formatMessage({
-														id: "POPUP_REQUEST_CHANGE_OPTION_IP",
-													}),
-												},
-												{
-													value: 1,
-													label: intl.formatMessage({
-														id: "POPUP_REQUEST_CHANGE_OPTION_NT",
-													}),
-												},
-											]}
-											onChange={(option) => {
-												setChangeButton({
-													...changeButton,
-													appliedChange: option?.value,
-												});
-											}}
-										/>
-										<div
-											style={{
-												display: "flex",
-												justifyContent: "flex-end",
-												width: "100%",
-												height: "44px",
-												marginTop: "5px",
-											}}
-										>
-											<Button
-												variant="contained"
-												color="secondary"
-												// className={classes.button}
-												startIcon={<Send />}
-												// onClick={sendVoting}
-												style={{
-													borderRadius: "5px",
-													height: "44px",
-												}}
-											>
-												<FormattedMessage id="ADD_SUBMIT" />
-											</Button>
-										</div>
-									</motion.div>
+	if (props.isAuthenticated && !props.content.private) {
+		// user is authenticated and issue wasn´t created by the user
+		return (
+			<>
+				{props.content.voted ? (
+					<>
+						{props.content.vote.confirm ? (
+							<button
+								style={{
+									border: "2.5px solid green",
+									borderRadius: "5px",
+									height: "41px",
+									backgroundColor: "white",
+									color: "green",
+								}}
+								disabled={true}
+							>
+								{useMediaQuery(theme.breakpoints.down("md")) ? (
+									<ThumbUp />
 								) : (
-									<motion.div
-										layoutId="changeStatusOptions"
-										style={{ width: "100%", marginTop: "15px" }}
-									/>
+									<div style={{ display: "flex", justifyContent: "center" }}>
+										<ThumbUp />
+										<Typography style={{ marginLeft: "2.5px" }}>
+											<FormattedMessage id="POPUP_CONFIRMED" />
+										</Typography>
+									</div>
 								)}
-							</AnimateSharedLayout>
-						</>
-					)}
-				</>
-			) : (
-				<>
-					{props.content.private ? (
-						<div style={{ display: "flex", alignItems: "center" }}>
-							<InfoOutlined style={{ color: "#bdbdbd", fontSize: "15px" }} />
-							<Typography
+							</button>
+						) : (
+							<button
 								style={{
-									color: "#bdbdbd",
-									display: "inline-block",
+									border: "2.5px solid red",
+									borderRadius: "5px",
+									height: "41px",
 									marginLeft: "5px",
-									fontWeight: "normal",
-									fontSize: "12px",
+									backgroundColor: "white",
+									color: "red",
 								}}
+								disabled={true}
 							>
-								Sie haben diesen Eintrag erstellt
-							</Typography>
-							<br />
-						</div>
-					) : (
-						<div style={{ display: "flex", alignItems: "center" }}>
-							<InfoOutlined style={{ color: "#bdbdbd", fontSize: "15px" }} />
-							<Typography
+								{useMediaQuery(theme.breakpoints.down("md")) ? (
+									<ThumbDown />
+								) : (
+									<div
+										style={{
+											display: "flex",
+											justifyContent: "center",
+										}}
+									>
+										<ThumbDown />
+										<Typography style={{ marginLeft: "2.5px" }}>
+											<FormattedMessage id="POPUP_CHANGED" />
+										</Typography>
+									</div>
+								)}
+							</button>
+						)}
+					</>
+				) : (
+					<>
+						<AnimateSharedLayout>
+							<motion.button
+								layoutId="confirmButton"
+								initial={
+									confirmButtonHovered
+										? { backgroundColor: "white", color: "green" }
+										: { backgroundColor: "green", color: "white" }
+								}
+								animate={
+									confirmButtonHovered
+										? { backgroundColor: "green", color: "white" }
+										: { backgroundColor: "white", color: "green" }
+								}
+								exit={
+									confirmButtonHovered
+										? { backgroundColor: "white", color: "green" }
+										: { backgroundColor: "green", color: "white" }
+								}
 								style={{
-									color: "#bdbdbd",
-									display: "inline-block",
-									marginLeft: "5px",
-									fontWeight: "normal",
-									fontSize: "12px",
+									border: "2.5px solid green",
+									borderRadius: "5px",
+									height: "41px",
 								}}
+								disabled={
+									changeButton.selected ||
+									confirmButton.selected ||
+									props.content.voted
+								}
+								// onClick={() => {
+								// 	if (!changeButton.selected) {
+								// 		setConfirmButton({ ...confirmButton, selected: true });
+								// 	}
+								// }}
+								onClick={() => {
+									if (!changeButton.selected) {
+										props.confirmMarker();
+									}
+								}}
+								ref={confirmButtonRef}
 							>
-								Sie müssen eingeloggt sein
-							</Typography>
-							<br />
-						</div>
-					)}
-				</>
-			)}
-		</>
-	);
+								{useMediaQuery(theme.breakpoints.down("md")) |
+								!confirmButtonHovered ? (
+									<>
+										{confirmButtonHovered ? <ThumbUp /> : <ThumbUpOutlined />}
+									</>
+								) : (
+									<div style={{ display: "flex", justifyContent: "center" }}>
+										<ThumbUp />
+										<Typography style={{ marginLeft: "2.5px" }}>
+											<FormattedMessage id="POPUP_CONFIRM" />
+										</Typography>
+									</div>
+								)}
+							</motion.button>
+							<motion.button
+								layoutId="changeButton"
+								// initial={{ backgroundColor: "white", color: "red" }}
+								initial={
+									changeButtonHovered
+										? { backgroundColor: "white", color: "red" }
+										: { backgroundColor: "red", color: "white" }
+								}
+								animate={
+									changeButtonHovered
+										? { backgroundColor: "red", color: "white" }
+										: { backgroundColor: "white", color: "red" }
+								}
+								exit={
+									changeButtonHovered
+										? { backgroundColor: "white", color: "red" }
+										: { backgroundColor: "red", color: "white" }
+								}
+								style={{
+									border: "2.5px solid red",
+									borderRadius: "5px",
+									height: "41px",
+									marginLeft: "5px",
+								}}
+								disabled={
+									changeButton.selected ||
+									confirmButton.selected ||
+									props.content.voted
+								}
+								onClick={() => {
+									if (!confirmButton.selected) {
+										setChangeButton({ ...changeButton, selected: true });
+									}
+								}}
+								ref={changeButtonRef}
+							>
+								{useMediaQuery(theme.breakpoints.down("md")) |
+								!changeButtonHovered ? (
+									<>
+										{changeButtonHovered ? (
+											<ThumbDown />
+										) : (
+											<ThumbDownOutlined />
+										)}
+									</>
+								) : (
+									<div
+										style={{
+											display: "flex",
+											justifyContent: "center",
+										}}
+									>
+										<ThumbDown />
+										<Typography style={{ marginLeft: "2.5px" }}>
+											<FormattedMessage id="POPUP_CHANGE" />
+										</Typography>
+									</div>
+								)}
+							</motion.button>
+						</AnimateSharedLayout>
+						<AnimateSharedLayout>
+							{changeButton.selected ? (
+								<motion.div
+									layoutId="changeStatusOptions"
+									style={{ width: "100%", marginTop: "15px" }}
+								>
+									<Select
+										placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
+										options={[
+											{
+												value: 0,
+												label: intl.formatMessage({
+													id: "POPUP_REQUEST_CHANGE_OPTION_IP",
+												}),
+											},
+											{
+												value: 1,
+												label: intl.formatMessage({
+													id: "POPUP_REQUEST_CHANGE_OPTION_NT",
+												}),
+											},
+										]}
+										onChange={(option) => {
+											setChangeButton({
+												...changeButton,
+												appliedChange: option?.value,
+											});
+										}}
+									/>
+									<div
+										style={{
+											display: "flex",
+											justifyContent: "flex-end",
+											width: "100%",
+											height: "44px",
+											marginTop: "5px",
+										}}
+									>
+										<Button
+											variant="contained"
+											color="secondary"
+											// className={classes.button}
+											startIcon={<Send />}
+											// onClick={sendVoting}
+											style={{
+												borderRadius: "5px",
+												height: "44px",
+											}}
+										>
+											<FormattedMessage id="ADD_SUBMIT" />
+										</Button>
+									</div>
+								</motion.div>
+							) : (
+								<motion.div
+									layoutId="changeStatusOptions"
+									style={{ width: "100%", marginTop: "15px" }}
+								/>
+							)}
+						</AnimateSharedLayout>
+					</>
+				)}
+			</>
+		);
+	} else {
+		return (
+			<>
+				{props.content.private ? (
+					<div style={{ display: "flex", alignItems: "center" }}>
+						<InfoOutlined style={{ color: "#bdbdbd", fontSize: "15px" }} />
+						<Typography
+							style={{
+								color: "#bdbdbd",
+								display: "inline-block",
+								marginLeft: "5px",
+								fontWeight: "normal",
+								fontSize: "12px",
+							}}
+						>
+							Sie haben diesen Eintrag erstellt
+						</Typography>
+						<br />
+					</div>
+				) : (
+					<div style={{ display: "flex", alignItems: "center" }}>
+						<InfoOutlined style={{ color: "#bdbdbd", fontSize: "15px" }} />
+						<Typography
+							style={{
+								color: "#bdbdbd",
+								display: "inline-block",
+								marginLeft: "5px",
+								fontWeight: "normal",
+								fontSize: "12px",
+							}}
+						>
+							Sie müssen eingeloggt sein
+						</Typography>
+						<br />
+					</div>
+				)}
+			</>
+		);
+	}
+
+	// return (
+	// 	<>
+	// 		{props.isAuthenticated && !props.content.private ? (
+	// 			<>
+	// 				{props.content.voted ? (
+	// 					<>
+	// 						{props.content.vote.confirm ? (
+	// 							<button
+	// 								style={{
+	// 									border: "2.5px solid green",
+	// 									borderRadius: "5px",
+	// 									height: "41px",
+	// 									backgroundColor: "white",
+	// 									color: "green",
+	// 								}}
+	// 								disabled={true}
+	// 							>
+	// 								{useMediaQuery(theme.breakpoints.down("md")) ? (
+	// 									<ThumbUp />
+	// 								) : (
+	// 									<div style={{ display: "flex", justifyContent: "center" }}>
+	// 										<ThumbUp />
+	// 										<Typography style={{ marginLeft: "2.5px" }}>
+	// 											<FormattedMessage id="POPUP_CONFIRMED" />
+	// 										</Typography>
+	// 									</div>
+	// 								)}
+	// 							</button>
+	// 						) : (
+	// 							<button
+	// 								style={{
+	// 									border: "2.5px solid red",
+	// 									borderRadius: "5px",
+	// 									height: "41px",
+	// 									marginLeft: "5px",
+	// 									backgroundColor: "white",
+	// 									color: "red",
+	// 								}}
+	// 								disabled={true}
+	// 							>
+	// 								{useMediaQuery(theme.breakpoints.down("md")) ? (
+	// 									<ThumbDown />
+	// 								) : (
+	// 									<div
+	// 										style={{
+	// 											display: "flex",
+	// 											justifyContent: "center",
+	// 										}}
+	// 									>
+	// 										<ThumbDown />
+	// 										<Typography style={{ marginLeft: "2.5px" }}>
+	// 											<FormattedMessage id="POPUP_CHANGED" />
+	// 										</Typography>
+	// 									</div>
+	// 								)}
+	// 							</button>
+	// 						)}
+	// 					</>
+	// 				) : (
+	// 					<>
+	// 						<AnimateSharedLayout>
+	// 							<motion.button
+	// 								layoutId="confirmButton"
+	// 								initial={
+	// 									confirmButtonHovered
+	// 										? { backgroundColor: "white", color: "green" }
+	// 										: { backgroundColor: "green", color: "white" }
+	// 								}
+	// 								animate={
+	// 									confirmButtonHovered
+	// 										? { backgroundColor: "green", color: "white" }
+	// 										: { backgroundColor: "white", color: "green" }
+	// 								}
+	// 								exit={
+	// 									confirmButtonHovered
+	// 										? { backgroundColor: "white", color: "green" }
+	// 										: { backgroundColor: "green", color: "white" }
+	// 								}
+	// 								style={{
+	// 									border: "2.5px solid green",
+	// 									borderRadius: "5px",
+	// 									height: "41px",
+	// 								}}
+	// 								disabled={
+	// 									changeButton.selected ||
+	// 									confirmButton.selected ||
+	// 									props.content.voted
+	// 								}
+	// 								// onClick={() => {
+	// 								// 	if (!changeButton.selected) {
+	// 								// 		setConfirmButton({ ...confirmButton, selected: true });
+	// 								// 	}
+	// 								// }}
+	// 								onClick={() => {
+	// 									if (!changeButton.selected) {
+	// 										props.confirmMarker();
+	// 									}
+	// 								}}
+	// 								ref={confirmButtonRef}
+	// 							>
+	// 								{useMediaQuery(theme.breakpoints.down("md")) |
+	// 								!confirmButtonHovered ? (
+	// 									<>
+	// 										{confirmButtonHovered ? <ThumbUp /> : <ThumbUpOutlined />}
+	// 									</>
+	// 								) : (
+	// 									<div style={{ display: "flex", justifyContent: "center" }}>
+	// 										<ThumbUp />
+	// 										<Typography style={{ marginLeft: "2.5px" }}>
+	// 											<FormattedMessage id="POPUP_CONFIRM" />
+	// 										</Typography>
+	// 									</div>
+	// 								)}
+	// 							</motion.button>
+	// 							<motion.button
+	// 								layoutId="changeButton"
+	// 								// initial={{ backgroundColor: "white", color: "red" }}
+	// 								initial={
+	// 									changeButtonHovered
+	// 										? { backgroundColor: "white", color: "red" }
+	// 										: { backgroundColor: "red", color: "white" }
+	// 								}
+	// 								animate={
+	// 									changeButtonHovered
+	// 										? { backgroundColor: "red", color: "white" }
+	// 										: { backgroundColor: "white", color: "red" }
+	// 								}
+	// 								exit={
+	// 									changeButtonHovered
+	// 										? { backgroundColor: "white", color: "red" }
+	// 										: { backgroundColor: "red", color: "white" }
+	// 								}
+	// 								style={{
+	// 									border: "2.5px solid red",
+	// 									borderRadius: "5px",
+	// 									height: "41px",
+	// 									marginLeft: "5px",
+	// 								}}
+	// 								disabled={
+	// 									changeButton.selected ||
+	// 									confirmButton.selected ||
+	// 									props.content.voted
+	// 								}
+	// 								// onClick={() => {
+	// 								// 	if (!confirmButton.selected) {
+	// 								// 		setChangeButton({ ...changeButton, selected: true });
+	// 								// 	}
+	// 								// }}
+	// 								ref={changeButtonRef}
+	// 							>
+	// 								{useMediaQuery(theme.breakpoints.down("md")) |
+	// 								!changeButtonHovered ? (
+	// 									<>
+	// 										{changeButtonHovered ? (
+	// 											<ThumbDown />
+	// 										) : (
+	// 											<ThumbDownOutlined />
+	// 										)}
+	// 									</>
+	// 								) : (
+	// 									<div
+	// 										style={{
+	// 											display: "flex",
+	// 											justifyContent: "center",
+	// 										}}
+	// 									>
+	// 										<ThumbDown />
+	// 										<Typography style={{ marginLeft: "2.5px" }}>
+	// 											<FormattedMessage id="POPUP_CHANGE" />
+	// 										</Typography>
+	// 									</div>
+	// 								)}
+	// 							</motion.button>
+	// 						</AnimateSharedLayout>
+	// 						<AnimateSharedLayout>
+	// 							{changeButton.selected ? (
+	// 								<motion.div
+	// 									layoutId="changeStatusOptions"
+	// 									style={{ width: "100%", marginTop: "15px" }}
+	// 								>
+	// 									<Select
+	// 										placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
+	// 										options={[
+	// 											{
+	// 												value: 0,
+	// 												label: intl.formatMessage({
+	// 													id: "POPUP_REQUEST_CHANGE_OPTION_IP",
+	// 												}),
+	// 											},
+	// 											{
+	// 												value: 1,
+	// 												label: intl.formatMessage({
+	// 													id: "POPUP_REQUEST_CHANGE_OPTION_NT",
+	// 												}),
+	// 											},
+	// 										]}
+	// 										onChange={(option) => {
+	// 											setChangeButton({
+	// 												...changeButton,
+	// 												appliedChange: option?.value,
+	// 											});
+	// 										}}
+	// 									/>
+	// 									<div
+	// 										style={{
+	// 											display: "flex",
+	// 											justifyContent: "flex-end",
+	// 											width: "100%",
+	// 											height: "44px",
+	// 											marginTop: "5px",
+	// 										}}
+	// 									>
+	// 										<Button
+	// 											variant="contained"
+	// 											color="secondary"
+	// 											// className={classes.button}
+	// 											startIcon={<Send />}
+	// 											// onClick={sendVoting}
+	// 											style={{
+	// 												borderRadius: "5px",
+	// 												height: "44px",
+	// 											}}
+	// 										>
+	// 											<FormattedMessage id="ADD_SUBMIT" />
+	// 										</Button>
+	// 									</div>
+	// 								</motion.div>
+	// 							) : (
+	// 								<motion.div
+	// 									layoutId="changeStatusOptions"
+	// 									style={{ width: "100%", marginTop: "15px" }}
+	// 								/>
+	// 							)}
+	// 						</AnimateSharedLayout>
+	// 					</>
+	// 				)}
+	// 			</>
+	// 		) : (
+	// 			<>
+	// 				{props.content.private ? (
+	// 					<div style={{ display: "flex", alignItems: "center" }}>
+	// 						<InfoOutlined style={{ color: "#bdbdbd", fontSize: "15px" }} />
+	// 						<Typography
+	// 							style={{
+	// 								color: "#bdbdbd",
+	// 								display: "inline-block",
+	// 								marginLeft: "5px",
+	// 								fontWeight: "normal",
+	// 								fontSize: "12px",
+	// 							}}
+	// 						>
+	// 							Sie haben diesen Eintrag erstellt
+	// 						</Typography>
+	// 						<br />
+	// 					</div>
+	// 				) : (
+	// 					<div style={{ display: "flex", alignItems: "center" }}>
+	// 						<InfoOutlined style={{ color: "#bdbdbd", fontSize: "15px" }} />
+	// 						<Typography
+	// 							style={{
+	// 								color: "#bdbdbd",
+	// 								display: "inline-block",
+	// 								marginLeft: "5px",
+	// 								fontWeight: "normal",
+	// 								fontSize: "12px",
+	// 							}}
+	// 						>
+	// 							Sie müssen eingeloggt sein
+	// 						</Typography>
+	// 						<br />
+	// 					</div>
+	// 				)}
+	// 			</>
+	// 		)}
+	// 	</>
+	// );
 }
 
 Votes.propTypes = {
