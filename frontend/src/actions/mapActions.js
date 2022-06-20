@@ -1,6 +1,15 @@
-import { VIEW, MAP_DATA, OPEN_MARKER_POPUP, CLOSE_MARKER_POPUP } from "./types";
+import {
+	VIEW,
+	MAP_DATA,
+	OPEN_MARKER_POPUP,
+	CLOSE_MARKER_POPUP,
+	MARKER_POPUP_LOADED,
+	MARKER_POPUP_LOADING,
+} from "./types";
 
 import axios from "axios";
+
+import { toast } from "react-toastify";
 
 export const viewChanges = (lat, lng, zoom) => (dispatch) => {
 	dispatch({
@@ -37,6 +46,7 @@ export const updateData = () => (dispatch) => {
 
 export const openMarkerPopup = (item) => (dispatch, getState) => {
 	if (getState().auth.isAuthenticated) {
+		dispatch({ type: MARKER_POPUP_LOADING });
 		axios
 			.get(`/react/vote/status/?item=${item.code}`)
 			.then((res) => {
@@ -50,13 +60,91 @@ export const openMarkerPopup = (item) => (dispatch, getState) => {
 					item.vote = { confirm: res.data.confirm, change: res.data.change };
 				}
 				dispatch({ type: OPEN_MARKER_POPUP, payload: item });
+				dispatch({ type: MARKER_POPUP_LOADED });
 			})
 			.catch((err) => {
 				dispatch({ type: OPEN_MARKER_POPUP, payload: item });
+				dispatch({ type: MARKER_POPUP_LOADED });
 				console.log(err);
 			});
 	} else {
 		dispatch({ type: OPEN_MARKER_POPUP, payload: item });
+	}
+};
+
+export const confirmMarker = () => (dispatch, getState) => {
+	var item = getState().map.markerPopup.content;
+	console.log(item);
+	dispatch({ type: MARKER_POPUP_LOADING });
+	const config = {
+		headers: {
+			"Content-Type": "application/json",
+			"X-CSRFToken": getState().security.csrf_token,
+		},
+	};
+	const body = JSON.stringify({
+		entry_id: getState().map.markerPopup.content.code,
+	});
+	axios
+		.post("/react/vote/confirm/", body, config)
+		.then((res) => {
+			toast.success("Wir danken Ihnen für die Rückmeldung zu diesem Eintrag");
+			item.voted = res.data.voted;
+			item.vote = { confirm: res.data.confirm, change: res.data.change };
+			dispatch({ type: OPEN_MARKER_POPUP, payload: item });
+			dispatch({ type: MARKER_POPUP_LOADED });
+		})
+		.catch((err) => {
+			if (err.response.status == 409 && err.response.msg == "") {
+				toast.info(
+					"Sie haben uns zu diesem Eintrag bereits eine Rückmeldung erstattet."
+				);
+			} else {
+				toast.error(
+					"Es ist etwas schief gelaufen! Bitte versuchen Sie es später erneut oder wenden sich an unseren Support."
+				);
+			}
+			console.log(err);
+		});
+};
+
+export const changeMarker = (option) => (dispatch, getState) => {
+	var item = getState().map.markerPopup.content;
+	dispatch({ type: MARKER_POPUP_LOADING });
+	if (Number.isInteger(option)) {
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				"X-CSRFToken": getState().security.csrf_token,
+			},
+		};
+		const body = JSON.stringify({
+			entry_id: getState().map.markerPopup.content.code,
+			change_option: option,
+		});
+		axios
+			.post("/react/vote/change/", body, config)
+			.then((res) => {
+				toast.success("Wir danken Ihnen für die Rückmeldung zu diesem Eintrag");
+				item.voted = res.data.voted;
+				item.vote = { confirm: res.data.confirm, change: res.data.change };
+				dispatch({ type: OPEN_MARKER_POPUP, payload: item });
+				dispatch({ type: MARKER_POPUP_LOADED });
+			})
+			.catch((err) => {
+				if (err.response.status == 409 && err.response.msg == "") {
+					toast.info(
+						"Sie haben uns zu diesem Eintrag bereits eine Rückmeldung erstattet."
+					);
+				} else {
+					toast.error(
+						"Es ist etwas schief gelaufen! Bitte versuchen Sie es später erneut oder wenden sich an unseren Support."
+					);
+				}
+				console.log(err);
+			});
+	} else {
+		toast.error("Sie müssen eine der angegebenen Optionen wählen");
 	}
 };
 

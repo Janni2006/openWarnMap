@@ -6,5 +6,7 @@ urlpatterns = [
     path('create/', WebCreateIssueView.as_view()),
     path('private-data/', WebGetPrivateData.as_view()),
     path('vote/create/', WebCreateIssueVote.as_view()),
+    path('vote/confirm/', WebConfirmIssueVote.as_view()),
+    path('vote/change/', WebChangeIssueVote.as_view()),
     path('vote/status/', WebGetPrivateIssueVoteStatus.as_view())
 ]

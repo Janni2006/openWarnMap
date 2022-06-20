@@ -1,5 +1,7 @@
 from datetime import datetime
+from random import choices
 from django.db.models import fields
+from pkg_resources import require
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework import serializers
@@ -71,3 +73,12 @@ class CreateVoteSerializer(serializers.Serializer):
     confirm = serializers.BooleanField(required=True)
     change = serializers.BooleanField(default=False)
     applied_change = serializers.IntegerField(required=False)
+
+
+class ConfirmVoteSerializer(serializers.Serializer):
+    entry_id = serializers.CharField(required=True)
+
+
+class ChangeVoteSerializer(serializers.Serializer):
+    entry_id = serializers.CharField(required=True)
+    change_option = serializers.IntegerField(required=True)
