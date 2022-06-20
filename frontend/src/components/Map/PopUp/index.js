@@ -8,7 +8,12 @@ import { closeMarkerPopup } from "../../../actions/mapActions";
 
 import { VerifiedUser, Warning, Close, ExpandMore } from "@mui/icons-material";
 
-import { Typography, IconButton, Divider } from "@mui/material";
+import {
+	Typography,
+	IconButton,
+	Divider,
+	CircularProgress,
+} from "@mui/material";
 
 import { makeStyles } from "@mui/styles";
 
@@ -22,6 +27,8 @@ import Votes from "./Votes";
 
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
 import getDistance from "geolib/es/getDistance";
+
+import ErrorBoundary from "../../ErrorBoundary";
 
 const useStyles = makeStyles((theme) => ({
 	z_wrapper: {
@@ -347,8 +354,15 @@ function MarkerPopup(props) {
 									</div>
 								</AccordionDetails>
 							</Accordion>
-
-							<Votes />
+							{props.loading ? (
+								<CircularProgress />
+							) : (
+								<>
+									<ErrorBoundary>
+										<Votes />
+									</ErrorBoundary>
+								</>
+							)}
 						</motion.div>
 					) : (
 						<motion.div
@@ -391,6 +405,7 @@ MarkerPopup.propTypes = {
 	content: PropTypes.object.isRequired,
 	isAuthenticated: PropTypes.bool.isRequired,
 	gpsAvailable: PropTypes.bool.isRequired,
+	loading: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -398,6 +413,7 @@ const mapStateToProps = (state) => ({
 	content: state.map.markerPopup.content,
 	isAuthenticated: state.auth.isAuthenticated,
 	gpsAvailable: state.client.gps.available,
+	loading: state.map.markerPopup.loading,
 });
 
 export default connect(mapStateToProps, { closeMarkerPopup })(MarkerPopup);
