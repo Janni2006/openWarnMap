@@ -28,7 +28,7 @@ import Votes from "./Votes";
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
 import getDistance from "geolib/es/getDistance";
 
-import ErrirBoundary from "../../ErrorBoundary";
+import ErrorBoundary from "../../ErrorBoundary";
 
 const useStyles = makeStyles((theme) => ({
 	z_wrapper: {
@@ -354,10 +354,15 @@ function MarkerPopup(props) {
 									</div>
 								</AccordionDetails>
 							</Accordion>
-							{props.loading ? <CircularProgress /> : <></>}
-							<ErrirBoundary>
-								<Votes />
-							</ErrirBoundary>
+							{props.loading ? (
+								<CircularProgress />
+							) : (
+								<>
+									<ErrorBoundary>
+										<Votes />
+									</ErrorBoundary>
+								</>
+							)}
 						</motion.div>
 					) : (
 						<motion.div

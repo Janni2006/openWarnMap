@@ -171,7 +171,7 @@ class WebConfirmIssueVote(APIView):
                              confirm=True, change=False)
                 vote.save()
 
-                return Response({"issue": vote.entry.code, "voted": True, "confirm": vote.confirm, "change": vote.change}, status=status.HTTP_200_OK)
+                return Response({"issue": vote.entry.code, "voted": True, "confirm": vote.confirm, "change": vote.change}, status=status.HTTP_201_CREATED)
             return Response(data={"err_msg": "You have ranked this entry already!"}, status=status.HTTP_409_CONFLICT)
         return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -209,7 +209,7 @@ class WebChangeIssueVote(APIView):
                     else:
                         return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
 
-                    return Response(status=status.HTTP_201_CREATED, data={'created': 'Thanks for ranking this entry!'})
+                    return Response({"issue": vote.entry.code, "voted": True, "confirm": vote.confirm, "change": vote.change}, status=status.HTTP_201_CREATED)
 
                 return Response(data={"Error": "You have ranked this entry already!"}, status=status.HTTP_409_CONFLICT)
         print(serializer.errors)

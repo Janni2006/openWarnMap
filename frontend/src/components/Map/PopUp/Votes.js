@@ -23,10 +23,6 @@ import { Button, Typography, useMediaQuery } from "@mui/material";
 
 import Select from "react-select";
 
-import { toast } from "react-toastify";
-
-import axios from "axios";
-
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { useTheme } from "@mui/material";
@@ -43,9 +39,6 @@ function Votes(props) {
 		appliedChange: null,
 	});
 
-	const [voted, setVoted] = React.useState(false);
-	const [confirm, setConfirm] = React.useState(false);
-
 	const intl = useIntl();
 
 	const confirmButtonRef = React.useRef(null);
@@ -53,12 +46,6 @@ function Votes(props) {
 
 	const confirmButtonHovered = useHover(confirmButtonRef);
 	const changeButtonHovered = useHover(changeButtonRef);
-
-	React.useEffect(() => {
-		if (confirmButton.selected) {
-			sendVoting();
-		}
-	}, [confirmButton.selected]);
 
 	// React.useEffect(() => {
 	// 	setChangeButton({
