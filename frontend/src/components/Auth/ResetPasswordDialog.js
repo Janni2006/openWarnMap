@@ -14,15 +14,17 @@ import {
 	DialogActions,
 } from "@mui/material";
 
-import "./input.css";
+// import "./input.css";
 
-import { useIntl, FormattedMessage, FormattedTime } from "react-intl";
+import { useIntl, FormattedMessage } from "react-intl";
 
 import SubmitButton from "../SubmitButton";
 
 import { toast } from "react-toastify";
 
 import axios from "axios";
+
+import InputField from "../InputField";
 
 function ResetPassword(props) {
 	const { onClose, open } = props;
@@ -106,7 +108,7 @@ function ResetPassword(props) {
 				<Typography>
 					<FormattedMessage id="AUTH_RESET_PASSWORD_DESCRIPTION" />
 				</Typography>
-				<div
+				{/* <div
 					className={"wrapper"}
 					style={{
 						marginLeft: "-10px",
@@ -150,7 +152,21 @@ function ResetPassword(props) {
 					}}
 				>
 					{errors}
-				</div>
+				</div> */}
+
+				<InputField
+					error={errors}
+					type="email"
+					input={input}
+					onChange={(e) => {
+						setInput(e.target.value);
+					}}
+					onSubmit={handleSubmit}
+					disabled={props.progress}
+					placeholder={
+						<FormattedMessage id="AUTH_RESET_PASSWORD_EMAIL_PLACEHOLDER" />
+					}
+				/>
 			</div>
 
 			<DialogActions>
