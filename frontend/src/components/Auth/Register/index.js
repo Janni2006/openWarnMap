@@ -29,6 +29,8 @@ import axios from "axios";
 
 import ErrorBoundary from "../../ErrorBoundary"; //! only for testing
 
+import EmailUsernameInput from "./EmailUsernameInput";
+
 function Register(props) {
 	const [passwordScore, setPasswordScore] = React.useState(0);
 	const [input, setInput] = React.useState({
@@ -381,45 +383,56 @@ function Register(props) {
 		{
 			label: intl.formatMessage({ id: "AUTH_REGISTER_STEPS_FIRST" }),
 			content: (
-				<StepWrapper
+				// <StepWrapper
+				// 	handleNext={handleNext}
+				// 	handleBack={handleBack}
+				// 	register={register}
+				// 	first
+				// >
+				// 	<InputField
+				// 		placeholder={intl.formatMessage({
+				// 			id: "AUTH_REGISTER_USERNAME_PLACEHOLDER",
+				// 		})}
+				// 		error={errors.username}
+				// 		input={input.username}
+				// 		type="text"
+				// 		name="username"
+				// 		onChange={(event) => {
+				// 			setInput({
+				// 				...input,
+				// 				username: event.target.value,
+				// 			});
+				// 		}}
+				// 		disabled={props.progress}
+				// 	/>
+				// 	<InputField
+				// 		placeholder={intl.formatMessage({
+				// 			id: "AUTH_REGISTER_EMAIL_PLACEHOLDER",
+				// 		})}
+				// 		error={errors.email}
+				// 		input={input.email}
+				// 		type="email"
+				// 		name="email"
+				// 		onChange={(event) => {
+				// 			setInput({
+				// 				...input,
+				// 				email: event.target.value,
+				// 			});
+				// 		}}
+				// 		disabled={props.progress}
+				// 	/>
+				// </StepWrapper>
+				<EmailUsernameInput
 					handleNext={handleNext}
-					handleBack={handleBack}
-					register={register}
-					first
-				>
-					<InputField
-						placeholder={intl.formatMessage({
-							id: "AUTH_REGISTER_USERNAME_PLACEHOLDER",
-						})}
-						error={errors.username}
-						input={input.username}
-						type="text"
-						name="username"
-						onChange={(event) => {
-							setInput({
-								...input,
-								username: event.target.value,
-							});
-						}}
-						disabled={props.progress}
-					/>
-					<InputField
-						placeholder={intl.formatMessage({
-							id: "AUTH_REGISTER_EMAIL_PLACEHOLDER",
-						})}
-						error={errors.email}
-						input={input.email}
-						type="email"
-						name="email"
-						onChange={(event) => {
-							setInput({
-								...input,
-								email: event.target.value,
-							});
-						}}
-						disabled={props.progress}
-					/>
-				</StepWrapper>
+					onChange={() => {}}
+					number={0}
+					addErrorStep={addErrorStep}
+					removeErrorStep={removeErrorStep}
+					isErrorStep={isErrorStep}
+					setValues={(username, email) => {
+						setInput({ ...input, username: username, email: email });
+					}}
+				/>
 			),
 		},
 		{
@@ -630,19 +643,20 @@ function Register(props) {
 				})}
 			</Stepper>
 			{props.progress && (
-				<ErrorBoundary>
-					<div
-						style={{
-							height: "100%",
-							width: "100%",
-							display: "flex",
-							justifyContent: "center",
-							alignItems: "center",
-						}}
-					>
-						<CircularProgress color="#378d40" />
-					</div>
-				</ErrorBoundary>
+				<></>
+				// <ErrorBoundary>
+				// 	<div
+				// 		style={{
+				// 			height: "100%",
+				// 			width: "100%",
+				// 			display: "flex",
+				// 			justifyContent: "center",
+				// 			alignItems: "center",
+				// 		}}
+				// 	>
+				// 		<CircularProgress color="#378d40" />
+				// 	</div>
+				// </ErrorBoundary>
 			)}
 		</AuthWrapper>
 	);

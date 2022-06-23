@@ -22,6 +22,10 @@ function InputField(props) {
 		}
 	}, [props.valid]);
 
+	React.useEffect(() => {
+		console.log(typeof props.underline);
+	}, [props.underline]);
+
 	return (
 		<>
 			<div
@@ -44,8 +48,14 @@ function InputField(props) {
 						// 		props.onKeyUp();
 						// 	}
 						// }}
+						onSubmit={() => {
+							if (typeof props.onSubmit == "function") {
+								props.onSubmit();
+							}
+						}}
 						placeholder=" "
 						required
+						autoComplete={props.autoComplete}
 					/>
 					<div className={"underline"} />
 					{props.error ? (
@@ -82,10 +92,6 @@ function InputField(props) {
 			>
 				{props.error}
 			</div>
-
-			{props.error && props.error != true && props.error != false && (
-				<div className={classes.error}>{props.error}</div>
-			)}
 		</>
 	);
 }
@@ -98,10 +104,12 @@ InputField.propTypes = {
 	input: PropTypes.string,
 	type: PropTypes.string.isRequired,
 	onChange: PropTypes.func.isRequired,
+	onKeyUp: PropTypes.func,
+	onSubmit: PropTypes.func,
 	name: PropTypes.string.isRequired,
 	progress: PropTypes.bool,
 	valid: PropTypes.bool,
-	onKeyUp: PropTypes.func,
+	autoComplete: PropTypes.string,
 };
 
 export default InputField;
