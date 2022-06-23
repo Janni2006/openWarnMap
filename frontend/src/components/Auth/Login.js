@@ -118,7 +118,7 @@ function Login(props) {
 						<Button
 							onClick={() => setResetDialog(true)}
 							style={{
-								height: "40px",
+								height: "60px",
 								background: "linear-gradient(90deg, #378d40, #008259)",
 								marginTop: "25px",
 								marginLeft: "15px",
