@@ -14,8 +14,6 @@ import {
 	DialogActions,
 } from "@mui/material";
 
-// import "./input.css";
-
 import { useIntl, FormattedMessage } from "react-intl";
 
 import SubmitButton from "../SubmitButton";
@@ -108,51 +106,6 @@ function ResetPassword(props) {
 				<Typography>
 					<FormattedMessage id="AUTH_RESET_PASSWORD_DESCRIPTION" />
 				</Typography>
-				{/* <div
-					className={"wrapper"}
-					style={{
-						marginLeft: "-10px",
-						marginRight: "-10px",
-						marginTop: "15px",
-					}}
-				>
-					<div className={"input-data"}>
-						<input
-							type="email"
-							required
-							onChange={(e) => {
-								setInput(e.target.value);
-							}}
-							value={input}
-							onSubmit={handleSubmit}
-							disabled={props.progress}
-						/>
-						<div className={"underline"} />
-						{errors ? (
-							<div
-								style={{
-									height: "2px",
-									width: "100%",
-									backgroundColor: "red",
-									position: "absolute",
-									bottom: "2px",
-								}}
-							/>
-						) : null}
-
-						<label>
-							<FormattedMessage id="AUTH_RESET_PASSWORD_EMAIL_PLACEHOLDER" />
-						</label>
-					</div>
-				</div>
-				<div
-					style={{
-						color: "red",
-						fontSize: "12px",
-					}}
-				>
-					{errors}
-				</div> */}
 
 				<InputField
 					error={errors}
