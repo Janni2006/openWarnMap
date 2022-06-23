@@ -27,6 +27,8 @@ import { motion, AnimateSharedLayout } from "framer-motion";
 import InputField from "../../InputField";
 import axios from "axios";
 
+import ErrorBoundary from "../../ErrorBoundary"; //! only for testing
+
 function Register(props) {
 	const [passwordScore, setPasswordScore] = React.useState(0);
 	const [input, setInput] = React.useState({
@@ -589,46 +591,46 @@ function Register(props) {
 
 	return (
 		<AuthWrapper>
-			<div style={{ margin: "0px -20%" }}>
-				<p
-					style={{
-						textTransform: "uppercase",
-						marginBottom: "50px",
-						color: "#008259",
-						fontSize: "25px",
-					}}
-				>
-					<FormattedMessage id="AUTH_REGISTER_TITLE" />
+			<p
+				style={{
+					textTransform: "uppercase",
+					marginBottom: "50px",
+					color: "#008259",
+					fontSize: "25px",
+				}}
+			>
+				<FormattedMessage id="AUTH_REGISTER_TITLE" />
+			</p>
+
+			{activeStep == 0 ? (
+				<p style={{ marginLeft: "5px", textAlign: "center" }}>
+					<FormattedMessage id="AUTH_REGISTER_QUESTION" />{" "}
+					<Link
+						style={{ color: "#008259", textDecoration: "none" }}
+						to={"/login"}
+					>
+						<FormattedMessage id="AUTH_REGISTER_QUESTION_LINK" />
+					</Link>
 				</p>
+			) : null}
 
-				{activeStep == 0 ? (
-					<p style={{ marginLeft: "5px", textAlign: "center" }}>
-						<FormattedMessage id="AUTH_REGISTER_QUESTION" />{" "}
-						<Link
-							style={{ color: "#008259", textDecoration: "none" }}
-							to={"/login"}
-						>
-							<FormattedMessage id="AUTH_REGISTER_QUESTION_LINK" />
-						</Link>
-					</p>
-				) : null}
+			<Stepper activeStep={activeStep} orientation="vertical">
+				{registerContent.map((item, index) => {
+					const labelProps = {};
+					if (isErrorStep(index)) {
+						labelProps.error = true;
+					}
 
-				<Stepper activeStep={activeStep} orientation="vertical">
-					{registerContent.map((item, index) => {
-						const labelProps = {};
-						if (isErrorStep(index)) {
-							labelProps.error = true;
-						}
-
-						return (
-							<Step key={index}>
-								<StepLabel {...labelProps}>{item.label}</StepLabel>
-								<StepContent>{item.content}</StepContent>
-							</Step>
-						);
-					})}
-				</Stepper>
-				{props.progress && (
+					return (
+						<Step key={index}>
+							<StepLabel {...labelProps}>{item.label}</StepLabel>
+							<StepContent>{item.content}</StepContent>
+						</Step>
+					);
+				})}
+			</Stepper>
+			{props.progress && (
+				<ErrorBoundary>
 					<div
 						style={{
 							height: "100%",
@@ -640,8 +642,8 @@ function Register(props) {
 					>
 						<CircularProgress color="#378d40" />
 					</div>
-				)}
-			</div>
+				</ErrorBoundary>
+			)}
 		</AuthWrapper>
 	);
 }
