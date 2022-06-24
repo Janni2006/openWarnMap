@@ -1,15 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-
-import {
-	Step,
-	Stepper,
-	StepLabel,
-	StepContent,
-	CircularProgress,
-} from "@mui/material";
 
 import StepWrapper from "./StepWrapper";
 
@@ -17,16 +8,12 @@ import "../input.css";
 
 import zxcvbn from "zxcvbn";
 
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 
-import { motion, AnimateSharedLayout } from "framer-motion";
 import InputField from "../../InputField";
 import axios from "axios";
 
-import ErrorBoundary from "../../ErrorBoundary"; //! only for testing
-
 function EmailUsernameInputfield(props) {
-	const [passwordScore, setPasswordScore] = React.useState(0);
 	const [input, setInput] = React.useState({
 		username: { state: "", valid: false, progress: false },
 		email: { state: "", valid: false, progress: false },
@@ -40,8 +27,7 @@ function EmailUsernameInputfield(props) {
 		username: { present: false, msg: "" },
 		email: { present: false, msg: "" },
 	});
-	const [errorSteps, setErrorSteps] = React.useState(new Set());
-	const [activeStep, setActiveStep] = React.useState(0);
+	// const [errorSteps, setErrorSteps] = React.useState(new Set());
 	const intl = useIntl();
 
 	const patternEmail = new RegExp(
@@ -55,6 +41,16 @@ function EmailUsernameInputfield(props) {
 			timer = setTimeout(callback, ms);
 		};
 	};
+
+	React.useEffect(() => {
+		if (input.username == "" && input.email == "") {
+			setInput({
+				...input,
+				username: { ...input.username, state: props.input.username },
+				email: { ...input.email, state: props.input.email },
+			});
+		}
+	}, [props.input]);
 
 	React.useEffect(() => {
 		if (errors.email.present || errors.username.present) {
@@ -76,9 +72,6 @@ function EmailUsernameInputfield(props) {
 				...errors,
 				username: { msg: "", present: false },
 			});
-			if (!errors.email.present) {
-				removeErrorStep(0);
-			}
 			// setInput({ ...input, username: { ...input.username, progress: true } });
 			setTimeout((username = input.username.state) => {
 				if (username == input.username.state && username) {
@@ -102,7 +95,6 @@ function EmailUsernameInputfield(props) {
 										present: true,
 									},
 								});
-								addErrorStep(0);
 								setProgress({ ...progress, username: false });
 								setValid({ ...valid, username: false });
 							} else {
@@ -110,9 +102,6 @@ function EmailUsernameInputfield(props) {
 									...errors,
 									username: { present: false, msg: "" },
 								});
-								if (!errors.email) {
-									removeErrorStep(0);
-								}
 								setValid({ ...valid, username: true });
 								setProgress({ ...progress, username: false });
 							}
@@ -136,9 +125,6 @@ function EmailUsernameInputfield(props) {
 				...errors,
 				email: { msg: "", present: false },
 			});
-			if (!errors.username.present) {
-				removeErrorStep(0);
-			}
 			setInput({ ...input, email: { ...input.email, progress: true } });
 			setProgress({ ...progress, email: true });
 			setTimeout(() => {
@@ -161,16 +147,12 @@ function EmailUsernameInputfield(props) {
 										present: true,
 									},
 								});
-								addErrorStep(0);
 								setValid({ ...valid, email: false });
 							} else {
 								setErrors({
 									...errors,
 									email: { present: false, msg: "" },
 								});
-								if (!errors.username) {
-									removeErrorStep(0);
-								}
 								setValid({ ...valid, email: true });
 							}
 							console.log(email, input.email.state);
@@ -188,30 +170,6 @@ function EmailUsernameInputfield(props) {
 	const handleNext = () => {
 		props.setValues(input.username.state, input.email.state);
 		props.handleNext();
-	};
-
-	const isErrorStep = (step) => {
-		return errorSteps.has(step);
-	};
-
-	const addErrorStep = (step) => {
-		if (!isErrorStep(step)) {
-			setErrorSteps((prevError) => {
-				const newError = new Set(prevError.values());
-				newError.add(step);
-				return newError;
-			});
-		}
-	};
-
-	const removeErrorStep = (step) => {
-		if (isErrorStep(step)) {
-			setErrorSteps((prevError) => {
-				const newError = new Set(prevError.values());
-				newError.delete(step);
-				return newError;
-			});
-		}
 	};
 
 	function validate() {
@@ -356,7 +314,7 @@ function EmailUsernameInputfield(props) {
 		}
 
 		setErrors(errors);
-		setErrorSteps(errorSteps_cache);
+		// setErrorSteps(errorSteps_cache);
 		return isValid;
 	}
 
@@ -395,6 +353,12 @@ function EmailUsernameInputfield(props) {
 					}, 1000);
 				}}
 				progress={progress.username}
+				valid={valid.username}
+				underline={{
+					width: valid.username ? 100 : 0,
+					color: valid.username ? "green" : null,
+				}}
+				autoComplete="username"
 			/>
 			<InputField
 				placeholder={intl.formatMessage({
@@ -412,6 +376,12 @@ function EmailUsernameInputfield(props) {
 				}}
 				disabled={props.progress}
 				progress={progress.email}
+				valid={valid.email}
+				underline={{
+					width: valid.email ? 100 : 0,
+					color: valid.email ? "green" : null,
+				}}
+				autoComplete="email"
 			/>
 		</StepWrapper>
 	);
@@ -425,6 +395,10 @@ EmailUsernameInputfield.propTypes = {
 	addErrorStep: PropTypes.func.isRequired,
 	removeErrorStep: PropTypes.func.isRequired,
 	setValues: PropTypes.func.isRequired,
+	input: PropTypes.shape({
+		username: PropTypes.string.isRequired,
+		email: PropTypes.string.isRequired,
+	}),
 };
 
 const mapStateToProps = (state) => ({

@@ -23,13 +23,13 @@ import zxcvbn from "zxcvbn";
 
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { motion, AnimateSharedLayout } from "framer-motion";
 import InputField from "../../InputField";
 import axios from "axios";
 
 import ErrorBoundary from "../../ErrorBoundary"; //! only for testing
 
 import EmailUsernameInput from "./EmailUsernameInput";
+import Password from "./Password";
 
 function Register(props) {
 	const [passwordScore, setPasswordScore] = React.useState(0);
@@ -432,61 +432,82 @@ function Register(props) {
 					setValues={(username, email) => {
 						setInput({ ...input, username: username, email: email });
 					}}
+					input={{ username: input.username, email: input.email }}
 				/>
 			),
 		},
 		{
 			label: intl.formatMessage({ id: "AUTH_REGISTER_STEPS_SECOND" }),
 			content: (
-				<StepWrapper
+				// <StepWrapper
+				// 	handleNext={handleNext}
+				// 	handleBack={handleBack}
+				// 	register={register}
+				// >
+				// 	<InputField
+				// 		type="password"
+				// 		name="password"
+				// 		error={errors.password}
+				// 		input={input.password}
+				// 		placeholder={intl.formatMessage({
+				// 			id: "AUTH_REGISTER_PASSWORD_PLACEHOLDER",
+				// 		})}
+				// 		onChange={(e) => {
+				// 			setPasswordScore(zxcvbn(e.target.value).score);
+				// 			setInput({ ...input, password: e.target.value });
+				// 		}}
+				// 		underline={{
+				// 			width: passwordScore * 25,
+				// 			color:
+				// 				passwordScore == 1
+				// 					? "red"
+				// 					: passwordScore == 2
+				// 					? "orange"
+				// 					: passwordScore == 3
+				// 					? "yellow"
+				// 					: passwordScore == 4
+				// 					? "green"
+				// 					: "#cccccc",
+				// 		}}
+				// 	/>
+				// 	<InputField
+				// 		type="password"
+				// 		name="conf-password"
+				// 		error={
+				// 			errors.conf_password || input.password != input.conf_password
+				// 		}
+				// 		input={input.conf_password}
+				// 		placeholder={intl.formatMessage({
+				// 			id: "AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER",
+				// 		})}
+				// 		onChange={(e) => {
+				// 			setInput({
+				// 				...input,
+				// 				conf_password: e.target.value,
+				// 			});
+				// 		}}
+				// 	/>
+				// </StepWrapper>
+				<Password
 					handleNext={handleNext}
 					handleBack={handleBack}
-					register={register}
-				>
-					<InputField
-						type="password"
-						name="password"
-						error={errors.password}
-						input={input.password}
-						placeholder={intl.formatMessage({
-							id: "AUTH_REGISTER_PASSWORD_PLACEHOLDER",
-						})}
-						onChange={(e) => {
-							setPasswordScore(zxcvbn(e.target.value).score);
-							setInput({ ...input, password: e.target.value });
-						}}
-						underline={{
-							width: passwordScore * 25,
-							color:
-								passwordScore == 1
-									? "red"
-									: passwordScore == 2
-									? "orange"
-									: passwordScore == 3
-									? "yellow"
-									: passwordScore == 4
-									? "green"
-									: "#cccccc",
-						}}
-					/>
-					<InputField
-						type="password"
-						name="conf-password"
-						error={
-							errors.conf_password || input.password != input.conf_password
-						}
-						input={input.conf_password}
-						placeholder={intl.formatMessage({
-							id: "AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER",
-						})}
-						onChange={(e) => {
-							setInput({
-								...input,
-								conf_password: e.target.value,
-							});
-						}}
-					/>
-				</StepWrapper>
+					onChange={() => {}}
+					number={1}
+					addErrorStep={addErrorStep}
+					removeErrorStep={removeErrorStep}
+					isErrorStep={isErrorStep}
+					setValues={(password, conf_password) => {
+						setInput({
+							...input,
+							password: password,
+							conf_password: conf_password,
+						});
+					}}
+					input={{
+						password: input.password,
+						conf_password: input.conf_password,
+					}}
+				/>
 			),
 		},
 		{

@@ -9,22 +9,23 @@ import "./input.css";
 function InputField(props) {
 	const [valid, setValid] = React.useState({ state: false, last_change: 0 });
 
+	//TODO: This function is not working properly yet
 	React.useEffect(() => {
 		if (props.valid) {
 			setValid({ state: true, last_change: new Date() });
 			setTimeout(() => {
 				if (props.valid && valid.last_change <= new Date() - 2500) {
-					setValid({ state: true, last_change: 0 });
+					setValid({ state: false, last_change: 0 });
 				}
 			}, 3000);
 		} else {
-			setValid({ state: true, last_change: 0 });
+			setValid({ state: false, last_change: 0 });
 		}
 	}, [props.valid]);
 
 	React.useEffect(() => {
-		console.log(typeof props.underline);
-	}, [props.underline]);
+		console.log(valid);
+	}, [valid]);
 
 	return (
 		<>
@@ -56,6 +57,7 @@ function InputField(props) {
 						placeholder=" "
 						required
 						autoComplete={props.autoComplete}
+						ref={props?.reference}
 					/>
 					<div className={"underline"} />
 					{props.error ? (
@@ -68,7 +70,21 @@ function InputField(props) {
 								bottom: "2px",
 							}}
 						/>
-					) : null}
+					) : (
+						<>
+							{props.underline && (
+								<div
+									style={{
+										height: "2px",
+										width: `${props.underline.width}%`,
+										backgroundColor: props.underline.color,
+										position: "absolute",
+										bottom: "2px",
+									}}
+								/>
+							)}
+						</>
+					)}
 					<div
 						style={{
 							position: "absolute",
@@ -79,26 +95,40 @@ function InputField(props) {
 						{props.progress && <CircularProgress size="20px" />}
 						{valid.state ?? <CheckIcon style={{ fontColor: "#378d40" }} />}
 					</div>
-					{typeof props.underline == "object" ?? props.underline}
 
 					<label>{props.placeholder}</label>
 				</div>
 			</div>
-			<div
-				style={{
-					color: "red",
-					fontSize: "12px",
-				}}
-			>
-				{props.error}
-			</div>
+			{props.error ? (
+				<div
+					style={{
+						color: "red",
+						fontSize: "12px",
+					}}
+				>
+					{props.error}
+				</div>
+			) : (
+				<div
+					style={{
+						color: "#cccccc",
+						fontSize: "12px",
+					}}
+				>
+					{props.info}
+				</div>
+			)}
 		</>
 	);
 }
 
 InputField.propTypes = {
-	underline: PropTypes.object,
+	underline: PropTypes.shape({
+		color: PropTypes.string,
+		width: PropTypes.number,
+	}),
 	error: PropTypes.any,
+	info: PropTypes.any,
 	placeholder: PropTypes.string.isRequired,
 	disabled: PropTypes.bool,
 	input: PropTypes.string,
@@ -110,6 +140,7 @@ InputField.propTypes = {
 	progress: PropTypes.bool,
 	valid: PropTypes.bool,
 	autoComplete: PropTypes.string,
+	reference: PropTypes.any,
 };
 
 export default InputField;

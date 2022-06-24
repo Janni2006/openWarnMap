@@ -38,8 +38,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
                                      validate_password], style={'input_type': 'password', 'placeholder': 'Password'})
     password2 = serializers.CharField(required=True, style={
                                       'input_type': 'password', 'placeholder': 'Confirm password'})
-    firstname = serializers.CharField()
-    lastname = serializers.CharField()
+    firstname = serializers.CharField(required=False, default="")
+    lastname = serializers.CharField(required=False, default="")
 
     class Meta:
         model = User
@@ -57,9 +57,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
-            first_name=validated_data['firstname'],
-            last_name=validated_data['lastname']
         )
+
+        print(validated_data)
+
+        # if validated_data['firstname']:
+        #     user.firstname = validated_data['firstname']
+        # if validated_data['lastname']:
+        #     user.firstname = validated_data['lastname']
 
         user.set_password(validated_data['password'])
         user.save()

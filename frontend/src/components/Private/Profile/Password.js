@@ -9,7 +9,7 @@ import { Grid, Button, Paper, CircularProgress } from "@mui/material";
 
 import makeStyles from "@mui/styles/makeStyles";
 
-import { motion, AnimateSharedLayout } from "framer-motion";
+// import { motion, AnimateSharedLayout } from "framer-motion";
 
 import { green, red } from "@mui/material/colors";
 
@@ -165,6 +165,7 @@ function Profile(props) {
 							setInput({ ...input, old_password: event.target.value });
 						}}
 						disabled={loading}
+						autoComplete="current-password"
 					/>
 				</Grid>
 			</Grid>
@@ -224,29 +225,19 @@ function Profile(props) {
 						placeholder={intl.formatMessage({
 							id: "PROFILE_PAGE_PASSWORD_NEW_PASSWORD",
 						})}
-						underline={
-							<AnimateSharedLayout>
-								<motion.div
-									layoutId="change_password_score"
-									style={{
-										height: "2px",
-										width: `${passwordScore * 25}%`,
-										backgroundColor:
-											passwordScore == 1
-												? "red"
-												: passwordScore == 2
-												? "orange"
-												: passwordScore == 3
-												? "yellow"
-												: passwordScore == 4
-												? "green"
-												: "#cccccc",
-										position: "absolute",
-										bottom: "2px",
-									}}
-								/>
-							</AnimateSharedLayout>
-						}
+						underline={{
+							color:
+								passwordScore == 1
+									? "red"
+									: passwordScore == 2
+									? "orange"
+									: passwordScore == 3
+									? "yellow"
+									: passwordScore == 4
+									? "green"
+									: "#cccccc",
+							width: passwordScore * 25,
+						}}
 					/>
 				</Grid>
 				<Grid item xs={12} md={6}>
