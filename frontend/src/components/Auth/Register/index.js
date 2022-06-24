@@ -23,9 +23,13 @@ import zxcvbn from "zxcvbn";
 
 import { FormattedMessage, useIntl } from "react-intl";
 
-import { motion, AnimateSharedLayout } from "framer-motion";
 import InputField from "../../InputField";
 import axios from "axios";
+
+import ErrorBoundary from "../../ErrorBoundary"; //! only for testing
+
+import EmailUsernameInput from "./EmailUsernameInput";
+import Password from "./Password";
 
 function Register(props) {
 	const [passwordScore, setPasswordScore] = React.useState(0);
@@ -379,99 +383,131 @@ function Register(props) {
 		{
 			label: intl.formatMessage({ id: "AUTH_REGISTER_STEPS_FIRST" }),
 			content: (
-				<StepWrapper
+				// <StepWrapper
+				// 	handleNext={handleNext}
+				// 	handleBack={handleBack}
+				// 	register={register}
+				// 	first
+				// >
+				// 	<InputField
+				// 		placeholder={intl.formatMessage({
+				// 			id: "AUTH_REGISTER_USERNAME_PLACEHOLDER",
+				// 		})}
+				// 		error={errors.username}
+				// 		input={input.username}
+				// 		type="text"
+				// 		name="username"
+				// 		onChange={(event) => {
+				// 			setInput({
+				// 				...input,
+				// 				username: event.target.value,
+				// 			});
+				// 		}}
+				// 		disabled={props.progress}
+				// 	/>
+				// 	<InputField
+				// 		placeholder={intl.formatMessage({
+				// 			id: "AUTH_REGISTER_EMAIL_PLACEHOLDER",
+				// 		})}
+				// 		error={errors.email}
+				// 		input={input.email}
+				// 		type="email"
+				// 		name="email"
+				// 		onChange={(event) => {
+				// 			setInput({
+				// 				...input,
+				// 				email: event.target.value,
+				// 			});
+				// 		}}
+				// 		disabled={props.progress}
+				// 	/>
+				// </StepWrapper>
+				<EmailUsernameInput
 					handleNext={handleNext}
-					handleBack={handleBack}
-					register={register}
-					first
-				>
-					<InputField
-						placeholder={intl.formatMessage({
-							id: "AUTH_REGISTER_USERNAME_PLACEHOLDER",
-						})}
-						error={errors.username}
-						input={input.username}
-						type="text"
-						name="username"
-						onChange={(event) => {
-							setInput({
-								...input,
-								username: event.target.value,
-							});
-						}}
-						disabled={props.progress}
-					/>
-					<InputField
-						placeholder={intl.formatMessage({
-							id: "AUTH_REGISTER_EMAIL_PLACEHOLDER",
-						})}
-						error={errors.email}
-						input={input.email}
-						type="email"
-						name="email"
-						onChange={(event) => {
-							setInput({
-								...input,
-								email: event.target.value,
-							});
-						}}
-						disabled={props.progress}
-					/>
-				</StepWrapper>
+					onChange={() => {}}
+					number={0}
+					addErrorStep={addErrorStep}
+					removeErrorStep={removeErrorStep}
+					isErrorStep={isErrorStep}
+					setValues={(username, email) => {
+						setInput({ ...input, username: username, email: email });
+					}}
+					input={{ username: input.username, email: input.email }}
+				/>
 			),
 		},
 		{
 			label: intl.formatMessage({ id: "AUTH_REGISTER_STEPS_SECOND" }),
 			content: (
-				<StepWrapper
+				// <StepWrapper
+				// 	handleNext={handleNext}
+				// 	handleBack={handleBack}
+				// 	register={register}
+				// >
+				// 	<InputField
+				// 		type="password"
+				// 		name="password"
+				// 		error={errors.password}
+				// 		input={input.password}
+				// 		placeholder={intl.formatMessage({
+				// 			id: "AUTH_REGISTER_PASSWORD_PLACEHOLDER",
+				// 		})}
+				// 		onChange={(e) => {
+				// 			setPasswordScore(zxcvbn(e.target.value).score);
+				// 			setInput({ ...input, password: e.target.value });
+				// 		}}
+				// 		underline={{
+				// 			width: passwordScore * 25,
+				// 			color:
+				// 				passwordScore == 1
+				// 					? "red"
+				// 					: passwordScore == 2
+				// 					? "orange"
+				// 					: passwordScore == 3
+				// 					? "yellow"
+				// 					: passwordScore == 4
+				// 					? "green"
+				// 					: "#cccccc",
+				// 		}}
+				// 	/>
+				// 	<InputField
+				// 		type="password"
+				// 		name="conf-password"
+				// 		error={
+				// 			errors.conf_password || input.password != input.conf_password
+				// 		}
+				// 		input={input.conf_password}
+				// 		placeholder={intl.formatMessage({
+				// 			id: "AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER",
+				// 		})}
+				// 		onChange={(e) => {
+				// 			setInput({
+				// 				...input,
+				// 				conf_password: e.target.value,
+				// 			});
+				// 		}}
+				// 	/>
+				// </StepWrapper>
+				<Password
 					handleNext={handleNext}
 					handleBack={handleBack}
-					register={register}
-				>
-					<InputField
-						type="password"
-						name="password"
-						error={errors.password}
-						input={input.password}
-						placeholder={intl.formatMessage({
-							id: "AUTH_REGISTER_PASSWORD_PLACEHOLDER",
-						})}
-						onChange={(e) => {
-							setPasswordScore(zxcvbn(e.target.value).score);
-							setInput({ ...input, password: e.target.value });
-						}}
-						underline={{
-							width: passwordScore * 25,
-							color:
-								passwordScore == 1
-									? "red"
-									: passwordScore == 2
-									? "orange"
-									: passwordScore == 3
-									? "yellow"
-									: passwordScore == 4
-									? "green"
-									: "#cccccc",
-						}}
-					/>
-					<InputField
-						type="password"
-						name="conf-password"
-						error={
-							errors.conf_password || input.password != input.conf_password
-						}
-						input={input.conf_password}
-						placeholder={intl.formatMessage({
-							id: "AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER",
-						})}
-						onChange={(e) => {
-							setInput({
-								...input,
-								conf_password: e.target.value,
-							});
-						}}
-					/>
-				</StepWrapper>
+					onChange={() => {}}
+					number={1}
+					addErrorStep={addErrorStep}
+					removeErrorStep={removeErrorStep}
+					isErrorStep={isErrorStep}
+					setValues={(password, conf_password) => {
+						setInput({
+							...input,
+							password: password,
+							conf_password: conf_password,
+						});
+					}}
+					input={{
+						password: input.password,
+						conf_password: input.conf_password,
+					}}
+				/>
 			),
 		},
 		{
@@ -589,59 +625,60 @@ function Register(props) {
 
 	return (
 		<AuthWrapper>
-			<div style={{ margin: "0px -20%" }}>
-				<p
-					style={{
-						textTransform: "uppercase",
-						marginBottom: "50px",
-						color: "#008259",
-						fontSize: "25px",
-					}}
-				>
-					<FormattedMessage id="AUTH_REGISTER_TITLE" />
-				</p>
+			<p
+				style={{
+					textTransform: "uppercase",
+					marginBottom: "50px",
+					color: "#008259",
+					fontSize: "25px",
+				}}
+			>
+				<FormattedMessage id="AUTH_REGISTER_TITLE" />
+			</p>
 
-				{activeStep == 0 ? (
-					<p style={{ marginLeft: "5px", textAlign: "center" }}>
-						<FormattedMessage id="AUTH_REGISTER_QUESTION" />{" "}
-						<Link
-							style={{ color: "#008259", textDecoration: "none" }}
-							to={"/login"}
-						>
-							<FormattedMessage id="AUTH_REGISTER_QUESTION_LINK" />
-						</Link>
-					</p>
-				) : null}
-
-				<Stepper activeStep={activeStep} orientation="vertical">
-					{registerContent.map((item, index) => {
-						const labelProps = {};
-						if (isErrorStep(index)) {
-							labelProps.error = true;
-						}
-
-						return (
-							<Step key={index}>
-								<StepLabel {...labelProps}>{item.label}</StepLabel>
-								<StepContent>{item.content}</StepContent>
-							</Step>
-						);
-					})}
-				</Stepper>
-				{props.progress && (
-					<div
-						style={{
-							height: "100%",
-							width: "100%",
-							display: "flex",
-							justifyContent: "center",
-							alignItems: "center",
-						}}
+			{activeStep == 0 ? (
+				<p style={{ marginLeft: "5px", textAlign: "center" }}>
+					<FormattedMessage id="AUTH_REGISTER_QUESTION" />{" "}
+					<Link
+						style={{ color: "#008259", textDecoration: "none" }}
+						to={"/login"}
 					>
-						<CircularProgress color="#378d40" />
-					</div>
-				)}
-			</div>
+						<FormattedMessage id="AUTH_REGISTER_QUESTION_LINK" />
+					</Link>
+				</p>
+			) : null}
+
+			<Stepper activeStep={activeStep} orientation="vertical">
+				{registerContent.map((item, index) => {
+					const labelProps = {};
+					if (isErrorStep(index)) {
+						labelProps.error = true;
+					}
+
+					return (
+						<Step key={index}>
+							<StepLabel {...labelProps}>{item.label}</StepLabel>
+							<StepContent>{item.content}</StepContent>
+						</Step>
+					);
+				})}
+			</Stepper>
+			{props.progress && (
+				<></>
+				// <ErrorBoundary>
+				// 	<div
+				// 		style={{
+				// 			height: "100%",
+				// 			width: "100%",
+				// 			display: "flex",
+				// 			justifyContent: "center",
+				// 			alignItems: "center",
+				// 		}}
+				// 	>
+				// 		<CircularProgress color="#378d40" />
+				// 	</div>
+				// </ErrorBoundary>
+			)}
 		</AuthWrapper>
 	);
 }

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import CircularProgress from "@mui/material/CircularProgress";
 import { Button } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import { green } from "@mui/material/colors";
 
 const useStyles = makeStyles({
@@ -53,7 +53,7 @@ function SubmitButton(props) {
 							textTransform: "uppercase",
 							borderRadius: "5px",
 							border: "none",
-							height: "40px",
+							height: "60px",
 						}}
 						onClick={props.onClick}
 					>
@@ -75,7 +75,7 @@ function SubmitButton(props) {
 							textTransform: "uppercase",
 							borderRadius: "5px",
 							border: "none",
-							height: "40px",
+							height: "60px",
 							cursor: "pointer",
 						}}
 						value={props.title}

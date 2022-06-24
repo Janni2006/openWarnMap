@@ -7,9 +7,9 @@ import { setTitle } from "../../../actions/generalActions";
 
 import { Grid, Button, Paper, CircularProgress } from "@mui/material";
 
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 
-import { motion, AnimateSharedLayout } from "framer-motion";
+// import { motion, AnimateSharedLayout } from "framer-motion";
 
 import { green, red } from "@mui/material/colors";
 
@@ -19,7 +19,9 @@ import zxcvbn from "zxcvbn";
 
 import { FormattedMessage, useIntl } from "react-intl";
 
-import "./input.css";
+// import "./input.css";
+
+import InputField from "../../InputField";
 
 import axios from "axios";
 
@@ -135,7 +137,7 @@ function Profile(props) {
 		<Paper style={{ padding: "22px" }}>
 			<Grid container spacing={2} style={{ overflow: "hidden" }}>
 				<Grid item xs={12} md={6}>
-					<div className={"wrapper"}>
+					{/* <div className={"wrapper"}>
 						<div className={"input-data"}>
 							<input
 								type="password"
@@ -151,12 +153,25 @@ function Profile(props) {
 								<FormattedMessage id="PROFILE_PAGE_PASSWORD_OLD_PASSWORD" />
 							</label>
 						</div>
-					</div>
+					</div> */}
+					<InputField
+						type="password"
+						input={input.old_password}
+						name="password"
+						placeholder={intl.formatMessage({
+							id: "PROFILE_PAGE_PASSWORD_OLD_PASSWORD",
+						})}
+						onChange={(event) => {
+							setInput({ ...input, old_password: event.target.value });
+						}}
+						disabled={loading}
+						autoComplete="current-password"
+					/>
 				</Grid>
 			</Grid>
 			<Grid container spacing={2} style={{ overflow: "hidden" }}>
 				<Grid item xs={12} md={6}>
-					<div className={"wrapper"}>
+					{/* <div className={"wrapper"}>
 						<div className={"input-data"}>
 							<input
 								type="password"
@@ -196,10 +211,37 @@ function Profile(props) {
 								<FormattedMessage id="PROFILE_PAGE_PASSWORD_NEW_PASSWORD" />
 							</label>
 						</div>
-					</div>
+					</div> */}
+					<InputField
+						type="password"
+						name="new_password"
+						onChange={(e) => {
+							setPasswordScore(zxcvbn(e.target.value).score);
+							setInput({ ...input, new_password: e.target.value });
+						}}
+						value={input.new_password}
+						disabled={loading}
+						autoComplete="new-password"
+						placeholder={intl.formatMessage({
+							id: "PROFILE_PAGE_PASSWORD_NEW_PASSWORD",
+						})}
+						underline={{
+							color:
+								passwordScore == 1
+									? "red"
+									: passwordScore == 2
+									? "orange"
+									: passwordScore == 3
+									? "yellow"
+									: passwordScore == 4
+									? "green"
+									: "#cccccc",
+							width: passwordScore * 25,
+						}}
+					/>
 				</Grid>
 				<Grid item xs={12} md={6}>
-					<div className={"wrapper"}>
+					{/* <div className={"wrapper"}>
 						<div className={"input-data"}>
 							<input
 								type="password"
@@ -229,7 +271,22 @@ function Profile(props) {
 								<FormattedMessage id="PROFILE_PAGE_PASSWORD_CONFIRM_PASSWORD" />
 							</label>
 						</div>
-					</div>
+					</div> */}
+					<InputField
+						type="password"
+						input={input.conf_password}
+						name="conf_password"
+						placeholder={intl.formatMessage({
+							id: "PROFILE_PAGE_PASSWORD_CONFIRM_PASSWORD",
+						})}
+						onChange={(event) => {
+							setInput({ ...input, conf_password: event.target.value });
+						}}
+						onSubmit={updatePassword}
+						disabled={loading}
+						error={input.new_password != input.conf_password}
+						autoComplete="new-password"
+					/>
 				</Grid>
 			</Grid>
 			<div

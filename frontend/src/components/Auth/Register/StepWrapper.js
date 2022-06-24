@@ -8,6 +8,9 @@ import "../input.css";
 import { FormattedMessage } from "react-intl";
 
 function StepWrapper(props) {
+	React.useEffect(() => {
+		console.log(props.disabled);
+	}, [props.disabled]);
 	return (
 		<>
 			{props.children}
@@ -33,6 +36,7 @@ function StepWrapper(props) {
 							height: "40px",
 						}}
 						onClick={props.handleBack}
+						disabled={props.disabled}
 					>
 						<FormattedMessage id="BACK" />
 					</Button>
@@ -53,6 +57,7 @@ function StepWrapper(props) {
 							marginLeft: "10px",
 						}}
 						onClick={props.register}
+						disabled={props.disabled}
 					>
 						<FormattedMessage id="AUTH_REGISTER" />
 					</Button>
@@ -71,6 +76,7 @@ function StepWrapper(props) {
 							marginLeft: "10px",
 						}}
 						onClick={props.handleNext}
+						disabled={props.disabled}
 					>
 						<FormattedMessage id="NEXT" />
 					</Button>
@@ -82,11 +88,12 @@ function StepWrapper(props) {
 
 StepWrapper.propTypes = {
 	children: PropTypes.any.isRequired,
-	handleBack: PropTypes.func.isRequired,
-	handleNext: PropTypes.func.isRequired,
+	handleBack: PropTypes.func,
+	handleNext: PropTypes.func,
 	register: PropTypes.func,
 	last: PropTypes.bool,
 	first: PropTypes.bool,
+	disabled: PropTypes.bool,
 };
 
 export default StepWrapper;

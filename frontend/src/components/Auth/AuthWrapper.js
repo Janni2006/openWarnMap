@@ -47,7 +47,7 @@ function AuthWrapper(props) {
 					<Hidden lgDown>
 						<Grid
 							item
-							md={5}
+							lg={5}
 							xs={12}
 							style={{
 								background: "linear-gradient(90deg, #378d40, #008259)",
@@ -116,7 +116,7 @@ function AuthWrapper(props) {
 
 					<Grid
 						item
-						md={7}
+						lg={7}
 						xs={12}
 						ref={cardRef}
 						style={{ padding: "50px 10%", height: "100%" }}

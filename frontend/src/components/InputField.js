@@ -1,178 +1,146 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import makeStyles from '@mui/styles/makeStyles';
+import { CircularProgress } from "@mui/material";
+import CheckIcon from "@material-ui/icons/Check";
 
-import { motion, AnimateSharedLayout } from "framer-motion";
-
-const useStyles = makeStyles((theme) => ({
-	wrapper: {
-		width: "100%",
-		background: "#ffffff",
-		padding: "20px 10px 2.5px",
-		margin: "0px -10px",
-		boxSizing: "border-box",
-		outline: "none",
-	},
-	input_data: {
-		height: "30px",
-		width: "100%",
-		margin: 0,
-		padding: 0,
-		outline: "none",
-		position: "relative",
-	},
-	input: {
-		height: "100%",
-		width: "100%",
-		border: "none",
-		fontSize: "17px",
-		outline: "none",
-		margin: 0,
-		padding: 0,
-	},
-	underline: {
-		height: "2px",
-		width: "100%",
-		backgroundColor: "#cccccc",
-		position: "absolute",
-		bottom: "2px",
-	},
-	errorUnderline: {
-		height: "2px",
-		width: "100%",
-		backgroundColor: "red",
-		position: "absolute",
-		bottom: "2px",
-	},
-	label: {
-		position: "absolute",
-		bottom: "25px",
-		left: 0,
-		color: "#cccccc",
-		pointerEvents: "none",
-		margin: 0,
-		padding: 0,
-		boxSizing: "border-box",
-		outline: "none",
-	},
-	secondLabel: {
-		position: "absolute",
-		bottom: "7.5px",
-		left: 0,
-		color: "#cccccc",
-		pointerEvents: "none",
-		margin: 0,
-		padding: 0,
-		boxSizing: "border-box",
-		outline: "none",
-	},
-	error: { color: "red", fontSize: "12px" },
-}));
+import "./input.css";
 
 function InputField(props) {
-	const [open, setOpen] = React.useState(false);
-	const classes = useStyles();
+	const [valid, setValid] = React.useState({ state: false, last_change: 0 });
+
+	//TODO: This function is not working properly yet
+	React.useEffect(() => {
+		if (props.valid) {
+			setValid({ state: true, last_change: new Date() });
+			setTimeout(() => {
+				if (props.valid && valid.last_change <= new Date() - 2500) {
+					setValid({ state: false, last_change: 0 });
+				}
+			}, 3000);
+		} else {
+			setValid({ state: false, last_change: 0 });
+		}
+	}, [props.valid]);
 
 	React.useEffect(() => {
-		if (props.input != "") {
-			setOpen(true);
-		}
-	}, [props.input]);
-
-	React.useEffect(() => console.log(props.underline), [props.underline]);
-
-	function onFocus() {
-		setOpen(true);
-		console.log("Focus");
-	}
-
-	function onBlur() {
-		if (props.input == "") {
-			setOpen(false);
-			console.log("Blur");
-		}
-	}
+		console.log(valid);
+	}, [valid]);
 
 	return (
 		<>
-			<div className={classes.wrapper}>
-				<div className={classes.input_data}>
+			<div
+				className={"wrapper"}
+				style={{
+					marginLeft: "-10px",
+					marginRight: "-10px",
+					marginTop: "15px",
+				}}
+			>
+				<div className={"input-data"}>
 					<input
-						className={classes.input}
 						type={props.type}
 						name={props.name}
 						value={props.input}
 						onChange={props.onChange}
-						id={props.name}
 						disabled={props.disabled}
-						onFocus={onFocus}
-						onBlur={onBlur}
+						// onKeyUp={() => {
+						// 	if (typeof props.onKeyUp == "function") {
+						// 		props.onKeyUp();
+						// 	}
+						// }}
+						onSubmit={() => {
+							if (typeof props.onSubmit == "function") {
+								props.onSubmit();
+							}
+						}}
+						placeholder=" "
+						required
+						autoComplete={props.autoComplete}
+						ref={props?.reference}
 					/>
-					<AnimateSharedLayout>
-						{props.error ? (
-							<motion.div
-								layoutId={`_${props.name}-underline`}
-								className={classes.errorUnderline}
-							/>
-						) : (
-							<motion.div
-								layoutId={`_${props.name}-underline`}
-								className={classes.underline}
-							/>
-						)}
-						{props.underline ? (
-							<motion.div
-								layoutId={`_${props.name}-secondUnderline`}
-								className={classes.underline}
-								style={{
-									width: `${props.underline.width}%`,
-									backgroundColor: props.underline.color,
-								}}
-							/>
-						) : (
-							<motion.div
-								layoutId={`_${props.name}-secondUnderline`}
-								className={classes.underline}
-								style={{
-									width: `0%`,
-								}}
-							/>
-						)}
-						{open ? (
-							<motion.p
-								className={classes.label}
-								layoutId={`_${props.name}-label`}
-							>
-								{props.placeholder}
-							</motion.p>
-						) : (
-							<motion.p
-								className={classes.secondLabel}
-								layoutId={`_${props.name}-label`}
-							>
-								{props.placeholder}
-							</motion.p>
-						)}
-					</AnimateSharedLayout>
+					<div className={"underline"} />
+					{props.error ? (
+						<div
+							style={{
+								height: "2px",
+								width: "100%",
+								backgroundColor: "red",
+								position: "absolute",
+								bottom: "2px",
+							}}
+						/>
+					) : (
+						<>
+							{props.underline && (
+								<div
+									style={{
+										height: "2px",
+										width: `${props.underline.width}%`,
+										backgroundColor: props.underline.color,
+										position: "absolute",
+										bottom: "2px",
+									}}
+								/>
+							)}
+						</>
+					)}
+					<div
+						style={{
+							position: "absolute",
+							bottom: "2px",
+							right: "0px",
+						}}
+					>
+						{props.progress && <CircularProgress size="20px" />}
+						{valid.state ?? <CheckIcon style={{ fontColor: "#378d40" }} />}
+					</div>
+
+					<label>{props.placeholder}</label>
 				</div>
 			</div>
-			{props.error && props.error != true && props.error != false && (
-				<div className={classes.error}>{props.error}</div>
+			{props.error ? (
+				<div
+					style={{
+						color: "red",
+						fontSize: "12px",
+					}}
+				>
+					{props.error}
+				</div>
+			) : (
+				<div
+					style={{
+						color: "#cccccc",
+						fontSize: "12px",
+					}}
+				>
+					{props.info}
+				</div>
 			)}
 		</>
 	);
 }
 
 InputField.propTypes = {
-	underline: PropTypes.object,
+	underline: PropTypes.shape({
+		color: PropTypes.string,
+		width: PropTypes.number,
+	}),
 	error: PropTypes.any,
+	info: PropTypes.any,
 	placeholder: PropTypes.string.isRequired,
 	disabled: PropTypes.bool,
-	input: PropTypes.string.isRequired,
+	input: PropTypes.string,
 	type: PropTypes.string.isRequired,
 	onChange: PropTypes.func.isRequired,
+	onKeyUp: PropTypes.func,
+	onSubmit: PropTypes.func,
 	name: PropTypes.string.isRequired,
+	progress: PropTypes.bool,
+	valid: PropTypes.bool,
+	autoComplete: PropTypes.string,
+	reference: PropTypes.any,
 };
 
 export default InputField;

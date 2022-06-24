@@ -20,8 +20,6 @@ import {
 	FormattedTime,
 } from "react-intl";
 
-import "./input.css";
-
 import { toast } from "react-toastify";
 
 import { loadUser } from "../../../actions/authActions";
