@@ -19,6 +19,7 @@ function MapClick(props) {
 	const [show, setShow] = React.useState(false);
 
 	var xs = useMediaQuery(theme.breakpoints.down("xs")); // CHECK if the useMediaQuery updates its state on screen resize
+	var sm = useMediaQuery(theme.breakpoints.up("sm"));
 
 	React.useEffect(() => {
 		// if (useMediaQuery(theme.breakpoints.down("xs")) || !props.clickToAdd) {
@@ -32,7 +33,7 @@ function MapClick(props) {
 	const map = useMapEvents({
 		click(e) {
 			if (
-				useMediaQuery(theme.breakpoints.up("sm")) &&
+				sm &&
 				map.getZoom() > 12 &&
 				props.clickToAdd &&
 				props.isAuthenticated
