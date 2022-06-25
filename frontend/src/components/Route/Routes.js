@@ -20,7 +20,7 @@ import PrivateEntrys from "../Private/PrivateEntrys";
 import PublicProfile from "../PublicProfile";
 import News from "../News";
 
-import FunctionsOverview from "../Functions";
+// import FunctionsOverview from "../Functions";
 
 import NotFound from "../NotFound";
 
@@ -35,9 +35,9 @@ class Routes extends Component {
 				<PublicRoute path="/" exact>
 					<Map key="TEST" />
 				</PublicRoute>
-				<PublicRoute path="/functions" exact>
+				{/* <PublicRoute path="/functions" exact>
 					<FunctionsOverview />
-				</PublicRoute>
+				</PublicRoute> */}
 				<PublicRoute path="/about" exact>
 					<About />
 				</PublicRoute>
