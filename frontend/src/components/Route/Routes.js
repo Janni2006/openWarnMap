@@ -14,6 +14,7 @@ import Map from "../Map";
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import Logout from "../Auth/Logout";
+import PasswordReset from "../Auth/PasswordReset";
 import AddEntry from "../AddEntry";
 import Profile from "../Private/Profile";
 import PrivateEntrys from "../Private/PrivateEntrys";
@@ -70,6 +71,22 @@ class Routes extends Component {
 					render={({ location }) =>
 						!this.props.isAuthenticated ? (
 							<Register />
+						) : (
+							<Redirect
+								to={{
+									pathname: "/",
+									state: { from: location },
+								}}
+							/>
+						)
+					}
+				/>
+				<Route
+					exact
+					path="/reset-password"
+					render={({ location }) =>
+						!this.props.isAuthenticated ? (
+							<PasswordReset />
 						) : (
 							<Redirect
 								to={{

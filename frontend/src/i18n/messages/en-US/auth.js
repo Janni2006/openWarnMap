@@ -39,19 +39,21 @@ export const AUTH = {
 	AUTH_REGISTER_SUCCESS:
 		"Hi {username}, you´ve successfully created your account!",
 
-	AUTH_RESET_PASSWORD: "Reset password",
-	AUTH_RESET_PASSWORD_DESCRIPTION:
+	AUTH_RESET_PASSWORD_DIALOG: "Reset password",
+	AUTH_RESET_PASSWORD_DIALOG_DESCRIPTION:
 		"Please type in the account´s email address. We will send an email to the address below\
 		 with the reset link and instructions about how to reset the password. To provide the\
 		 best level of security we won´t tell you if you mistype rather you just get no email.",
-	AUTH_RESET_PASSWORD_EMAIL_PLACEHOLDER: "E-Mail",
-	AUTH_RESET_PASSWORD_SUCCESS:
+	AUTH_RESET_PASSWORD_DIALOG_EMAIL_PLACEHOLDER: "E-Mail",
+	AUTH_RESET_PASSWORD_DIALOG_SUCCESS:
 		"You have successfully requested to reset your password! You are going to receive an\
 		email with further instructions.",
-	AUTH_RESET_PASSWORD_QUESTION: "Forgot password?",
+	AUTH_RESET_PASSWORD_DIALOG_QUESTION: "Forgot password?",
 
 	AUTH_ALREADY_USED_EMAIL: "The email is already in use.",
 	AUTH_ALREADY_USED_USERNAME: "This username is already occupied.",
 
 	AUTH_PASSWORD_NOT_STRONG: "This password isn´t strong enough",
+
+	AUTH_PASSWORD_RESET_TITLE: "Password reset",
 };

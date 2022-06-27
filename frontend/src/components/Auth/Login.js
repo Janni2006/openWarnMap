@@ -125,7 +125,7 @@ function Login(props) {
 								color: "white",
 							}}
 						>
-							<FormattedMessage id="AUTH_RESET_PASSWORD_QUESTION" />
+							<FormattedMessage id="AUTH_RESET_PASSWORD_DIALOG_QUESTION" />
 						</Button>
 					</div>
 				</form>

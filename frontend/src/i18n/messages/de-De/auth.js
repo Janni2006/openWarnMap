@@ -44,20 +44,22 @@ export const AUTH = {
 	AUTH_REGISTER_SUCCESS:
 		"Willkommen {username}, Ihr Nutzeraccount wurde erfolgreich erstellt!",
 
-	AUTH_RESET_PASSWORD: "Passwort zurücksetzen",
-	AUTH_RESET_PASSWORD_DESCRIPTION:
+	AUTH_RESET_PASSWORD_DIALOG: "Passwort zurücksetzen",
+	AUTH_RESET_PASSWORD_DIALOG_DESCRIPTION:
 		"Bitte geben Sie hier die E-Mail Adresse des betroffenen Accounts ein.\
 		Wir werden eine E-Mail an diese Adresse mit einem Link zum Zurücksetzen\
 		des Passworts und weitere Instruktionen senden. Um die Sicherheit unserer\
 		Nutzer zu gewährleisten, werden wir Ihnen kein Feedback geben, ob Sie sich\
 		ggf. verschrieben haben oder ähnliches.",
-	AUTH_RESET_PASSWORD_EMAIL_PLACEHOLDER: "E-Mail",
-	AUTH_RESET_PASSWORD_SUCCESS:
+	AUTH_RESET_PASSWORD_DIALOG_EMAIL_PLACEHOLDER: "E-Mail",
+	AUTH_RESET_PASSWORD_DIALOG_SUCCESS:
 		"Wir haben Ihnen nun eine E-Mail mit weiteren Instruktionen zum Zurücksetzen des Passworts geschickt.",
-	AUTH_RESET_PASSWORD_QUESTION: "Passwort vergessen?",
+	AUTH_RESET_PASSWORD_DIALOG_QUESTION: "Passwort vergessen?",
 
 	AUTH_ALREADY_USED_EMAIL: "Diese E-Mail Addresse ist bereits in Gebrauch.",
 	AUTH_ALREADY_USED_USERNAME: "Dieser Nutzername ist bereits vergeben.",
 
 	AUTH_PASSWORD_NOT_STRONG: "Dieses Passwort ist nicht sicher genug.",
+
+	AUTH_PASSWORD_RESET_TITLE: "Passwort zuzücksetzen",
 };
