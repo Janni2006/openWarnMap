@@ -3,230 +3,97 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setTitle } from "../../actions/generalActions";
 
+import "leaflet/dist/leaflet.css";
+import "react-leaflet-markercluster/dist/styles.min.css";
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
+import "leaflet-defaulticon-compatibility";
+
 import { useIntl, FormattedMessage } from "react-intl";
 
 import { Grid, Paper, Typography, Hidden } from "@mui/material";
 
-import makeStyles from '@mui/styles/makeStyles';
-
-import { MoneyOff, Place, CheckCircleOutline } from "@mui/icons-material";
+import {
+	MapContainer,
+	TileLayer,
+	useMapEvents,
+	useMap,
+	ScaleControl,
+	LayersControl,
+} from "react-leaflet";
 
 import Map from "../Map";
 
-const useStyles = makeStyles((theme) => ({
-	wrapper: {
-		position: "relative",
-		width: "100%",
-		height: "100%",
-		overflowY: "hidden",
-	},
-	background: {
-		position: "absolute",
-		top: "0px",
-		left: "0px",
-		width: "100%",
-		zIndex: 0,
-	},
-	foreground: {
-		position: "relative",
-		zIndex: 50,
-		width: "100%",
-		paddingBottom: "25px",
-		overflowY: "hidden",
-		[theme.breakpoints.up("md")]: {
-			margin: "auto",
-			maxWidth: "1300px",
-			padding: "0px 50px 25px 50px",
-			width: "calc(100% - 100px)",
-		},
-	},
-	section1: {
-		height: "calc(100vh - 64px)",
-		width: "100%",
-		position: "relative",
-	},
-	section1Content: {
-		position: "absolute",
-		transform: "translate(-50%, -50%)",
-		top: "50%",
-		left: "50%",
-		width: "100%",
-	},
-	title: {
-		marginTop: "40px",
-		color: "white",
-		fontFamily: "'Open sans', sans-serrif",
-		[theme.breakpoints.only("xs")]: {
-			textAlign: "center",
-			width: "75%",
-			maxWidth: "328.5px",
-			fontSize: "32px",
-			fontWeight: "700",
-			marginLeft: "50%",
-			transform: "translate(-50%, 0%)",
-			lineHeight: 1.2,
-		},
-		[theme.breakpoints.only("sm")]: {
-			textAlign: "center",
-			width: "75%",
-			maxWidth: "400px",
-			fontSize: "40px",
-			fontWeight: "700",
-			marginLeft: "50%",
-			transform: "translate(-50%, 0%)",
-			lineHeight: 1.2,
-		},
-		[theme.breakpoints.up("md")]: {
-			textAlign: "left",
-			width: "75%",
-			maxWidth: "688px",
-			fontSize: "51.2px",
-			fontWeight: "800",
-			lineHeight: 1.2,
-		},
-	},
-	description: {
-		color: "white",
-		fontFamily: "'Open sans', sans-serrif",
-		fontWeight: "300",
-		[theme.breakpoints.only("xs")]: {
-			textAlign: "center",
-			width: "87.5%",
-			marginTop: "25px",
-			marginLeft: "auto",
-			marginRight: "auto",
-			fontSize: "19.2px",
-		},
-		[theme.breakpoints.only("sm")]: {
-			textAlign: "center",
-			width: "75%",
-			marginTop: "25px",
-			marginLeft: "auto",
-			marginRight: "auto",
-			fontSize: "20px",
-		},
-		[theme.breakpoints.up("md")]: {
-			textAlign: "left",
-			marginTop: "25px",
-			fontSize: "22px",
-			width: "100%",
-		},
-	},
-	buttonWrapper: {
-		display: "flex",
-
-		[theme.breakpoints.down('lg')]: {
-			justifyContent: "center",
-			padding: "25px 0px 0px 0px",
-		},
-		[theme.breakpoints.up("md")]: {
-			justifyContent: "flex-start",
-			padding: "25px 50px 0px 0px",
-		},
-	},
-	button: {
-		// position: "absolute",
-		backgroundColor: "red",
-		borderRadius: "25px",
-		height: "50px",
-		padding: "6px 18px",
-		color: "white",
-		fontSize: "16px",
-		[theme.breakpoints.down('lg')]: {
-			// transform: "translate(-50%, 0%)",
-			// left: "50%",
-			// bottom: "25px",
-		},
-		[theme.breakpoints.up("md")]: {
-			// right: "50px",
-			// bottom: "50px",
-			marginTop: "50px",
-		},
-	},
-	section: { width: "100%" },
-	sectionTitle: {
-		position: "relative",
-		width: "100%",
-		height: "150px",
-	},
-	sectionFirstTitle: {
-		position: "absolute",
-		top: "50%",
-		fontFamily: "'Open sans', sans-serrif",
-		color: "#ffffff",
-		width: "100%",
-		textAlign: "center",
-		letterSpacing: "6px",
-		fontWeight: "700",
-		transform: "translate(0%, -50%)",
-		lineHeight: 0.9,
-
-		[theme.breakpoints.down('lg')]: {
-			fontSize: "27.5px",
-		},
-		[theme.breakpoints.up("md")]: {
-			fontSize: "59.2px",
-		},
-	},
-	sectionScondTitle: {
-		position: "absolute",
-		top: "50%",
-		fontFamily: "'Open sans', sans-serrif",
-		color: "#ffffff",
-		opacity: "37.5%",
-		width: "100%",
-		textAlign: "center",
-		letterSpacing: "7.5px",
-		textTransform: "uppercase",
-		fontWeight: "800",
-		transform: "translate(0%, -50%)",
-
-		[theme.breakpoints.down('lg')]: {
-			display: "none",
-		},
-		[theme.breakpoints.only("md")]: {
-			letterSpacing: "5px",
-		},
-		[theme.breakpoints.up("md")]: {
-			fontSize: "100px",
-		},
-	},
-	sectionContent: {
-		width: "calc(100% - 100px)",
-		padding: "0px 50px",
-		overflowY: "hidden",
-	},
-	sectionCard: {
-		height: "auto",
-		width: "calc(100% - 40px)",
-		padding: "10px 20px",
-	},
-
-	img: {
-		height: "auto",
-		width: "calc(100% - 48px)",
-		position: "absolute",
-		top: "50%",
-		transform: "translate(0%, -50%)",
-	},
-}));
-
-function FunctionsOverview(props) {
+function GpxUpload(props) {
 	const intl = useIntl();
-	const classes = useStyles();
+	const [key, setKey] = new React.useState(0);
+
+	const [map, setMap] = React.useState(null);
+
+	const initial_center = [props.latitude ?? 0, props.longitude ?? 0];
+	const initial_zoom = props.zoom ?? 0;
 
 	React.useEffect(() => {
-		props.setTitle(intl.formatMessage({ id: "FUNCTIONS_OVERVIEW" }));
+		props.setTitle(intl.formatMessage({ id: "FUNCTIONS_GPX_TITLE" }));
 		return () => {
 			props.setTitle();
 		};
 	}, []);
 
-	return <Map />;
+	function LastPosition() {
+		const map = useMap();
+		useMapEvents({
+			moveend() {
+				props.viewChanges(
+					map.getCenter().lat,
+					map.getCenter().lng,
+					map.getZoom()
+				);
+			},
+			zoomend() {
+				props.viewChanges(
+					map.getCenter().lat,
+					map.getCenter().lng,
+					map.getZoom()
+				);
+			},
+		});
+
+		return null;
+	}
+
+	return (
+		<Paper>
+			<MapContainer
+				center={[0, 0]}
+				zoom={0}
+				scrollWheelZoom={true}
+				style={{ height: "calc(100vh - 90px)", zIndex: 0 }}
+				whenCreated={setMap}
+				key={key}
+			>
+				<TileLayer
+					attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+				/>
+				<LastPosition />
+			</MapContainer>
+		</Paper>
+	);
 }
 
-FunctionsOverview.propTypes = {
+GpxUpload.propTypes = {
 	setTitle: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setTitle })(FunctionsOverview);
+const mapStateToProps = (state) => ({
+	latitude: state.map.view.latitude,
+	longitude: state.map.view.longitude,
+	zoom: state.map.view.zoom,
+	data: state.map.data,
+	latitude: PropTypes.number.isRequired,
+	longitude: PropTypes.number.isRequired,
+	zoom: PropTypes.number.isRequired,
+	data: PropTypes.array,
+});
+
+export default connect(mapStateToProps, { setTitle })(GpxUpload);

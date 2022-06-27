@@ -21,6 +21,7 @@ import PublicProfile from "../PublicProfile";
 import News from "../News";
 
 import FunctionsOverview from "../Functions";
+import GpxUpload from "../Functions/GpxUpload";
 
 import NotFound from "../NotFound";
 
@@ -38,6 +39,9 @@ class Routes extends Component {
 				<PublicRoute path="/functions" exact>
 					<FunctionsOverview />
 				</PublicRoute>
+				<AuthRoute path="/functions/gpx" exact authenticated={true}>
+					<GpxUpload />
+				</AuthRoute>
 				<PublicRoute path="/about" exact>
 					<About />
 				</PublicRoute>
