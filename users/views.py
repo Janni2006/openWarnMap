@@ -362,6 +362,7 @@ class WebSetNotificationSettings(generics.UpdateAPIView):
 
 class WebPasswordTokenCheck(APIView):
     serializer_class = SetNewPasswordSerializer
+    permission_classes = (AllowAny,)
 
     def get(self, request, uidb64, token):
 
