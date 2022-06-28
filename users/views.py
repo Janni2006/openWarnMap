@@ -358,3 +358,31 @@ class WebCheckEmail(APIView):
 class WebSetNotificationSettings(generics.UpdateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = WebChangeNotificationSettings
+
+
+class WebPasswordTokenCheck(APIView):
+    serializer_class = SetNewPasswordSerializer
+
+    def get(self, request, uidb64, token):
+
+        try:
+            id = smart_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(id=id)
+
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                return Response({'valid': False}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({'valid': True, 'uidb64': uidb64, 'token': token})
+
+            # if redirect_url and len(redirect_url) > 3:
+            #     return CustomRedirect(redirect_url+'?token_valid=True&message=Credentials Valid&uidb64='+uidb64+'&token='+token)
+            # else:
+            #     return CustomRedirect(os.environ.get('FRONTEND_URL', '')+'?token_valid=False')
+
+        except DjangoUnicodeDecodeError as identifier:
+            try:
+                if not PasswordResetTokenGenerator().check_token(user):
+                    return Response({'valid': False}, status=status.HTTP_400_BAD_REQUEST)
+
+            except UnboundLocalError as e:
+                return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
