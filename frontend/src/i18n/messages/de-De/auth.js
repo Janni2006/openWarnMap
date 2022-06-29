@@ -63,4 +63,9 @@ export const AUTH = {
 
 	AUTH_PASSWORD_RESET: "Passwort zuzücksetzen",
 	AUTH_PASSWORD_RESET_TITLE: "Ihr Passwort für openWarnMap zurücksetzen",
+	AUTH_PASSWORD_RESET_GET_NEW_LINK: "Neuen Link beantragen",
+	AUTH_PASSWORD_RESET_LINK_ERROR_MSG:
+		"Der angegebene Link ist ungültig. Dieser Fehler kann ebenfalls an einem\
+		 Ablaufen des Links oder einer weiteren Anmeldung des Nutzers seit der\
+		  Anforderung dieses Linkes liegen.",
 };

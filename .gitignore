@@ -171,13 +171,5 @@ frontend/packages/react-devtools-scheduling-profiler/dist
 
 # gitignore for vsCode
 *.code-workspace
-frontend/static/frontend/node_modules_web-vitals_dist_web-vitals_js.js
-frontend/static/frontend/main.js
-frontend/static/frontend/main.js.LICENSE.txt
-frontend/static/frontend/node_modules_web-vitals_dist_web-vitals_js.js.LICENSE.txt
-frontend/static/frontend/a0c6cc1401c107b501ef.png
-frontend/static/frontend/680f69f3c2e6b90c1812.png
-frontend/static/frontend/416d91365b44e4b4f477.png
-frontend/static/frontend/8f2c4d11474275fbc161.png
-frontend/static/frontend/2b3e1faf89f94a483539.png
 emails
+frontend/static/frontend

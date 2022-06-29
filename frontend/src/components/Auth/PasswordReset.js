@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 
 import zxcvbn from "zxcvbn";
 
-import { Button } from "@mui/material";
+import { Button, Paper, Typography } from "@mui/material";
 
 import { setTitle } from "../../actions/generalActions";
 
@@ -173,7 +173,36 @@ function PasswordReset(props, { match }) {
 								title={intl.formatMessage({ id: "AUTH_PASSWORD_RESET" })}
 							/>
 						</form>
-					) : null}
+					) : (
+						<>
+							<Paper style={{ backgroundColor: "#CC1B29", padding: "10px" }}>
+								<Typography style={{ color: "white" }}>
+									<FormattedMessage id="AUTH_PASSWORD_RESET_LINK_ERROR_MSG" />
+								</Typography>
+							</Paper>
+							<div
+								style={{
+									display: `flex`,
+									justifyContent: `end`,
+								}}
+							>
+								<Link to="/reset-password" style={{ textDecoration: "none" }}>
+									<Button
+										style={{
+											height: "60px",
+											background: "linear-gradient(90deg, #378d40, #008259)",
+											marginTop: "25px",
+											marginLeft: "15px",
+											color: "white",
+											textDecoration: "none",
+										}}
+									>
+										<FormattedMessage id="AUTH_PASSWORD_RESET_GET_NEW_LINK" />
+									</Button>
+								</Link>
+							</div>
+						</>
+					)}
 				</>
 			)}
 		</AuthWrapper>

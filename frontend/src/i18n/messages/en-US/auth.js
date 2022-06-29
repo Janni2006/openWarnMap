@@ -57,4 +57,6 @@ export const AUTH = {
 
 	AUTH_PASSWORD_RESET: "Reset password",
 	AUTH_PASSWORD_RESET_TITLE: "Reset your password for openWarnMap",
+	AUTH_PASSWORD_RESET_GET_NEW_LINK: "Get new reset link",
+	AUTH_PASSWORD_RESET_LINK_ERROR_MSG: "",
 };
