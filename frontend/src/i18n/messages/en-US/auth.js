@@ -58,5 +58,11 @@ export const AUTH = {
 	AUTH_PASSWORD_RESET: "Reset password",
 	AUTH_PASSWORD_RESET_TITLE: "Reset your password for openWarnMap",
 	AUTH_PASSWORD_RESET_GET_NEW_LINK: "Get new reset link",
-	AUTH_PASSWORD_RESET_LINK_ERROR_MSG: "",
+	AUTH_PASSWORD_RESET_LINK_ERROR_MSG:
+		"Your link is invalid. You may have logged into your\
+	 account since you requested it or it just got obsolete.",
+	AUTH_PASSWORD_RESET_CHECKING_LINK:
+		"We check your link. Please wait for a moment...",
+	AUTH_PASSWORD_RESET_SUCCESS_MSG:
+		"The password reset was successfull. Go ahead to the login page an login.",
 };

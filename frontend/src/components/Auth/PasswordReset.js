@@ -20,7 +20,9 @@ import AuthWrapper from "./AuthWrapper";
 
 import axios from "axios";
 
-function PasswordReset(props, { match }) {
+import { green } from "@mui/material/colors";
+
+function PasswordReset(props) {
 	const [checkRunning, setCheckRunning] = React.useState(true);
 	const [linkValid, setLinkValid] = React.useState(false);
 	const [passwordScore, setPasswordScore] = React.useState(0);
@@ -33,6 +35,7 @@ function PasswordReset(props, { match }) {
 		password: false,
 		conf_password: false,
 	});
+	const [success, setSuccess] = React.useState(false);
 
 	const intl = useIntl();
 
@@ -98,6 +101,38 @@ function PasswordReset(props, { match }) {
 			});
 	};
 
+	const handleSubmit = (event, props) => {
+		console.log(props);
+		event.preventDefault();
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+				"X-CSRFToken": props.csrf,
+			},
+		};
+
+		const body = JSON.stringify({
+			password: input.password,
+			uidb64: props.match.params.uidb64,
+			token: props.match.params.token,
+		});
+
+		axios
+			.post("/backend/auth/password-reset/set/", body, config)
+			.then((res) => {
+				console.log(res);
+				if (res.status == 200) {
+					setSuccess(true);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+
+		console.log(props);
+		console.log("Submit");
+	};
+
 	return (
 		<AuthWrapper>
 			<p
@@ -116,63 +151,105 @@ function PasswordReset(props, { match }) {
 						<CircularProgress color="style" size="7.5rem" />
 					</div>
 
-					<p style={{ textAlign: "center" }}>validating your link</p>
+					<p style={{ textAlign: "center" }}>
+						<FormattedMessage id="AUTH_PASSWORD_RESET_CHECKING_LINK" />
+					</p>
 				</div>
 			) : (
 				<>
 					{linkValid ? (
-						<form>
-							<InputField
-								type="password"
-								name="password"
-								error={errors.password}
-								input={input.password}
-								placeholder={intl.formatMessage({
-									id: "AUTH_REGISTER_PASSWORD_PLACEHOLDER",
-								})}
-								onChange={(e) => {
-									setPasswordScore(zxcvbn(e.target.value).score);
-									setInput({ ...input, password: e.target.value });
-								}}
-								underline={{
-									color:
-										passwordScore == 1
-											? "red"
-											: passwordScore == 2
-											? "orange"
-											: passwordScore == 3
-											? "yellow"
-											: passwordScore == 4
-											? "green"
-											: "#cccccc",
-									width: passwordScore * 25,
-								}}
-								info={`Strength: ${passwordScore}`}
-								reference={passwordField}
-								autoComplete="new-password"
-							/>
-							<InputField
-								type="password"
-								name="conf-password"
-								error={errors.conf_password}
-								input={input.conf_password}
-								placeholder={intl.formatMessage({
-									id: "AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER",
-								})}
-								onChange={(e) => {
-									setInput({
-										...input,
-										conf_password: e.target.value,
-									});
-								}}
-								autoComplete="new-password"
-							/>
-							<SubmitButton
-								// loading={props.progress}
-								// success={props.isAuthenticated && !props.progress}
-								title={intl.formatMessage({ id: "AUTH_PASSWORD_RESET" })}
-							/>
-						</form>
+						<>
+							{success ? (
+								<>
+									<Paper
+										style={{ backgroundColor: green[500], padding: "10px" }}
+									>
+										<Typography style={{ color: "white" }}>
+											<FormattedMessage id="AUTH_PASSWORD_RESET_SUCCESS_MSG" />
+										</Typography>
+									</Paper>
+									<div
+										style={{
+											display: `flex`,
+											justifyContent: `end`,
+										}}
+									>
+										<Link to="/login" style={{ textDecoration: "none" }}>
+											<Button
+												style={{
+													height: "60px",
+													background:
+														"linear-gradient(90deg, #378d40, #008259)",
+													marginTop: "25px",
+													marginLeft: "15px",
+													color: "white",
+													textDecoration: "none",
+												}}
+											>
+												<FormattedMessage id="AUTH_LOGIN" />
+											</Button>
+										</Link>
+									</div>
+								</>
+							) : (
+								<form
+									onSubmit={(e) => {
+										handleSubmit(e, props);
+									}}
+								>
+									<InputField
+										type="password"
+										name="password"
+										error={errors.password}
+										input={input.password}
+										placeholder={intl.formatMessage({
+											id: "AUTH_REGISTER_PASSWORD_PLACEHOLDER",
+										})}
+										onChange={(e) => {
+											setPasswordScore(zxcvbn(e.target.value).score);
+											setInput({ ...input, password: e.target.value });
+										}}
+										underline={{
+											color:
+												passwordScore == 1
+													? "red"
+													: passwordScore == 2
+													? "orange"
+													: passwordScore == 3
+													? "yellow"
+													: passwordScore == 4
+													? "green"
+													: "#cccccc",
+											width: passwordScore * 25,
+										}}
+										info={`Strength: ${passwordScore}`}
+										reference={passwordField}
+										autoComplete="new-password"
+									/>
+									<InputField
+										type="password"
+										name="conf-password"
+										error={errors.conf_password}
+										input={input.conf_password}
+										placeholder={intl.formatMessage({
+											id: "AUTH_REGISTER_CONFIRM_PASSWORD_PLACEHOLDER",
+										})}
+										onChange={(e) => {
+											setInput({
+												...input,
+												conf_password: e.target.value,
+											});
+										}}
+										autoComplete="new-password"
+									/>
+									<SubmitButton
+										// loading={props.progress}
+										// success={props.isAuthenticated && !props.progress}
+										title={intl.formatMessage({ id: "AUTH_PASSWORD_RESET" })}
+									/>
+								</form>
+							)}
+						</>
 					) : (
 						<>
 							<Paper style={{ backgroundColor: "#CC1B29", padding: "10px" }}>
@@ -209,7 +286,7 @@ function PasswordReset(props, { match }) {
 	);
 }
 
-PasswordReset.PropTypes = { csrf: PropTypes.string.isRequired };
+PasswordReset.propTypes = { csrf: PropTypes.string.isRequired };
 
 const mapStateToProps = (state) => ({ csrf: state.security.csrf_token });
 

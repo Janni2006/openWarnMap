@@ -68,4 +68,8 @@ export const AUTH = {
 		"Der angegebene Link ist ungültig. Dieser Fehler kann ebenfalls an einem\
 		 Ablaufen des Links oder einer weiteren Anmeldung des Nutzers seit der\
 		  Anforderung dieses Linkes liegen.",
+	AUTH_PASSWORD_RESET_CHECKING_LINK:
+		"Ihr Link wird überprüft. Bitte warten Sie einen Moment...",
+	AUTH_PASSWORD_RESET_SUCCESS_MSG:
+		"Das Zurücksetzen des Passworts war erfolgreich. Gehen Sie nun zur Anmelde Seite, um sich anzumelden",
 };

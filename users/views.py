@@ -6,12 +6,12 @@ from rest_framework.response import Response
 from rest_framework import exceptions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes, force_str
 from django.contrib.sites.shortcuts import get_current_site
 
 from django.conf import settings
@@ -399,13 +399,7 @@ class WebSetResetPassword(generics.GenericAPIView):
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            password = serializer.data.get("password")
-            uidb64 = serializer.data.get("uidb64")
-
-            id = force_str(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(id=id)
-
-            user.set_password(password)
-
+        # if serializer.is_valid(raise_exception=True):
+        #     serializer.set_password(serializer.validated_data)
+        serializer.is_valid(raise_exception=True)
         return Response({'success': True, 'message': 'Password reset success'}, status=status.HTTP_200_OK)
