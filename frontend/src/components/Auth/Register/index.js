@@ -17,8 +17,6 @@ import StepWrapper from "./StepWrapper";
 import { register } from "../../../actions/authActions";
 import { setTitle } from "../../../actions/generalActions";
 
-import "../input.css";
-
 import zxcvbn from "zxcvbn";
 
 import { FormattedMessage, useIntl } from "react-intl";

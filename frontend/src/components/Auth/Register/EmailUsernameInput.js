@@ -4,8 +4,6 @@ import { connect } from "react-redux";
 
 import StepWrapper from "./StepWrapper";
 
-import "../input.css";
-
 import zxcvbn from "zxcvbn";
 
 import { useIntl } from "react-intl";

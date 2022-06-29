@@ -116,9 +116,10 @@ function ResetPassword(props) {
 					}}
 					onSubmit={handleSubmit}
 					disabled={props.progress}
-					placeholder={
-						<FormattedMessage id="AUTH_RESET_PASSWORD_DIALOG_EMAIL_PLACEHOLDER" />
-					}
+					placeholder={intl.formatMessage({
+						id: "AUTH_RESET_PASSWORD_DIALOG_EMAIL_PLACEHOLDER",
+					})}
+					name="email"
 				/>
 			</div>
 
