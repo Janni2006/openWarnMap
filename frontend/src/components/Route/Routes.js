@@ -12,15 +12,22 @@ import About from "../About";
 import Map from "../Map";
 
 import Login from "../Auth/Login";
-import Register from "../Auth/Register";
+// import Register from "../Auth/Register";
 import Logout from "../Auth/Logout";
-import PasswordReset from "../Auth/PasswordReset";
+// import PasswordReset from "../Auth/PasswordReset";
 import PasswordResetRequest from "../Auth/PasswordResetRequest";
 import AddEntry from "../AddEntry";
 import Profile from "../Private/Profile";
 import PrivateEntrys from "../Private/PrivateEntrys";
 import PublicProfile from "../PublicProfile";
 import News from "../News";
+
+const Register = React.lazy(() => import("../Auth/Register"));
+const PasswordReset = React.lazy(() => import("../Auth/PasswordReset"));
+
+import { Suspense } from "react";
+import AuthLoading from "../Auth/AuthLoading";
+import ErrorBoundary from "../ErrorBoundary";
 
 // import FunctionsOverview from "../Functions";
 
@@ -74,7 +81,11 @@ class Routes extends Component {
 					path="/register"
 					render={({ location }) =>
 						!this.props.isAuthenticated ? (
-							<Register />
+							<ErrorBoundary>
+								<Suspense fallback={<AuthLoading />}>
+									<Register />
+								</Suspense>
+							</ErrorBoundary>
 						) : (
 							<Redirect
 								to={{
@@ -131,7 +142,11 @@ class Routes extends Component {
 				>
 					<>
 						{!this.props.isAuthenticated ? (
-							<PasswordReset />
+							<ErrorBoundary>
+								<Suspense fallback={<AuthLoading />}>
+									<PasswordReset />
+								</Suspense>
+							</ErrorBoundary>
 						) : (
 							<Redirect
 								to={{

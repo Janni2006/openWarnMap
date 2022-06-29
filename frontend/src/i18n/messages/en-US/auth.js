@@ -1,4 +1,5 @@
 export const AUTH = {
+	AUTH_LOADING: "Please wait for a moment",
 	AUTH_TITLE: "Welcome to the",
 	AUTH_DESCRIPTION:
 		"A Software to save you from the hairs of oak processionary moths",

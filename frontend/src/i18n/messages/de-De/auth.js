@@ -1,4 +1,5 @@
 export const AUTH = {
+	AUTH_LOADING: "Bitte warten Sie einen Moment",
 	AUTH_TITLE: "Wilkommen zur",
 	AUTH_DESCRIPTION:
 		"Eine App um Sie vor dem Kontakt mit den Haren der Eichenprozessionsspinner zu schützen ",
