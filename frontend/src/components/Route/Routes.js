@@ -15,6 +15,7 @@ import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import Logout from "../Auth/Logout";
 import PasswordReset from "../Auth/PasswordReset";
+import PasswordResetRequest from "../Auth/PasswordResetRequest";
 import AddEntry from "../AddEntry";
 import Profile from "../Private/Profile";
 import PrivateEntrys from "../Private/PrivateEntrys";
@@ -45,9 +46,12 @@ class Routes extends Component {
 				<PublicRoute path="/news" exact>
 					<News />
 				</PublicRoute>
-				<PublicRoute path="/user/:user">
+				{/* <PublicRoute path="/user/:user">
 					<PublicProfile />
-				</PublicRoute>
+				</PublicRoute> */}
+				<Route path="/user/:user" exact>
+					<PublicProfile />
+				</Route>
 				{/* Auth */}
 				<Route
 					exact
@@ -81,22 +85,62 @@ class Routes extends Component {
 						)
 					}
 				/>
-				<Route
+				<PublicRoute
 					exact
 					path="/reset-password"
-					render={({ location }) =>
-						!this.props.isAuthenticated ? (
+					// render={({ location }) =>
+					// 	!this.props.isAuthenticated ? (
+					// 		<PasswordResetRequest />
+					// 	) : (
+					// 		<Redirect
+					// 			to={{
+					// 				pathname: "/",
+					// 				state: { from: location },
+					// 			}}
+					// 		/>
+					// 	)
+					// }
+				>
+					<>
+						{!this.props.isAuthenticated ? (
+							<PasswordResetRequest />
+						) : (
+							<Redirect
+								to={{
+									pathname: "/",
+								}}
+							/>
+						)}
+					</>
+				</PublicRoute>
+				<Route
+					exact
+					path="/reset-password/:uidb64/:token"
+					// render={({ location }) =>
+					// 	!this.props.isAuthenticated ? (
+					// 		<PasswordResetRequest />
+					// 	) : (
+					// 		<Redirect
+					// 			to={{
+					// 				pathname: "/",
+					// 				state: { from: location },
+					// 			}}
+					// 		/>
+					// 	)
+					// }
+				>
+					<>
+						{!this.props.isAuthenticated ? (
 							<PasswordReset />
 						) : (
 							<Redirect
 								to={{
 									pathname: "/",
-									state: { from: location },
 								}}
 							/>
-						)
-					}
-				/>
+						)}
+					</>
+				</Route>
 				<AuthRoute authenticated={true} path="/logout" exact>
 					<Logout />
 				</AuthRoute>
