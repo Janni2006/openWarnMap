@@ -20,6 +20,9 @@ from users.models import TokenUUID
 from users.serializers import *
 from users.utils import generate_access_token, generate_refresh_token
 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+
 
 class WebLoginView(APIView):
     permission_classes = (AllowAny,)
@@ -304,10 +307,11 @@ class WebPasswordResetRequest(APIView):
 
                 current_site = get_current_site(request)
                 email_subject = '[EPS-Warner] Reset your password'
-                # email_body = render_to_string(
-                #     'users/password_reset/reset_password_email.html', {'user': user, 'domain': current_site.domain, 'uidb': uidb64, 'token': token})
-                print(token)
-                print(uidb64)
+                email_body = render_to_string(
+                    'users/password_reset/reset_password_email.html', {'user': user, 'domain': current_site.domain, 'uidb64': uidb64, 'token': token})
+
+                send_mail(email_subject, email_body,
+                          'no-reply@openwarnmap.de', [user.email])
 
                 return Response({"message": "An email was successfully send to your acount. If there was no account with this email address, there wont be an email."}, status=status.HTTP_200_OK)
         return Response({"code": 400, "message": "Invalid data was provided."}, status=status.HTTP_400_BAD_REQUEST)
