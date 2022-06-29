@@ -61,5 +61,6 @@ export const AUTH = {
 
 	AUTH_PASSWORD_NOT_STRONG: "Dieses Passwort ist nicht sicher genug.",
 
-	AUTH_PASSWORD_RESET_TITLE: "Passwort zuzücksetzen",
+	AUTH_PASSWORD_RESET: "Passwort zuzücksetzen",
+	AUTH_PASSWORD_RESET_TITLE: "Ihr Passwort für openWarnMap zurücksetzen",
 };

@@ -55,5 +55,6 @@ export const AUTH = {
 
 	AUTH_PASSWORD_NOT_STRONG: "This password isn´t strong enough",
 
-	AUTH_PASSWORD_RESET_TITLE: "Password reset",
+	AUTH_PASSWORD_RESET: "Reset password",
+	AUTH_PASSWORD_RESET_TITLE: "Reset your password for openWarnMap",
 };
