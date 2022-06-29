@@ -123,10 +123,6 @@ class SetNewPasswordSerializer(serializers.Serializer):
             if not PasswordResetTokenGenerator().check_token(user, token):
                 raise AuthenticationFailed('The reset link is invalid', 401)
 
-            user.set_password(password)
-            user.save()
-
-            return (user)
         except Exception as e:
             raise AuthenticationFailed('The reset link is invalid', 401)
         return super().validate(attrs)

@@ -11,6 +11,7 @@ urlpatterns = [
     path('login/reset/', WebPasswordResetRequest.as_view()),
     path('password-reset/check/<uidb64>/<token>/',
          WebPasswordTokenCheck.as_view()),
+    path('password-reset/set/', WebSetResetPassword.as_view()),
     path('change-profile/', WebChangeProfile.as_view()),
     path('checks/username/', WebCheckUsername.as_view()),
     path('checks/email/', WebCheckEmail.as_view()),

@@ -391,3 +391,21 @@ class WebPasswordTokenCheck(APIView):
 
             except UnboundLocalError as e:
                 return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WebSetResetPassword(generics.GenericAPIView):
+    serializer_class = SetNewPasswordSerializer
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            password = serializer.data.get("password")
+            uidb64 = serializer.data.get("uidb64")
+
+            id = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(id=id)
+
+            user.set_password(password)
+
+        return Response({'success': True, 'message': 'Password reset success'}, status=status.HTTP_200_OK)
