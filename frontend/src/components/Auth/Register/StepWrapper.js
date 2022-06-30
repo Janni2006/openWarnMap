@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 
 import { Button } from "@mui/material";
 
-import "../input.css";
-
 import { FormattedMessage } from "react-intl";
 
 function StepWrapper(props) {

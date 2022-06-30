@@ -51,7 +51,7 @@ function ResetPassword(props) {
 					if (res.status == 200) {
 						handleClose();
 						toast.success(
-							intl.formatMessage({ id: "AUTH_RESET_PASSWORD_SUCCESS" })
+							intl.formatMessage({ id: "AUTH_RESET_PASSWORD_DIALOG_SUCCESS" })
 						);
 					}
 				})
@@ -100,11 +100,11 @@ function ResetPassword(props) {
 	return (
 		<Dialog open={open} onClose={handleClose}>
 			<DialogTitle>
-				<FormattedMessage id="AUTH_RESET_PASSWORD" />
+				<FormattedMessage id="AUTH_RESET_PASSWORD_DIALOG" />
 			</DialogTitle>
 			<div style={{ padding: "0px 24px" }}>
 				<Typography>
-					<FormattedMessage id="AUTH_RESET_PASSWORD_DESCRIPTION" />
+					<FormattedMessage id="AUTH_RESET_PASSWORD_DIALOG_DESCRIPTION" />
 				</Typography>
 
 				<InputField
@@ -116,9 +116,10 @@ function ResetPassword(props) {
 					}}
 					onSubmit={handleSubmit}
 					disabled={props.progress}
-					placeholder={
-						<FormattedMessage id="AUTH_RESET_PASSWORD_EMAIL_PLACEHOLDER" />
-					}
+					placeholder={intl.formatMessage({
+						id: "AUTH_RESET_PASSWORD_DIALOG_EMAIL_PLACEHOLDER",
+					})}
+					name="email"
 				/>
 			</div>
 

@@ -71,7 +71,7 @@ function Feedback(props) {
 			// 		if (res.status == 200) {
 			// 			handleClose();
 			// 			toast.success(
-			// 				intl.formatMessage({ id: "AUTH_RESET_PASSWORD_SUCCESS" })
+			// 				intl.formatMessage({ id: "AUTH_RESET_PASSWORD_DIALOG_SUCCESS" })
 			// 			);
 			// 		}
 			// 	})

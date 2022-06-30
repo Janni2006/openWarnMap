@@ -6,12 +6,12 @@ from rest_framework.response import Response
 from rest_framework import exceptions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
-from django.utils.http import urlsafe_base64_encode
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes, force_str
 from django.contrib.sites.shortcuts import get_current_site
 
 from django.conf import settings
@@ -19,6 +19,9 @@ from users.models import TokenUUID
 
 from users.serializers import *
 from users.utils import generate_access_token, generate_refresh_token
+
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 
 class WebLoginView(APIView):
@@ -304,10 +307,11 @@ class WebPasswordResetRequest(APIView):
 
                 current_site = get_current_site(request)
                 email_subject = '[EPS-Warner] Reset your password'
-                # email_body = render_to_string(
-                #     'users/password_reset/reset_password_email.html', {'user': user, 'domain': current_site.domain, 'uidb': uidb64, 'token': token})
-                print(token)
-                print(uidb64)
+                email_body = render_to_string(
+                    'users/password_reset/reset_password_email.html', {'user': user, 'domain': current_site.domain, 'uidb64': uidb64, 'token': token})
+
+                send_mail(email_subject, email_body,
+                          'no-reply@openwarnmap.de', [user.email])
 
                 return Response({"message": "An email was successfully send to your acount. If there was no account with this email address, there wont be an email."}, status=status.HTTP_200_OK)
         return Response({"code": 400, "message": "Invalid data was provided."}, status=status.HTTP_400_BAD_REQUEST)
@@ -358,3 +362,44 @@ class WebCheckEmail(APIView):
 class WebSetNotificationSettings(generics.UpdateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = WebChangeNotificationSettings
+
+
+class WebPasswordTokenCheck(APIView):
+    serializer_class = SetNewPasswordSerializer
+    permission_classes = (AllowAny,)
+
+    def get(self, request, uidb64, token):
+
+        try:
+            id = smart_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(id=id)
+
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                return Response({'valid': False}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({'valid': True, 'uidb64': uidb64, 'token': token})
+
+            # if redirect_url and len(redirect_url) > 3:
+            #     return CustomRedirect(redirect_url+'?token_valid=True&message=Credentials Valid&uidb64='+uidb64+'&token='+token)
+            # else:
+            #     return CustomRedirect(os.environ.get('FRONTEND_URL', '')+'?token_valid=False')
+
+        except DjangoUnicodeDecodeError as identifier:
+            try:
+                if not PasswordResetTokenGenerator().check_token(user):
+                    return Response({'valid': False}, status=status.HTTP_400_BAD_REQUEST)
+
+            except UnboundLocalError as e:
+                return Response({'error': 'Token is not valid, please request a new one'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WebSetResetPassword(generics.GenericAPIView):
+    serializer_class = SetNewPasswordSerializer
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        # if serializer.is_valid(raise_exception=True):
+        #     serializer.set_password(serializer.validated_data)
+        serializer.is_valid(raise_exception=True)
+        return Response({'success': True, 'message': 'Password reset success'}, status=status.HTTP_200_OK)
