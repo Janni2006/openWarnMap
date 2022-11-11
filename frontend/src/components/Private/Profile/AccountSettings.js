@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setTitle } from "../../../actions/generalActions";
 
-import { Grid, Button, Paper, Typography } from "@material-ui/core";
+import { Grid, Button, Paper, Typography } from "@mui/material";
 
 import {
 	FormattedMessage,
@@ -12,13 +12,15 @@ import {
 	FormattedTime,
 } from "react-intl";
 
-import "./input.css";
+// import "./input.css";
 
 import { toast } from "react-toastify";
 
 import { loadUser } from "../../../actions/authActions";
 
 import axios from "axios";
+
+import InputField from "../../InputField";
 
 function Profile(props) {
 	const [input, setInput] = React.useState({
@@ -34,7 +36,7 @@ function Profile(props) {
 		return () => {
 			props.setTitle(intl.formatMessage({ id: "PROFILE" }));
 		};
-	});
+	}, []);
 
 	function updateProfile() {
 		setLoading(true);
@@ -67,7 +69,7 @@ function Profile(props) {
 		<Paper style={{ padding: "22px" }}>
 			<Grid container spacing={2} style={{ overflow: "hidden" }}>
 				<Grid item xs={12} md={6}>
-					<div className="wrapper">
+					{/* <div className="wrapper">
 						<div className="input-data">
 							<input
 								type="text"
@@ -85,10 +87,22 @@ function Profile(props) {
 								<FormattedMessage id="PROFILE_PAGE_ACCOUNT_FIRSTNAME" />
 							</label>
 						</div>
-					</div>
+					</div> */}
+					<InputField
+						type="text"
+						input={input.firstname}
+						name="firstname"
+						placeholder={intl.formatMessage({
+							id: "PROFILE_PAGE_ACCOUNT_FIRSTNAME",
+						})}
+						onChange={(event) => {
+							setInput({ ...input, firstname: event.target.value });
+						}}
+						disabled={loading}
+					/>
 				</Grid>
 				<Grid item xs={12} md={6}>
-					<div className="wrapper">
+					{/* <div className="wrapper">
 						<div className="input-data">
 							<input
 								type="text"
@@ -106,7 +120,19 @@ function Profile(props) {
 								<FormattedMessage id="PROFILE_PAGE_ACCOUNT_LASTNAME" />
 							</label>
 						</div>
-					</div>
+					</div> */}
+					<InputField
+						type="text"
+						input={input.lastname}
+						name="lastname"
+						placeholder={intl.formatMessage({
+							id: "PROFILE_PAGE_ACCOUNT_LASTNAME",
+						})}
+						onChange={(event) => {
+							setInput({ ...input, lastname: event.target.value });
+						}}
+						disabled={loading}
+					/>
 				</Grid>
 			</Grid>
 			<Grid container spacing={2}>

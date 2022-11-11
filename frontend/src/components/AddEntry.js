@@ -7,19 +7,20 @@ import "leaflet/dist/leaflet.css";
 
 import {
 	Typography,
-	withWidth,
-	isWidthDown,
-	makeStyles,
 	Grid,
 	Paper,
 	Button,
 	Backdrop,
 	CircularProgress,
-} from "@material-ui/core";
+	useMediaQuery,
+	useTheme,
+} from "@mui/material";
+
+import { makeStyles } from "@mui/styles";
 
 import { toast } from "react-toastify";
 
-import { Warning, Add, MyLocation, CheckCircle } from "@material-ui/icons";
+import { Warning, Add, MyLocation, CheckCircle } from "@mui/icons-material";
 
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 
@@ -58,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function AddEntry(props) {
+	const theme = useTheme();
 	const classes = useStyles();
 	const intl = useIntl();
 
@@ -311,7 +313,7 @@ function AddEntry(props) {
 						<Paper
 							style={{
 								width: "100%",
-								height: isWidthDown("sm", props.width)
+								height: useMediaQuery(theme.breakpoints.down("sm"))
 									? "50vh"
 									: "calc(100vh - 134px)",
 								backgroundColor: "white",
@@ -328,7 +330,7 @@ function AddEntry(props) {
 								trackResize={false}
 								zoomControl={false}
 								style={{
-									height: isWidthDown("sm", props.width)
+									height: useMediaQuery(theme.breakpoints.down("sm"))
 										? "50vh"
 										: "calc(100vh - 134px)",
 									width: "100%",
@@ -761,4 +763,4 @@ const mapStateToProps = (state) => ({
 	map_view: state.map.view,
 });
 
-export default withWidth()(connect(mapStateToProps, { setTitle })(AddEntry));
+export default connect(mapStateToProps, { setTitle })(AddEntry);

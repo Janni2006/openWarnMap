@@ -4,14 +4,14 @@ import Dropdown from "rc-dropdown";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import Avatar from "@material-ui/core/Avatar";
-import Badge from "@material-ui/core/Badge";
-import { withStyles } from "@material-ui/core/styles";
+import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
+import withStyles from '@mui/styles/withStyles';
 import { FormattedMessage } from "react-intl";
 
-import { List, ListItem, Paper, Divider } from "@material-ui/core";
+import { List, ListItem, Paper, Divider } from "@mui/material";
 
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 const StyledBadge = withStyles((theme) => ({
 	badge: {

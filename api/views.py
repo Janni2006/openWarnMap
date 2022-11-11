@@ -13,7 +13,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.contrib.gis.geos import Point
 
-from .models import Issue
+from server_models.models import Issue
 from .serializer import *
 # Create your views here.
 

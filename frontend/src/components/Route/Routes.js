@@ -8,16 +8,28 @@ import { Switch, withRouter, Route, Redirect } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import AuthRoute from "./AuthRoute";
 
-import About from "../About/About";
-import Map from "../Map/Map";
+import About from "../About";
+import Map from "../Map";
 
 import Login from "../Auth/Login";
-import Register from "../Auth/Register";
+// import Register from "../Auth/Register";
 import Logout from "../Auth/Logout";
+// import PasswordReset from "../Auth/PasswordReset";
+import PasswordResetRequest from "../Auth/PasswordResetRequest";
 import AddEntry from "../AddEntry";
-import Profile from "../Private/Profile/Profile";
+import Profile from "../Private/Profile";
 import PrivateEntrys from "../Private/PrivateEntrys";
 import PublicProfile from "../PublicProfile";
+import News from "../News";
+
+const Register = React.lazy(() => import("../Auth/Register"));
+const PasswordReset = React.lazy(() => import("../Auth/PasswordReset"));
+
+import { Suspense } from "react";
+import AuthLoading from "../Auth/AuthLoading";
+import ErrorBoundary from "../ErrorBoundary";
+
+// import FunctionsOverview from "../Functions";
 
 import NotFound from "../NotFound";
 
@@ -30,14 +42,23 @@ class Routes extends Component {
 		return (
 			<Switch>
 				<PublicRoute path="/" exact>
-					<Map />
+					<Map key="TEST" />
 				</PublicRoute>
+				{/* <PublicRoute path="/functions" exact>
+					<FunctionsOverview />
+				</PublicRoute> */}
 				<PublicRoute path="/about" exact>
 					<About />
 				</PublicRoute>
-				<PublicRoute path="/user/:user">
-					<PublicProfile />
+				<PublicRoute path="/news" exact>
+					<News />
 				</PublicRoute>
+				{/* <PublicRoute path="/user/:user">
+					<PublicProfile />
+				</PublicRoute> */}
+				<Route path="/user/:user" exact>
+					<PublicProfile />
+				</Route>
 				{/* Auth */}
 				<Route
 					exact
@@ -60,7 +81,11 @@ class Routes extends Component {
 					path="/register"
 					render={({ location }) =>
 						!this.props.isAuthenticated ? (
-							<Register />
+							<ErrorBoundary>
+								<Suspense fallback={<AuthLoading />}>
+									<Register />
+								</Suspense>
+							</ErrorBoundary>
 						) : (
 							<Redirect
 								to={{
@@ -71,6 +96,66 @@ class Routes extends Component {
 						)
 					}
 				/>
+				<PublicRoute
+					exact
+					path="/reset-password"
+					// render={({ location }) =>
+					// 	!this.props.isAuthenticated ? (
+					// 		<PasswordResetRequest />
+					// 	) : (
+					// 		<Redirect
+					// 			to={{
+					// 				pathname: "/",
+					// 				state: { from: location },
+					// 			}}
+					// 		/>
+					// 	)
+					// }
+				>
+					<>
+						{!this.props.isAuthenticated ? (
+							<PasswordResetRequest />
+						) : (
+							<Redirect
+								to={{
+									pathname: "/",
+								}}
+							/>
+						)}
+					</>
+				</PublicRoute>
+				<Route
+					exact
+					path="/reset-password/:uidb64/:token"
+					// render={({ location }) =>
+					// 	!this.props.isAuthenticated ? (
+					// 		<PasswordResetRequest />
+					// 	) : (
+					// 		<Redirect
+					// 			to={{
+					// 				pathname: "/",
+					// 				state: { from: location },
+					// 			}}
+					// 		/>
+					// 	)
+					// }
+				>
+					<>
+						{!this.props.isAuthenticated ? (
+							<ErrorBoundary>
+								<Suspense fallback={<AuthLoading />}>
+									<PasswordReset />
+								</Suspense>
+							</ErrorBoundary>
+						) : (
+							<Redirect
+								to={{
+									pathname: "/",
+								}}
+							/>
+						)}
+					</>
+				</Route>
 				<AuthRoute authenticated={true} path="/logout" exact>
 					<Logout />
 				</AuthRoute>

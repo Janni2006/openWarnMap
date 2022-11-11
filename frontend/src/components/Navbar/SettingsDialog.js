@@ -10,9 +10,9 @@ import {
 	Grid,
 	Switch,
 	Tooltip,
-} from "@material-ui/core";
+} from "@mui/material";
 
-import { Language, MapOutlined, InfoOutlined } from "@material-ui/icons";
+import { Language, MapOutlined, InfoOutlined } from "@mui/icons-material";
 
 import { useIntl, FormattedMessage } from "react-intl";
 
@@ -73,39 +73,49 @@ function SettingsDialog(props) {
 							}}
 						/>
 					</Grid>
-					<Grid
-						item
-						xs={12}
-						sm={6}
-						style={{
-							display: "flex",
-							justifyContent: "flex-start",
-							flexWrap: "nowrap",
-							alignItems: "center",
-						}}
-					>
-						<MapOutlined />
-						<Typography
-							style={{ fontSize: "16px", color: "#3f3f3f", marginLeft: "5px" }}
-						>
-							<FormattedMessage id="SETTINGS_CLICK_TO_ADD" />:
-						</Typography>
-						<Tooltip
-							title={intl.formatMessage({
-								id: "SETTINGS_CLICK_TO_ADD_DESCRIPTION",
-							})}
-							placement="right"
-							arrow
-						>
-							<InfoOutlined style={{ color: "#2d79df", marginLeft: "5px" }} />
-						</Tooltip>
-					</Grid>
-					<Grid item xs={12} sm={6}>
-						<Switch
-							onChange={props.toggleClickToAdd}
-							checked={props.clickToAdd}
-						/>
-					</Grid>
+					{props.isAuthenticated ? (
+						<>
+							<Grid
+								item
+								xs={12}
+								sm={6}
+								style={{
+									display: "flex",
+									justifyContent: "flex-start",
+									flexWrap: "nowrap",
+									alignItems: "center",
+								}}
+							>
+								<MapOutlined />
+								<Typography
+									style={{
+										fontSize: "16px",
+										color: "#3f3f3f",
+										marginLeft: "5px",
+									}}
+								>
+									<FormattedMessage id="SETTINGS_CLICK_TO_ADD" />:
+								</Typography>
+								<Tooltip
+									title={intl.formatMessage({
+										id: "SETTINGS_CLICK_TO_ADD_DESCRIPTION",
+									})}
+									placement="right"
+									arrow
+								>
+									<InfoOutlined
+										style={{ color: "#2d79df", marginLeft: "5px" }}
+									/>
+								</Tooltip>
+							</Grid>
+							<Grid item xs={12} sm={6}>
+								<Switch
+									onChange={props.toggleClickToAdd}
+									checked={props.clickToAdd}
+								/>
+							</Grid>
+						</>
+					) : null}
 				</Grid>
 			</div>
 
@@ -124,11 +134,13 @@ SettingsDialog.propTypes = {
 	setLanguage: PropTypes.func.isRequired,
 	clickToAdd: PropTypes.bool.isRequired,
 	toggleClickToAdd: PropTypes.func.isRequired,
+	isAuthenticated: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	language: state.general.language,
 	clickToAdd: state.general.settings.map.clickToAdd,
+	isAuthenticated: state.auth.isAuthenticated,
 });
 
 export default connect(mapStateToProps, { setLanguage, toggleClickToAdd })(

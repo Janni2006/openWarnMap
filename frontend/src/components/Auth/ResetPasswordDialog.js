@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 
 import {
 	Card,
@@ -12,15 +12,17 @@ import {
 	Dialog,
 	DialogTitle,
 	DialogActions,
-} from "@material-ui/core";
+} from "@mui/material";
 
-import { useIntl, FormattedMessage, FormattedTime } from "react-intl";
+import { useIntl, FormattedMessage } from "react-intl";
 
 import SubmitButton from "../SubmitButton";
 
 import { toast } from "react-toastify";
 
 import axios from "axios";
+
+import InputField from "../InputField";
 
 function ResetPassword(props) {
 	const { onClose, open } = props;
@@ -49,7 +51,7 @@ function ResetPassword(props) {
 					if (res.status == 200) {
 						handleClose();
 						toast.success(
-							intl.formatMessage({ id: "AUTH_RESET_PASSWORD_SUCCESS" })
+							intl.formatMessage({ id: "AUTH_RESET_PASSWORD_DIALOG_SUCCESS" })
 						);
 					}
 				})
@@ -98,42 +100,27 @@ function ResetPassword(props) {
 	return (
 		<Dialog open={open} onClose={handleClose}>
 			<DialogTitle>
-				<FormattedMessage id="AUTH_RESET_PASSWORD" />
+				<FormattedMessage id="AUTH_RESET_PASSWORD_DIALOG" />
 			</DialogTitle>
 			<div style={{ padding: "0px 24px" }}>
 				<Typography>
-					<FormattedMessage id="AUTH_RESET_PASSWORD_DESCRIPTION" />
+					<FormattedMessage id="AUTH_RESET_PASSWORD_DIALOG_DESCRIPTION" />
 				</Typography>
-				<input
+
+				<InputField
+					error={errors}
 					type="email"
-					name="email"
-					placeholder={intl.formatMessage({
-						id: "AUTH_RESET_PASSWORD_EMAIL_PLACEHOLDER",
-					})}
-					value={input}
-					onChange={(event) => {
-						setInput(event.target.value);
+					input={input}
+					onChange={(e) => {
+						setInput(e.target.value);
 					}}
 					onSubmit={handleSubmit}
-					style={{
-						height: "45px",
-						width: "calc(100% - 50px)",
-						backgroundColor: props.progress ? "#dddddd" : "#faf6f2",
-						border: "none",
-						padding: "5px 25px",
-						marginTop: "25px",
-					}}
-					id="email"
 					disabled={props.progress}
+					placeholder={intl.formatMessage({
+						id: "AUTH_RESET_PASSWORD_DIALOG_EMAIL_PLACEHOLDER",
+					})}
+					name="email"
 				/>
-				<div
-					style={{
-						color: "red",
-						fontSize: "12px",
-					}}
-				>
-					{errors}
-				</div>
 			</div>
 
 			<DialogActions>
@@ -164,6 +151,6 @@ function ResetPassword(props) {
 
 ResetPassword.propTypes = { csrf: PropTypes.string.isRequired };
 
-const mapStateToProps = (state) => ({ csrf: state.security.csrf_toek });
+const mapStateToProps = (state) => ({ csrf: state.security.csrf_token });
 
 export default connect(mapStateToProps)(ResetPassword);

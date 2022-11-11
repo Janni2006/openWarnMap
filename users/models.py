@@ -2,7 +2,7 @@ from django.db import models
 from colorfield.fields import ColorField
 from django.contrib.auth.models import User
 from django.utils.translation import gettext as _
-from api.models import Issue
+from server_models.models import Issue
 import uuid
 from django.utils import timezone
 from reactbackend.models import Votes
@@ -18,6 +18,7 @@ class Profile(models.Model):
     private_data = models.ManyToManyField(Issue, blank=True)
     published_count = models.IntegerField(default=0)
     votes = models.ManyToManyField(Votes, blank=True)
+    notifications = models.BooleanField(default=False)
     avatar_color = ColorField(default='#bdbdbd')
 
     def __str__(self):

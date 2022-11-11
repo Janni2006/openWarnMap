@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 
 import { Link } from "react-router-dom";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
-import { Hidden } from "@material-ui/core";
+import makeStyles from '@mui/styles/makeStyles';
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import { Hidden } from "@mui/material";
 
 const useStyles = makeStyles((theme) => ({
 	actionButton: {
@@ -20,15 +20,9 @@ const useStyles = makeStyles((theme) => ({
 function AddActionButton(props) {
 	const classes = useStyles();
 
-	const [popupOpen, setPopupOpen] = React.useState(false);
-
-	React.useEffect(() => {
-		console.log(props);
-	}, [props.popupOpened]);
-
 	return (
 		<>
-			{props.isAuthenticated && props.popupOpened ? (
+			{props.isAuthenticated && !props.popupOpened ? (
 				<Hidden smUp>
 					<Link to="/add">
 						<Fab

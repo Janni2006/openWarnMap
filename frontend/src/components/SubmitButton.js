@@ -1,9 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles, Button } from "@material-ui/core";
-import { green } from "@material-ui/core/colors";
+import CircularProgress from "@mui/material/CircularProgress";
+import { Button } from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
+import { green } from "@mui/material/colors";
 
 const useStyles = makeStyles({
 	root: {
@@ -44,7 +45,7 @@ function SubmitButton(props) {
 								? "#bbbbbb"
 								: success
 								? green[500]
-								: "linear-gradient(90deg, #eb334a, #f45c43)",
+								: "linear-gradient(90deg, #378d40, #008259)",
 							padding: "7.5px 25px",
 							color: "white",
 							fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
@@ -52,7 +53,7 @@ function SubmitButton(props) {
 							textTransform: "uppercase",
 							borderRadius: "5px",
 							border: "none",
-							height: "40px",
+							height: "60px",
 						}}
 						onClick={props.onClick}
 					>
@@ -66,7 +67,7 @@ function SubmitButton(props) {
 								? "#bbbbbb"
 								: success
 								? green[500]
-								: "linear-gradient(90deg, #eb334a, #f45c43)",
+								: "linear-gradient(90deg, #378d40, #008259)",
 							padding: "7.5px 25px",
 							color: "white",
 							fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
@@ -74,7 +75,7 @@ function SubmitButton(props) {
 							textTransform: "uppercase",
 							borderRadius: "5px",
 							border: "none",
-							height: "40px",
+							height: "60px",
 							cursor: "pointer",
 						}}
 						value={props.title}

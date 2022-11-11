@@ -6,7 +6,6 @@ import { Helmet } from "react-helmet-async";
 
 import { IntlProvider } from "react-intl";
 import messages from "../i18n/messages";
-import { LOCALES } from "../i18n/languages";
 
 import { ToastContainer } from "react-toastify";
 

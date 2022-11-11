@@ -8,11 +8,15 @@ import { Link } from "react-router-dom";
 import "leaflet/dist/leaflet.css";
 
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import { Typography, makeStyles } from "@material-ui/core";
+import { Typography } from "@mui/material";
 
-import { VerifiedUser, Warning, Close } from "@material-ui/icons";
+import makeStyles from '@mui/styles/makeStyles';
+
+import { VerifiedUser, Warning, Close, Height } from "@mui/icons-material";
 
 import { FormattedMessage, FormattedRelativeTime } from "react-intl";
+
+import getDistance from "geolib/es/getDistance";
 
 const useStyles = makeStyles((theme) => ({
 	cardList: {
@@ -39,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 			padding: "10px 0px",
 			marginBottom: "2.55px",
 		},
-		[theme.breakpoints.down("xs")]: {
+		[theme.breakpoints.down('md')]: {
 			flex: "1 0 100%",
 			maxWidth: "calc(100% - 30px)",
 			padding: "10px 0px",
@@ -58,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 		display: "block",
 		pointerEvents: "none",
 		padding: "104px 0px 40px 0px",
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down('lg')]: {
 			left: "10px",
 			right: "10px",
 			width: "calc(100% - 20px)",
@@ -104,16 +108,42 @@ const useStyles = makeStyles((theme) => ({
 
 function Item(props) {
 	const [data, setData] = React.useState(null);
+	const [gps, setGps] = React.useState({ available: true, distance: 0 });
 
 	const classes = useStyles();
+
+	var id;
 
 	React.useEffect(() => {
 		if (props.loading == false && props.data) {
 			var cache_data = props.data.find((item) => item.code === props.id);
-			console.log(cache_data);
 			cache_data.created_date = Date.parse(cache_data.created);
 			setData(cache_data);
+			if (gps.available) {
+				id = navigator.geolocation.watchPosition(
+					function (e) {
+						setGps({
+							...gps,
+							distance: getDistance(
+								{ lat: e.coords.latitude, lon: e.coords.longitude },
+								{
+									lat: cache_data.gps_coords[1],
+									lon: cache_data.gps_coords[0],
+								}
+							),
+						});
+					},
+					function () {
+						console.log("error");
+					}
+				);
+			}
 		}
+		return () => {
+			if (id) {
+				navigator.geolocation.clearWatch(id);
+			}
+		};
 	}, [props.loading, props.data]);
 
 	return (
@@ -138,7 +168,7 @@ function Item(props) {
 								layoutId={`card-map-container-${props.id}`}
 							>
 								<MapContainer
-									center={[data.gps_lat, data.gps_long]}
+									center={[data.gps_coords[1], data.gps_coords[0]]}
 									zoom={13}
 									scrollWheelZoom={false}
 									closePopupOnClick={false}
@@ -158,7 +188,7 @@ function Item(props) {
 										attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 										url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 									/>
-									<Marker position={[data.gps_lat, data.gps_long]} />
+									<Marker position={[data.gps_coords[1], data.gps_coords[0]]} />
 								</MapContainer>
 							</motion.div>
 							<motion.div
@@ -220,6 +250,14 @@ function Item(props) {
 										</Typography>
 									</div>
 								) : null}
+								<Height /> <Typography>Höhe: {data.height}</Typography>
+								<Typography>
+									Distance:{" "}
+									{gps.distance >= 1000
+										? Math.round(gps.distance / 100) / 10
+										: gps.distance}
+									{gps.distance >= 1000 ? "km" : "m"}
+								</Typography>
 							</motion.div>
 							<motion.div
 								initial={{ opacity: 0 }}

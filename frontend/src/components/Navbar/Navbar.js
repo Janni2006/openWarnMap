@@ -12,9 +12,7 @@ import ProfileDropdown from "./ProfileDropdown";
 
 import { FormattedMessage } from "react-intl";
 
-import { Settings } from "@material-ui/icons";
-
-import { LOCALES } from "../../i18n/languages";
+import { Settings } from "@mui/icons-material";
 
 import SettingsDialog from "./SettingsDialog";
 
@@ -24,9 +22,9 @@ import {
 	IconButton,
 	List,
 	ListItem,
-	makeStyles,
 	Toolbar,
-} from "@material-ui/core";
+} from "@mui/material";
+import makeStyles from "@mui/styles/makeStyles";
 import SideDrawer from "./SideDrawer";
 
 const useStyles = makeStyles((theme) => ({
@@ -101,7 +99,7 @@ function Header(props) {
 						<img src={logo} alt="EPS Warner" style={{ height: "60px" }} />
 					</Link>
 
-					<Hidden smDown>
+					<Hidden lgDown>
 						<List
 							component="nav"
 							aria-labelledby="main navigation"
@@ -127,6 +125,16 @@ function Header(props) {
 									<FormattedMessage id="NAVBAR_ABOUT" />
 								</ListItem>
 							</Link>
+							{/* <Link
+								to={"/functions"}
+								style={{
+									textDecoration: "none",
+								}}
+							>
+								<ListItem className={classes.linkText}>
+									<FormattedMessage id="NAVBAR_FUNCTIONS" />
+								</ListItem>
+							</Link> */}
 							{!props.progress ? (
 								<>
 									{!props.isAuthenticated ? (
@@ -173,26 +181,22 @@ function Header(props) {
 							<IconButton
 								onClick={() => {
 									setOpen(true);
-									// if (props.language == LOCALES.GERMAN) {
-									// 	props.setLanguage(LOCALES.ENGLISH);
-									// } else {
-									// 	props.setLanguage(LOCALES.GERMAN);
-									// }
 								}}
 								className={classes.buttonSettings}
+								size="large"
 							>
 								<Settings />
 							</IconButton>
 						</List>
 					</Hidden>
-					<Hidden mdUp>
+					<Hidden lgUp>
 						<List
 							component="nav"
 							aria-labelledby="main navigation"
 							className={classes.navListDisplayFlex}
 							style={{ padding: "0px" }}
 						>
-							<Hidden xsDown>
+							<Hidden mdDown>
 								{!props.progress && props.isAuthenticated ? (
 									<Link
 										to="/add"

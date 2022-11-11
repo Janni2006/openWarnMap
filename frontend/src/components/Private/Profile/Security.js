@@ -11,7 +11,7 @@ import {
 	Switch,
 	FormControlLabel,
 	FormGroup,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import {
 	FormattedMessage,
@@ -19,8 +19,6 @@ import {
 	FormattedDate,
 	FormattedTime,
 } from "react-intl";
-
-import "./input.css";
 
 import { toast } from "react-toastify";
 

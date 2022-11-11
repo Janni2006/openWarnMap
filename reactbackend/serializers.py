@@ -1,9 +1,12 @@
 from datetime import datetime
+from random import choices
 from django.db.models import fields
+from pkg_resources import require
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from api.models import Issue
+from rest_framework.fields import ReadOnlyField
+from server_models.models import Issue
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from django.utils import timezone
@@ -12,68 +15,12 @@ from .models import Votes
 
 
 class IssueSerializer(serializers.ModelSerializer):
+    gps_coords = ReadOnlyField(source="gps.coords")
+
     class Meta:
         model = Issue
-        fields = ('code', 'active', 'verified', 'gps',
+        fields = ('code', 'active', 'verified', 'gps_coords',
                   'size', 'height', 'localization', 'created')
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email',
-                  'first_name', 'last_name', 'is_active']
-
-
-# class UserLoginSerializer(serializers.Serializer):
-#     username = serializers.CharField(required=True)
-#     password = serializers.CharField(
-#         required=True, style={'input_type': 'password', 'placeholder': 'Password'})
-
-
-# class UserChangePasswordSerializer(serializers.Serializer):
-#     old_password = serializers.CharField(
-#         required=True, style={'input_type': 'password', 'placeholder': 'Password'})
-#     new_password = serializers.CharField(
-#         required=True, validators=[
-#             validate_password], style={'input_type': 'password', 'placeholder': 'Password'})
-#     conf_password = serializers.CharField(
-#         required=True, style={'input_type': 'password', 'placeholder': 'Password'})
-
-
-# class UserRegistrationSerializer(serializers.ModelSerializer):
-#     username = serializers.CharField(required=True, validators=[
-#                                      UniqueValidator(queryset=User.objects.all())])
-#     email = serializers.EmailField(required=True, validators=[
-#                                    UniqueValidator(queryset=User.objects.all())], style={
-#         'input_type': 'email'})
-
-#     password = serializers.CharField(write_only=True, required=True, validators=[
-#                                      validate_password], style={'input_type': 'password', 'placeholder': 'Password'})
-#     password2 = serializers.CharField(write_only=True, required=True, style={
-#                                       'input_type': 'password', 'placeholder': 'Confirm password'})
-
-#     class Meta:
-#         model = User
-#         fields = ('username',  'email', 'password', 'password2')
-
-#     def validate(self, attrs):
-#         if attrs['password'] != attrs['password2']:
-#             raise serializers.ValidationError(
-#                 {"password": "Password fields didn't match."})
-
-#         return attrs
-
-#     def create(self, validated_data):
-#         user = User.objects.create(
-#             username=validated_data['username'],
-#             email=validated_data['email']
-#         )
-
-#         user.set_password(validated_data['password'])
-#         user.save()
-
-#         return user
 
 
 class CreateIssueSerializer(serializers.Serializer):
@@ -114,10 +61,6 @@ class CreateIssueSerializer(serializers.Serializer):
         return issue
 
 
-class UserResetPasswordRequestSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
-
-
 class CreateFeedbackSerializer(serializers.Serializer):
     email = serializers.EmailField(required=False)
     firstname = serializers.CharField(required=False)
@@ -130,3 +73,12 @@ class CreateVoteSerializer(serializers.Serializer):
     confirm = serializers.BooleanField(required=True)
     change = serializers.BooleanField(default=False)
     applied_change = serializers.IntegerField(required=False)
+
+
+class ConfirmVoteSerializer(serializers.Serializer):
+    entry_id = serializers.CharField(required=True)
+
+
+class ChangeVoteSerializer(serializers.Serializer):
+    entry_id = serializers.CharField(required=True)
+    change_option = serializers.IntegerField(required=True)

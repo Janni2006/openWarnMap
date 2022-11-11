@@ -9,6 +9,8 @@ export const TRANSLATIONS = {
 	OK: "Ok",
 	SAVE: "Speichern",
 	READY: "Fertig",
+	NEXT: "Weiter",
+	BACK: "Zurück",
 
 	COOKIE_CONSENT:
 		"Diese Webseite nutzt Cookies um die Nutzererfahrung zu verbessern.",
@@ -43,6 +45,13 @@ export const TRANSLATIONS = {
 	ENTRYS_FILTERS_SORT_NEWEST: "Neustes",
 	ENTRYS_FILTERS_SORT_OLDEST: "Ältester",
 
+	FILTER: "Einträge filtern",
+
 	POPUP_REQUEST_CHANGE_OPTION_IP: "Ungültige Position",
 	POPUP_REQUEST_CHANGE_OPTION_NT: "Es sind keine Bäume in der Nähe",
+
+	POPUP_CONFIRM: "Bestätigen",
+	POPUP_CONFIRMED: "Bestätigt",
+	POPUP_CHANGE: "Status ändern",
+	POPUP_CHANGED: "Status geändert",
 };

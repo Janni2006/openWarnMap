@@ -1,35 +1,24 @@
-from datetime import datetime, timedelta
-from re import A
-from django import http
-from django.contrib.auth import get_user_model
-from rest_framework import serializers, status, generics
+from django.forms import ValidationError
+from rest_framework import status, generics
 from rest_framework.response import Response
-from rest_framework import exceptions
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
-from django.utils.http import urlsafe_base64_encode
-from reactbackend.serializers import CreateVoteSerializer, IssueSerializer, CreateIssueSerializer
-from django.contrib.auth import get_user_model
+from reactbackend.serializers import ChangeVoteSerializer, CreateVoteSerializer, IssueSerializer, CreateIssueSerializer, ConfirmVoteSerializer
+from django_filters.rest_framework import DjangoFilterBackend
+
+from rest_framework import filters
 
 from .models import Votes
 
-from api.models import Issue, generate_unique_code
+from server_models.models import Issue
 
 from django.contrib.gis.geos import Point
 
 
-class WebGetData(APIView):
+class WebGetData(generics.ListAPIView):
     permission_classes = (AllowAny,)
-
-    def get(self, request):
-        data = []
-        queryset = Issue.objects.all()
-
-        for object in queryset:
-            data.append({'code': object.code, 'active': object.active,
-                        'verified': object.verified, 'gps_lat': object.gps.coords[1], 'gps_long': object.gps.coords[0], 'size': object.size, 'height': object.height, 'localization': object.localization, 'created': object.created})
-
-        return Response(data=data, status=status.HTTP_200_OK)
+    serializer_class = IssueSerializer
+    queryset = Issue.objects.all()
 
 
 class WebCreateIssueView(APIView):
@@ -81,18 +70,16 @@ class WebCreateIssueView(APIView):
         return Response({'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class WebGetPrivateData(APIView):
+class WebGetPrivateData(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
+    serializer_class = IssueSerializer
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    ordering_fields = ["created"]
+    filterset_fields = ["active", "verified", "size", "height", "localization"]
 
-    def get(self, request, format=None):
-        queryset = request.user.profile.private_data.all()
-        if queryset.exists():
-            issues = []
-            for object in queryset:
-                issues.append({'code': object.code, 'active': object.active,
-                               'verified': object.verified, 'gps_lat': object.gps.coords[1], 'gps_long': object.gps.coords[0], 'size': object.size, 'height': object.height, 'localization': object.localization, 'created': object.created})
-            return Response(data=issues, status=status.HTTP_200_OK)
-        return Response(data={'Error': 'No data found'}, status=status.HTTP_404_NOT_FOUND)
+    def get_queryset(self):
+        return self.request.user.profile.private_data.all()
+    # return Issue.objects.all()
 
 
 class WebSendFeedback(APIView):
@@ -157,3 +144,97 @@ class WebCreateIssueVote(APIView):
             return Response(data={"Error": "You have ranked this entry already!"}, status=status.HTTP_409_CONFLICT)
         print(serializer.errors)
         return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WebConfirmIssueVote(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ConfirmVoteSerializer
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            entry_id = serializer.data.get("entry_id")
+            entry = Issue.objects.get(code__iexact=entry_id)
+
+            if not entry:
+                return Response(data={'err': 'Not found', 'err_msg': 'The entry you are looking for does not exist.', 'err_code': 404}, status=status.HTTP_404_NOT_FOUND)
+
+            if entry.creator == request.user:
+                return Response(data={'err': 'owner', 'err_msg': 'You are the owner of the entry so you are not allowed to vote', 'err_code': 400}, status=status.HTTP_400_BAD_REQUEST)
+
+            existing_queryset = Votes.objects.filter(
+                entry=entry, user=request.user)
+
+            if not existing_queryset.exists():
+                vote = Votes(entry=entry, user=request.user,
+                             confirm=True, change=False)
+                vote.save()
+
+                return Response({"issue": vote.entry.code, "voted": True, "confirm": vote.confirm, "change": vote.change}, status=status.HTTP_201_CREATED)
+            return Response(data={"err_msg": "You have ranked this entry already!"}, status=status.HTTP_409_CONFLICT)
+        return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WebChangeIssueVote(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ChangeVoteSerializer
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            entry_id = serializer.data.get("entry_id")
+            change_option = serializer.data.get("change_option")
+
+            try:
+                entry = Issue.objects.get(code__iexact=entry_id)
+            except Issue.MultipleObjectsReturned:
+                return Response({"Internal server error": "Something went drastically wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            except Issue.DoesNotExist:
+                return Response({"not found": "The desired entry was not found"}, status=status.HTTP_404_NOT_FOUND)
+            else:
+                existing_queryset = Votes.objects.filter(
+                    entry=entry, user=request.user)
+
+                if not existing_queryset.exists():
+
+                    if change_option == 0:
+                        vote = Votes(entry=entry, user=request.user,
+                                     confirm=False, change=True, applied_change="IP")
+                        vote.save()
+                    elif change_option == 1:
+                        vote = Votes(entry=entry, user=request.user,
+                                     confirm=False, change=True, applied_change="NT")
+                    else:
+                        return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+
+                    return Response({"issue": vote.entry.code, "voted": True, "confirm": vote.confirm, "change": vote.change}, status=status.HTTP_201_CREATED)
+
+                return Response(data={"Error": "You have ranked this entry already!"}, status=status.HTTP_409_CONFLICT)
+        print(serializer.errors)
+        return Response(data={'Bad Request': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WebGetPrivateIssueVoteStatus(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        issue_code = request.GET.get("item", str)
+
+        try:
+            issue = Issue.objects.get(code__iexact=issue_code)
+        except Issue.MultipleObjectsReturned:
+            return Response({"Internal server error": "Something went drastically wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Issue.DoesNotExist:
+            return Response({"not found": "The desired entry was not found"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            if issue.creator == request.user or request.user.profile.private_data.all().filter(
+                    code__iexact=issue_code).exists():
+                return Response({"issue": issue.code, "private": True}, status=status.HTTP_200_OK)
+            queryset = Votes.objects.filter(entry=issue, user=request.user)
+
+            if queryset.exists():
+                return Response({"issue": queryset.first().entry.code, "voted": True, "confirm": queryset.first().confirm, "change": queryset.first().change}, status=status.HTTP_200_OK)
+            else:
+                return Response({"issue": issue.code, "voted": False}, status=status.HTTP_200_OK)

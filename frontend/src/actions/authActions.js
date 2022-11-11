@@ -141,7 +141,8 @@ export const login = (username, password) => (dispatch, getState) => {
 };
 
 export const register =
-	(username, email, password, intl) => (dispatch, getState) => {
+	(username, email, password, firstname, lastname, intl) =>
+	(dispatch, getState) => {
 		dispatch({ type: USER_LOADING });
 		const config = {
 			headers: {
@@ -155,6 +156,8 @@ export const register =
 			email: email,
 			password: password,
 			password2: password,
+			firstname: firstname,
+			lastname: lastname,
 		});
 		axios
 			.post("/backend/auth/register/", body, config)
@@ -170,7 +173,7 @@ export const register =
 			.catch((err) => {
 				console.log(err.response);
 				dispatch({ type: REGISTER_FAILED });
-				toast.error(intl.formatMessage({ id: "AUTH_REGISTER_SUCCESS" }));
+				toast.error("Error");
 			});
 	};
 

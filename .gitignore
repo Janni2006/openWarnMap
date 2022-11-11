@@ -168,3 +168,8 @@ frontend/packages/react-devtools-extensions/.tempUserDataDir
 frontend/packages/react-devtools-inline/dist
 frontend/packages/react-devtools-shell/dist
 frontend/packages/react-devtools-scheduling-profiler/dist
+
+# gitignore for vsCode
+*.code-workspace
+emails
+frontend/static/frontend

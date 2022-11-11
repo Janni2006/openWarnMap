@@ -2,12 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setTitle } from "../../actions/generalActions";
-import { loadPrivateData } from "../../actions/privateActions";
+import {
+	loadPrivateData,
+	setPrivateDataFilters,
+} from "../../actions/privateActions";
 import { Link, withRouter, useLocation, useHistory } from "react-router-dom";
 
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import withStyles from '@mui/styles/withStyles';
 
-import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 import Breadcrumbs from "../Breadcrumbs";
 
@@ -24,16 +28,16 @@ import {
 	Divider,
 	Hidden,
 	Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
-import { Skeleton } from "@material-ui/lab";
+import { Skeleton } from '@mui/material';
 
 import "leaflet/dist/leaflet.css";
-import ListIcon from "@material-ui/icons/List";
-import ViewComfyIcon from "@material-ui/icons/ViewComfy";
-import ArrowDropDown from "@material-ui/icons/ArrowDropDown";
+import ListIcon from "@mui/icons-material/List";
+import ViewComfyIcon from "@mui/icons-material/ViewComfy";
+import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
 
-import Badge from "@material-ui/core/Badge";
+import Badge from "@mui/material/Badge";
 import Select from "react-select";
 
 import { FormattedMessage, useIntl } from "react-intl";
@@ -41,6 +45,9 @@ import { FormattedMessage, useIntl } from "react-intl";
 import List from "./List";
 import Item from "./Item";
 import Dropdown from "rc-dropdown";
+import SubmitButton from "../SubmitButton";
+
+import Filters from "./Filters";
 
 const useStyles = makeStyles((theme) => ({
 	cardList: {
@@ -68,7 +75,7 @@ const useStyles = makeStyles((theme) => ({
 			padding: "10px 0px",
 			marginBottom: "2.55px",
 		},
-		[theme.breakpoints.down("xs")]: {
+		[theme.breakpoints.down('md')]: {
 			flex: "1 0 100%",
 			maxWidth: "calc(100% - 30px)",
 			padding: "10px 0px",
@@ -159,93 +166,13 @@ function PrivateEntrys(props) {
 	}, []);
 
 	React.useEffect(() => {
-		setLoading(true);
-		var current_data = props.data;
-		var cache_data = [];
-		if (filters.active == true) {
-			current_data.map((item) => {
-				if (item.active == true) {
-					cache_data.push(item);
-				}
-			});
-		} else {
-			cache_data = current_data;
-		}
-		current_data = cache_data;
-		cache_data = [];
+		setData(props.data);
+		setLoading(false);
+	}, [props.data]);
 
-		if (filters.verified == true) {
-			current_data.map((item) => {
-				if (item.verified == true) {
-					cache_data.push(item);
-				}
-			});
-		} else {
-			cache_data = current_data;
-		}
-
-		current_data = cache_data;
-		cache_data = [];
-
-		if (filters.size == 0) {
-			cache_data = current_data;
-		} else {
-			current_data.map((item) => {
-				if (item.size == filters.size - 1) {
-					cache_data.push(item);
-				}
-			});
-		}
-
-		current_data = cache_data;
-		cache_data = [];
-
-		if (filters.height == 0) {
-			cache_data = current_data;
-		} else {
-			current_data.map((item) => {
-				if (item.height == filters.height - 1) {
-					cache_data.push(item);
-				}
-			});
-		}
-
-		current_data = cache_data;
-		cache_data = [];
-
-		if (filters.localization == 0) {
-			cache_data = current_data;
-		} else {
-			current_data.map((item) => {
-				if (item.localization == filters.localization - 1) {
-					cache_data.push(item);
-				}
-			});
-		}
-
-		current_data = cache_data;
-		cache_data = [];
-
-		if (filters.sort == 0) {
-			cache_data = current_data;
-			setData([]);
-			cache_data.sort(function (a, b) {
-				return Date.parse(b.created) - Date.parse(a.created);
-			});
-		} else if (filters.sort == 1) {
-			cache_data = current_data;
-			setData([]);
-			cache_data.sort(function (a, b) {
-				return Date.parse(a.created) - Date.parse(b.created);
-			});
-		}
-
-		current_data = cache_data;
-		cache_data = [];
-
-		setData(current_data);
-		setTimeout(() => setLoading(false), 1);
-	}, [props.data, filters]);
+	React.useEffect(() => {
+		setFilters(props.filters);
+	}, [props.filters]);
 
 	React.useEffect(() => {
 		setSelectedId(
@@ -273,7 +200,7 @@ function PrivateEntrys(props) {
 	}, [listType]);
 
 	return (
-		<div
+        <div
 			style={{
 				padding: "10px 15px 0px 15px",
 				maxWidth: "1300px",
@@ -395,204 +322,7 @@ function PrivateEntrys(props) {
 
 			<Divider style={{ margin: "5px 0px 20px 0px" }} />
 			<Grid container spacing={2}>
-				<Hidden smDown>
-					<Grid item md={2}>
-						{!props.loading ? (
-							<Paper style={{ height: "calc(50vh - 40px)", padding: "20px" }}>
-								<FormControl component="fieldset">
-									<FormLabel component="legend">
-										<FormattedMessage id="ENTRYS_FILTER" />
-									</FormLabel>
-									<FormGroup aria-label="position">
-										<FormControlLabel
-											value="active"
-											control={<Checkbox color="primary" />}
-											label={intl.formatMessage({
-												id: "ENTRYS_FILTERS_ONLY_ACTIVE",
-											})}
-											labelPlacement="end"
-											checked={filters.active}
-											onChange={(event) => {
-												setFilters({
-													...filters,
-													active: event.target.checked,
-												});
-											}}
-										/>
-										<FormControlLabel
-											value="verified"
-											control={<Checkbox color="primary" />}
-											label={intl.formatMessage({
-												id: "ENTRYS_FILTERS_ONLY_VERIFIED",
-											})}
-											labelPlacement="end"
-											checked={filters.verified}
-											onChange={(event) => {
-												setFilters({
-													...filters,
-													verified: event.target.checked,
-												});
-											}}
-										/>
-									</FormGroup>
-								</FormControl>
-								<Select
-									placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
-									options={[
-										{
-											value: 0,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_SIZE_ALL",
-											}),
-										},
-										{
-											value: 1,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_SIZE_OPTION_1",
-											}),
-										},
-										{
-											value: 2,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_SIZE_OPTION_2",
-											}),
-										},
-										{
-											value: 3,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_SIZE_OPTION_3",
-											}),
-										},
-									]}
-									defaultValue={{
-										value: 0,
-										label: intl.formatMessage({
-											id: "ENTRYS_FILTERS_SIZE_ALL",
-										}),
-									}}
-									onChange={(option) => {
-										setFilters({ ...filters, size: option?.value });
-									}}
-									// styles={customStyles(error.fields.height.error)}
-								/>
-								<Select
-									placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
-									options={[
-										{
-											value: 0,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_HEIGHT_ALL",
-											}),
-										},
-										{
-											value: 1,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_HEIGHT_OPTION_1",
-											}),
-										},
-										{
-											value: 2,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_HEIGHT_OPTION_2",
-											}),
-										},
-										{
-											value: 3,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_HEIGHT_OPTION_3",
-											}),
-										},
-									]}
-									defaultValue={{
-										value: 0,
-										label: intl.formatMessage({
-											id: "ENTRYS_FILTERS_HEIGHT_ALL",
-										}),
-									}}
-									onChange={(option) => {
-										setFilters({ ...filters, height: option?.value });
-									}}
-									// styles={customStyles(error.fields.height.error)}
-								/>
-								<Select
-									placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
-									options={[
-										{
-											value: 0,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_LOCALIZATION_ALL",
-											}),
-										},
-										{
-											value: 1,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_LOCALIZATION_OPTION_1",
-											}),
-										},
-										{
-											value: 2,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_LOCALIZATION_OPTION_2",
-											}),
-										},
-										{
-											value: 3,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_LOCALIZATION_OPTION_3",
-											}),
-										},
-									]}
-									defaultValue={{
-										value: 0,
-										label: intl.formatMessage({
-											id: "ENTRYS_FILTERS_LOCALIZATION_ALL",
-										}),
-									}}
-									onChange={(option) => {
-										setFilters({ ...filters, localization: option?.value });
-									}}
-									// styles={customStyles(error.fields.height.error)}
-								/>
-								<Select
-									placeholder={intl.formatMessage({ id: "ADD_SELECT" })}
-									options={[
-										{
-											value: 0,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_SORT_NEWEST",
-											}),
-										},
-										{
-											value: 1,
-											label: intl.formatMessage({
-												id: "ENTRYS_FILTERS_SORT_OLDEST",
-											}),
-										},
-									]}
-									defaultValue={{
-										value: 0,
-										label: intl.formatMessage({
-											id: "ENTRYS_FILTERS_SORT_NEWEST",
-										}),
-									}}
-									onChange={(option) => {
-										setFilters({ ...filters, sort: option?.value });
-									}}
-									// styles={customStyles(error.fields.height.error)}
-								/>
-							</Paper>
-						) : (
-							<Paper style={{ height: "50vh", background: "transparent" }}>
-								<Skeleton
-									variant="rect"
-									width="100%"
-									height="100%"
-									animation="wave"
-								/>
-							</Paper>
-						)}
-					</Grid>
-				</Hidden>
+				<Filters />
 				<Grid item xs={12} md={10} style={{ overflowX: "hidden" }}>
 					<AnimateSharedLayout type="crossfade">
 						{!loading && data ? (
@@ -626,7 +356,7 @@ function PrivateEntrys(props) {
 											style={{ background: "transparent" }}
 										>
 											<Skeleton
-												variant="rect"
+												variant="rectangular"
 												animation="wave"
 												height="100%"
 												width="100%"
@@ -640,7 +370,7 @@ function PrivateEntrys(props) {
 				</Grid>
 			</Grid>
 		</div>
-	);
+    );
 }
 
 PrivateEntrys.propTypes = {
@@ -648,13 +378,17 @@ PrivateEntrys.propTypes = {
 	loadPrivateData: PropTypes.func.isRequired,
 	loading: PropTypes.bool.isRequired,
 	data: PropTypes.array,
+	filters: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	loading: state.private.loading,
 	data: state.private.data,
+	filters: state.private.filters,
 });
 
-export default connect(mapStateToProps, { setTitle, loadPrivateData })(
-	withRouter(PrivateEntrys)
-);
+export default connect(mapStateToProps, {
+	setTitle,
+	loadPrivateData,
+	setPrivateDataFilters,
+})(withRouter(PrivateEntrys));

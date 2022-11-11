@@ -40,14 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'api.apps.ApiConfig',
-    'frontend.apps.FrontendConfig',
-    'users.apps.UsersConfig',
     'rest_framework',
     'djoser',
     'rest_framework.authtoken',
+    'server_models.apps.ModelsConfig',
+    'api.apps.ApiConfig',
+    'frontend.apps.FrontendConfig',
+    'users.apps.UsersConfig',
     'colorfield',
     'reactbackend.apps.ReactbackendConfig',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -124,7 +126,7 @@ LANGUAGES = (
 
 LANGUAGE_CODE = 'en-US'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
@@ -156,3 +158,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'emails')
